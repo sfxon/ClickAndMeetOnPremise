@@ -1,0 +1,510 @@
+<div class="mvbox">
+		<div class="mvbox-body">
+				<div class="row">
+						<br />
+						<div class="form-group col-sm-12">
+								<button type="button" id="add_product_file" class="btn btn-default">{$smarty.const.TEXT_BUTTON_ADD_FILE}</button>
+						</div>
+						
+						<div class="form-group col-sm-12">
+								<table id="products_editor_files_table" style="width: 100%" class="table table-hover table-condensed table-bordered table-striped">
+										<thead>
+												<tr>
+														<th>{$smarty.const.TEXT_TABLE_HEADING_FILE_DATA}</th>
+														<th>{$smarty.const.TEXT_TABLE_HEADING_ACTION}</th>
+												</tr>
+												
+												{foreach from=$PRODUCTS_FILES item=products_file}
+														<tr {strip}
+																data-attr-documents-id="{$products_file.id}"{/strip} {strip}
+																data-attr-sort-order="{$products_file.sort_order}"{/strip} {strip}
+																data-attr-file-source="{$products_file.file_source}"{/strip} {strip}
+																data-attr-license-type="{$products_file.license_type}"{/strip} {strip}
+																data-attr-file-qualifier="{$products_file.qualifier}"{/strip} {strip}
+																data-attr-tmp-products-file=""{/strip} {strip}
+																
+																{foreach from=$DATALANGUAGES item=datalang name=datalangloop}
+																		data-attr-title-{$datalang.id}="{$products_file.products_files_descriptions[$datalang.id].title}"{/strip} {strip}
+																		data-attr-comment-{$datalang.id}="{$products_file.products_files_descriptions[$datalang.id].comment}"{/strip} {strip}
+																		data-attr-external-link-{$datalang.id}="{$products_file.products_files_descriptions[$datalang.id].external_link}"{/strip} {strip}
+																{/foreach}
+														>
+														{/strip}
+																<td valign="top">
+																		{$smarty.const.TEXT_SORT_ORDER}: {$products_file.sort_order}<br />
+																		{$smarty.const.TEXT_FILE_SOURCE}: {$products_file.file_source}<br />
+																		{$smarty.const.TEXT_FILE_LICENSE}: {$products_file.license_type}<br />
+																		{$smarty.const.TEXT_FILE_QUALIFIER}: {$products_file.qualifier}<br />
+																		{$smarty.const.TEXT_FILE_TITLE}: {$products_file.products_files_descriptions[$CURRENT_DATALANGUAGE_ID].title}<br />
+																		{$smarty.const.TEXT_FILE_COMMENT}: {$products_file.products_files_descriptions[$CURRENT_DATALANGUAGE_ID].comment}<br />
+																		{$smarty.const.TEXT_FILE_EXTERNAL_LINK}: {$products_file.products_files_descriptions[$CURRENT_DATALANGUAGE_ID].external_link}<br />
+																</td>
+																<td>
+																		<button type="button" class="btn btn-success edit_products_file">{$smarty.const.TEXT_BUTTON_EDIT}</button>
+																		<button type="button" class="btn btn-danger delete_products_file">{$smarty.const.TEXT_BUTTON_DELETE}</button>
+																</td>
+														</tr>
+												{/foreach}
+										</thead>
+										<tbody>
+										</tbody>
+								</table>
+						</div>
+				</div>
+		</div>
+</div>
+				
+{literal}
+<script>
+var products_editor_files_current_edit_row = '';
+
+function products_files_item_buttons_live() {
+		$('.edit_products_file').off('click');																						
+		$('.edit_products_file').on('click', function(event) {
+				edit_products_file_dialog(event, this);
+		});
+		
+		$('.delete_products_file').off('click');
+		$('.delete_products_file').on('click', function(event) {
+				edit_products_file_delete_dialog(event, this);
+		});
+}
+
+$(function() {
+		products_files_item_buttons_live();		//let the products files button actions live!
+
+		$('#add_product_file').click( function(event) {
+				event.stopPropagation();
+
+				//clear the file inputs
+				$('.fileinput').fileinput('clear');
+				
+				//clear all additional fields
+				$('#products_file_sort_order').val('');
+				$('#products_file_source').val('');
+				$('#products_file_license_type').val('');
+				$('#products_file_qualifier').val('');
+				$('#tmp_products_file').val('');
+				$('#products_files_documents_id').val('');
+				
+				{/literal}
+						{foreach from=$DATALANGUAGES item=datalang name=datalangloop}
+										{literal}$('#products_file_title_{/literal}{$datalang.id}{literal}').val('');{/literal}
+						{/foreach}
+						{foreach from=$DATALANGUAGES item=datalang name=datalangloop}
+										{literal}$('#products_file_comment_{/literal}{$datalang.id}{literal}').val('');{/literal}
+						{/foreach}
+						{foreach from=$DATALANGUAGES item=datalang name=datalangloop}
+										{literal}$('#products_file_external_link_{/literal}{$datalang.id}{literal}').val('');{/literal}
+						{/foreach}
+				{literal}
+				
+				//clear the row variable, since we are not editing - we are adding an item				
+				products_editor_files_current_edit_row = '';
+				
+				show_products_files_editor(this);
+		});
+});
+</script>
+{/literal}
+
+<!-- Modal dialog for deleting an files -->
+<div class="modal fade" id="products_files_delete_editor" tabindex="-1" role="dialog" aria-labbelledby="{$smarty.const.TEXT_TITLE_DELETE_PRODUCTS_FILE}" aria-hidden="true">
+		<div class="modal-dialog">
+				<div class="modal-content">
+						<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">{$smarty.const.TEXT_BUTTON_CLOSE}</span></button>
+								<h4 class="modal-title" id="myModalLabel">{$smarty.const.TEXT_TITLE_DELETE_PRODUCTS_FILE}</h4>
+						</div>
+						
+						<div class="modal-body">
+								<p>{$smarty.const.TEXT_DELETE_PRODUCTS_FILE}</p>
+						</div>
+						<div class="modal-footer">
+								{* <!--
+								<input type="hidden" id="add_product_category_channel_id" value="" />
+								<input type="hidden" id="add_product_category_parent_id" value="" />
+								--> *}
+								<button type="button" class="btn btn-default" data-dismiss="modal">{$smarty.const.TEXT_BUTTON_CANCEL}</button>
+								<button type="button" class="btn btn-primary" id="edit_products_file_delete_action">{$smarty.const.TEXT_BUTTON_DELETE}</button>
+						</div>
+				</div>
+		</div>
+</div>
+
+<!-- Modal Dialog for adding a products file -->
+<div class="modal fade" id="products_files_add_editor" tabindex="-1" role="dialog" aria-labelledby="{$smarty.const.TEXT_ADD_PRODUCTS_FILE}" aria-hidden="true">
+		<div class="modal-dialog">
+				<div class="modal-content">
+						<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">{$smarty.const.TEXT_BUTTON_CLOSE}</span></button>
+								<h4 class="modal-title" id="myModalLabel">{$smarty.const.TEXT_ADD_PRODUCTS_FILE}</h4>
+						</div>
+						<div class="modal-body">
+								<div class="row">
+										<div class="col-sm-6">
+												<div class="form-group col-sm-12">
+														<input type="hidden" value="" id="tmp_products_file" />
+														<input type="hidden" value="" id="products_files_documents_id" />
+														<label for="new_file">{$smarty.const.TEXT_LABEL_NEW_FILE}</label>
+														<div>
+																<div class="fileinput fileinput-new" data-provides="fileinput">
+																		<span class="btn btn-default btn-file">
+																				<span class="fileinput-new">{$smarty.const.TEXT_SELECT_FILE_DOCUMENT}</span>
+																				<span class="fileinput-exists">{$smarty.const.TEXT_SELECT_FILE_DOCUMENT}</span>
+																				<input type="file" name="new_file" id="new_product_file_file">
+																				<input type="hidden" name="MAX_FILE_SIZE" value="3000000" />
+																		</span>
+																		<div class="fileinput-preview fileinput-exists thumbnail" style="width: 40px; height: 40px;"></div>
+																		{* <!-- <button type="button" class="btn btn-primary fileinput-exists" id="new_product_file_upload">{$smarty.const.TEXT_UPLOAD_FILE}</button> --> *}
+																</div>
+														</div>
+														{literal}
+																<script>
+																		///////////////////////////////////////////////////////////////
+																		//function to start the dialog to edit a file
+																		///////////////////////////////////////////////////////////////
+																		function edit_products_file_delete_dialog(event, item) {
+																				event.stopPropagation();
+																				
+																				//get the parent tr..
+																				var row = $(item).closest("tr");
+																				products_editor_files_current_edit_row = row;
+																				
+																				//set the editors data fields
+																				var tmp_products_file = $(row).attr('data-attr-tmp-products-file');
+																				var documents_id = $(row).attr('data-attr-documents-id');
+																				
+																				$('#tmp_products_file').val(tmp_products_file);
+																				$('#products_files_documents_id').val(documents_id);
+																				
+																				show_products_files_delete_editor(this);
+																		}
+																
+																		///////////////////////////////////////////////////////////////
+																		//function to start the dialog to edit an file
+																		///////////////////////////////////////////////////////////////
+																		function edit_products_file_dialog(event, item) {
+																				event.stopPropagation();
+														
+																				//get the parent tr..
+																				var row = $(item).closest("tr");
+																				products_editor_files_current_edit_row = row;
+																				
+																				//reset the file input field
+																				//var input = $('#new_product_file_file');
+																				//input.replaceWith(input.val('').clone(true));
+																				$('.fileinput').fileinput('clear');
+																				
+																				//set the editors data fields
+																				var sort_order = $(row).attr('data-attr-sort-order');
+																				var file_source = $(row).attr('data-attr-file-source');
+																				var license_type = $(row).attr('data-attr-license-type');
+																				var file_qualifier = $(row).attr('data-attr-file-qualifier');
+																				var tmp_products_file = $(row).attr('data-attr-tmp-products-file');
+																				var documents_id = $(row).attr('data-attr-documents-id');
+																				
+																				$('#products_file_sort_order').val(sort_order);
+																				$('#products_file_source').val(file_source);
+																				$('#products_file_license_type').val(license_type);
+																				$('#products_file_qualifier').val(file_qualifier);
+																				$('#tmp_products_file').val(tmp_products_file);
+																				$('#products_files_documents_id').val(documents_id);
+																				
+																				//set editor data fields part 2: html-tag texts
+																				//Das ist ein geiles Konstrukt - das wird nie wieder jemand verstehen.. 
+																				// :P
+																				//Aber jetzt mal im Ernst: Wenn es unverständlich ist: HTML Ausgabe ansehen
+																				{/literal}
+																						{foreach from=$DATALANGUAGES item=datalang name=datalangloop}
+																										{literal}var title_{/literal}{$datalang.id}{literal} = $(row).attr('data-attr-title-{/literal}{$datalang.id}{literal}');{/literal}
+																										{literal}$('#products_file_title_{/literal}{$datalang.id}{literal}').val( title_{/literal}{$datalang.id}{literal} );{/literal}
+																						{/foreach}
+																						{foreach from=$DATALANGUAGES item=datalang name=datalangloop}
+																										{literal}var comment_{/literal}{$datalang.id}{literal} = $(row).attr('data-attr-comment-{/literal}{$datalang.id}{literal}');{/literal}
+																										{literal}$('#products_file_comment_{/literal}{$datalang.id}{literal}').val( comment_{/literal}{$datalang.id}{literal} );{/literal}
+																						{/foreach}
+																						{foreach from=$DATALANGUAGES item=datalang name=datalangloop}
+																										{literal}var external_link_{/literal}{$datalang.id}{literal} = $(row).attr('data-attr-external-link-{/literal}{$datalang.id}{literal}');{/literal}
+																										{literal}$('#products_file_external_link_{/literal}{$datalang.id}{literal}').val( external_link_{/literal}{$datalang.id}{literal} );{/literal}
+																						{/foreach}
+																				{literal}
+																				
+																				//show the editor..
+																				show_products_files_editor(this);
+																		}
+																		
+																		$( function() {
+																				/////////////////////////////////////////////////////////////////////////////////////////
+																				var trigger_allow_upload_without_file = function trigger_allow_upload_without_file_func(data) {
+																						if(
+																								($('#products_files_documents_id').val() == '' || $('#products_files_documents_id').val() == undefined) &&
+																								($('#tmp_products_file').val() == '' || $('#tmp_products_file').val() == undefined)
+																							) {
+																									alert('{/literal}{$smarty.const.TEXT_ERROR_NO_FILE_FOR_UPLOAD_SELECTED}{literal}');
+																									return false;
+																						} else {
+																								return true;
+																						}
+																				}
+																				
+																				/////////////////////////////////////////////////////////////////////////////////////////
+																				//function to add or update a table row (this is a callback..)
+																				/////////////////////////////////////////////////////////////////////////////////////////
+																				var handler_file_added = function handler_file_added_func(data) {
+																						//if this is true, add an item..
+																						if(products_editor_files_current_edit_row == '') {
+																								var imgurl = data.server + data.destination_path + data.filename;
+																								
+																								var trow = '<tr';
+																								//add data attributes to the table row
+																								trow += ' data-attr-sort-order="' + $('#products_file_sort_order').val() + '"';
+																								trow += ' data-attr-file-source="' + $('#products_file_source').val() + '"';
+																								trow += ' data-attr-license-type="' + $('#products_file_license_type').val() + '"';
+																								trow += ' data-attr-file-qualifier="' + $('#products_file_qualifier').val() + '"';
+																								trow += ' data-attr-tmp-products-file="' + data.filename + '"';
+																								
+																								//html-tags texts
+																								{/literal}
+																										{foreach from=$DATALANGUAGES item=datalang name=datalangloop}
+																														{literal}trow += ' data-attr-title-{/literal}{$datalang.id}{literal}="' + $('#products_file_title_{/literal}{$datalang.id}{literal}').val() + '"';{/literal}
+																										{/foreach}
+																										{foreach from=$DATALANGUAGES item=datalang name=datalangloop}
+																														{literal}trow += ' data-attr-comment-{/literal}{$datalang.id}{literal}="' + $('#products_file_comment_{/literal}{$datalang.id}{literal}').val() + '"';{/literal}
+																										{/foreach}
+																										{foreach from=$DATALANGUAGES item=datalang name=datalangloop}
+																														{literal}trow += ' data-attr-external-link-{/literal}{$datalang.id}{literal}="' + $('#products_file_external_link_{/literal}{$datalang.id}{literal}').val() + '"';{/literal}
+																										{/foreach}
+																								{literal}
+																								
+																								//set columns
+																										trow += '<td valign="top">';
+																												trow += '{/literal}{$smarty.const.TEXT_SORT_ORDER}{literal}: ' + $('#products_file_sort_order').val() + '<br />';
+																												trow += '{/literal}{$smarty.const.TEXT_FILE_SOURCE}{literal}: ' + $('#products_file_source').val() + '<br />';
+																												trow += '{/literal}{$smarty.const.TEXT_FILE_LICENSE}{literal}: ' + $('#products_file_license_type').val() + '<br />';
+																												trow += '{/literal}{$smarty.const.TEXT_FILE_QUALIFIER}{literal}: ' + $('#products_file_qualifier').val() + '<br />';
+																												trow += '{/literal}{$smarty.const.TEXT_FILE_TITLE}{literal}: ' + $('#products_file_title_' + $('#current_datalanguage_id').val()).val() + '<br />';
+																												trow += '{/literal}{$smarty.const.TEXT_FILE_COMMENT}{literal}: ' + $('#products_file_comment_' + $('#current_datalanguage_id').val()).val() + '<br />';
+																												trow += '{/literal}{$smarty.const.TEXT_FILE_EXTERNAL_LINK}{literal}: ' + $('#products_file_external_link_' + $('#current_datalanguage_id').val()).val() + '<br />';
+																					
+																										trow += '</td>';
+																										trow += '<td>';
+																												trow += '<button type="button" class="btn btn-success edit_products_file">{/literal}{$smarty.const.TEXT_BUTTON_EDIT}{literal}</button>';
+																												trow += ' <button type="button" class="btn btn-danger delete_products_file">{/literal}{$smarty.const.TEXT_BUTTON_DELETE}{literal}</button>';
+																								trow += '</tr>';
+																								
+																								$('#products_editor_files_table tbody').append(trow);
+																								
+																								//close the dialog
+																								$('#products_files_add_editor').modal('hide');
+																								
+																								//make the action buttons are clickable
+																								products_files_item_buttons_live();
+																						} else {
+																								var tmpr = products_editor_files_current_edit_row; //just shorten the variable name here temporary..
+																								var filegurl = '';
+																								
+																								if(data.filename != '' && data.filename != undefined) {
+																										fileurl = data.server + data.destination_path + data.filename;
+																										$(tmpr).attr('data-attr-tmp-products-file', data.filename);
+																								} else {
+																										var tmp_file_name = $('#tmp_products_file').val();
+
+																										if(tmp_file_name == undefined || tmp_file_name == '') {		//if there wasn't an file upload for an existing item..
+																												fileurl = data.server + data.destination_path + $('#products_files_documents_id').val() + data.file_extension;
+																										} else {
+																												fileurl = data.server + data.destination_path + $('#tmp_products_file').val();
+																										}
+																								}
+																								
+																								//add data attributes to the table row
+																								$(tmpr).attr('data-attr-sort-order', $('#products_file_sort_order').val());
+																								$(tmpr).attr('data-attr-file-source', $('#products_file_source').val());
+																								$(tmpr).attr('data-attr-license-type', $('#products_file_license_type').val());
+																								$(tmpr).attr('data-attr-file-qualifier', $('#products_file_qualifier').val());
+																								$(tmpr).attr('data-attr-documents-id', $('#products_files_documents_id').val());
+																								
+																								{/literal}
+																										{foreach from=$DATALANGUAGES item=datalang name=datalangloop}
+																														{literal}$(tmpr).attr('data-attr-title-{/literal}{$datalang.id}{literal}', $('#products_file_title_{/literal}{$datalang.id}{literal}').val());{/literal}
+																										{/foreach}
+																										{foreach from=$DATALANGUAGES item=datalang name=datalangloop}
+																														{literal}$(tmpr).attr('data-attr-comment-{/literal}{$datalang.id}{literal}', $('#products_file_comment_{/literal}{$datalang.id}{literal}').val());{/literal}
+																										{/foreach}
+																										{foreach from=$DATALANGUAGES item=datalang name=datalangloop}
+																														{literal}$(tmpr).attr('data-attr-external-link-{/literal}{$datalang.id}{literal}', $('#products_file_external_link_{/literal}{$datalang.id}{literal}').val());{/literal}
+																										{/foreach}
+																								{literal}
+																								
+																								//set columns
+																								trow += '<td valign="top">';
+																										trow += '{/literal}{$smarty.const.TEXT_SORT_ORDER}{literal}: ' + $('#products_file_sort_order').val() + '<br />';
+																										trow += '{/literal}{$smarty.const.TEXT_FILE_SOURCE}{literal}: ' + $('#products_file_source').val() + '<br />';
+																										trow += '{/literal}{$smarty.const.TEXT_FILE_LICENSE}{literal}: ' + $('#products_file_license_type').val() + '<br />';
+																										trow += '{/literal}{$smarty.const.TEXT_FILE_QUALIFIER}{literal}: ' + $('#products_file_qualifier').val() + '<br />';
+																										trow += '{/literal}{$smarty.const.TEXT_FILE_TITLE}{literal}: ' + $('#products_file_title_' + $('#current_datalanguage_id').val()).val() + '<br />';
+																										trow += '{/literal}{$smarty.const.TEXT_FILE_COMMENT}{literal}: ' + $('#products_file_comment_' + $('#current_datalanguage_id').val()).val() + '<br />';
+																										trow += '{/literal}{$smarty.const.TEXT_FILE_EXTERNAL_LINK}{literal}: ' + $('#products_file_external_link_' + $('#current_datalanguage_id').val()).val() + '<br />';
+																								trow += '</td>';
+																								trow += '<td>';
+																										trow += '<button type="button" class="btn btn-success edit_products_file">{/literal}{$smarty.const.TEXT_BUTTON_EDIT}{literal}</button>';
+																										trow += ' <button type="button" class="btn btn-danger delete_products_file">{/literal}{$smarty.const.TEXT_BUTTON_DELETE}{literal}</button>';
+																								
+																								$(tmpr).html(trow);
+																								
+																								//make the action buttons are clickable
+																								products_files_item_buttons_live();
+																								
+																								//close the dialog
+																								$('#products_files_add_editor').modal('hide');
+																						}
+																				}
+																		
+																				/////////////////////////////////////////////////////////////////////////////////////////
+																				//function to set additional post vars..
+																				/////////////////////////////////////////////////////////////////////////////////////////
+																				var file_set_post_vars = function file_set_post_vars_func() {
+																						var data = {
+																											sort_order: $('#products_file_sort_order').val(),
+																											file_source: $('#products_file_source').val(),
+																											file_license_type: $('#products_file_license_type').val(),
+																											file_qualifier: $('#products_file_qualifier').val(),
+																											tmp_products_file: $('#tmp_products_file').val(),
+																											documents_id: $('#products_files_documents_id').val(),
+																											{/literal}
+																													{foreach from=$DATALANGUAGES item=datalang name=datalangloop}
+																																	{literal}products_file_title_{/literal}{$datalang.id}{literal}: $('#products_file_title_{/literal}{$datalang.id}{literal}').val(){/literal}
+																															{if $smarty.foreach.datalangloop.last == FALSE},{/if}
+																													{/foreach}
+																											{literal},
+																											{/literal}
+																													{foreach from=$DATALANGUAGES item=datalang name=datalangloop}
+																																	{literal}products_file_comment_{/literal}{$datalang.id}{literal}: $('#products_file_comment_{/literal}{$datalang.id}{literal}').val(){/literal}
+																															{if $smarty.foreach.datalangloop.last == FALSE},{/if}
+																													{/foreach}
+																											{literal},
+																											{/literal}
+																													{foreach from=$DATALANGUAGES item=datalang name=datalangloop}
+																																	{literal}products_file_external_link_{/literal}{$datalang.id}{literal}: $('#products_file_external_link_{/literal}{$datalang.id}{literal}').val(){/literal}
+																															{if $smarty.foreach.datalangloop.last == FALSE},{/if}
+																													{/foreach}
+																											{literal}
+																												};
+																						return data;
+																				}
+																				
+																				//build the params for the url
+																				var params = {
+																											s: 'cAdminproducts',
+																											action: 'ajax_upload_file',
+																											tmp_products_id: $('#tmp_products_id').val(),
+																											
+																											};
+																				params = $.param(params);
+																				
+																				$(this).mv_file_uploader({
+																															input_file_selector: '',
+																															input_upload_button: '#add_product_file_submit',
+																															input_file: '#new_product_file_file',
+																															receiver_url: 'index.php?' + params,
+																															trigger_add_post_vars: file_set_post_vars,
+																															handler_uploaded: handler_file_added,
+																															trigger_allow_upload_without_file: trigger_allow_upload_without_file
+																															});
+																															
+																				//delete editor action									
+																				$('#edit_products_file_delete_action').on('click', function() {
+																						//save the content via ajax..
+																						var params = { 
+																												s: 'cAdminproducts', 
+																												action: 'ajax_delete_file', 
+																												tmp_products_file: $('#tmp_products_file').val(),
+																												documents_id: $('#products_files_documents_id').val(),
+																												tmp_products_id: $('#tmp_products_id').val()
+																												};
+																						params = $.param(params);
+																						
+																						$.ajax({
+																								type: "POST",
+																								url: "index.php?" + params,
+																						}).done(function( msg ) {
+																								//remove the item of the list and close the dialog..
+																								$(products_editor_files_current_edit_row).remove();
+																								$('#products_files_delete_editor').modal('hide');
+																						});
+																				});
+																		});
+																</script>
+														{/literal}
+												</div>
+										
+										
+												<div class="form-group col-sm-12">
+														<label for="products_file_sort_order">{$smarty.const.TEXT_LABEL_SORT_ORDER}</label>
+														<input type="text" class="form-control" placeholder="{$smarty.const.TEXT_LABEL_SORT_ORDER}" value="" id="products_file_sort_order" />
+												</div>
+												
+												<div class="form-group col-sm-12">
+														<label for="products_file_source">{$smarty.const.TEXT_LABEL_FILE_SOURCE}</label>
+														<input type="text" class="form-control" placeholder="{$smarty.const.TEXT_LABEL_FILE_SOURCE}" value="" id="products_file_source" />
+												</div>
+												
+												<div class="form-group col-sm-12">
+														<label for="products_file_license_type">{$smarty.const.TEXT_LABEL_LICENSE_TYPE}</label>
+														<input type="text" class="form-control" placeholder="{$smarty.const.TEXT_LABEL_LICENSE_TYPE}" value="" id="products_file_license_type" />
+												</div>
+												
+												<div class="form-group col-sm-12">
+														<label for="products_file_qualifier">{$smarty.const.TEXT_LABEL_FILE_QUALIFIER}</label>
+														<input type="text" class="form-control" placeholder="{$smarty.const.TEXT_LABEL_FILE_QUALIFIER}" value="" id="products_file_qualifier" />
+												</div>
+										</div>
+										
+										<div class="col-sm-6">
+												{foreach from=$DATALANGUAGES item=datalanguage}
+														<div class="mvbox gray">
+																<div class="mvbox-title">
+																		<div class="caption">{$datalanguage.title}</div>
+																</div>
+																<div class="mvbox-body">
+																		<div class="row">
+																				<div class="form-group col-sm-12">
+																						<label for="products_file_title">{$smarty.const.TEXT_LABEL_FILE_TITLE}</label>
+																						<input type="text" class="form-control" placeholder="{$smarty.const.TEXT_LABEL_FILE_TITLE}" value="" id="products_file_title_{$datalanguage.id}" />
+																				</div>
+																		</div>
+																		
+																		<div class="row">
+																				<div class="form-group col-sm-12">
+																						<label for="products_file_comment">{$smarty.const.TEXT_LABEL_FILE_COMMENT}</label>
+																						<input type="text" class="form-control" placeholder="{$smarty.const.TEXT_LABEL_FILE_COMMENT}" value="" id="products_file_comment_{$datalanguage.id}" />
+																				</div>
+																		</div>
+																		
+																		<div class="row">
+																				<div class="form-group col-sm-12">
+																						<label for="products_file_external_link">{$smarty.const.TEXT_LABEL_FILE_EXTERNAL_LINK}</label>
+																						<input type="text" class="form-control" placeholder="{$smarty.const.TEXT_LABEL_FILE_EXTERNAL_LINK}" value="" id="products_file_external_link_{$datalanguage.id}" />
+																				</div>
+																		</div>
+																		
+																		<div class="mv_clearfix"></div>
+																</div>
+														</div>
+												{/foreach}
+										</div>
+										
+										
+								</div>
+						</div>
+						<div class="modal-footer">
+								{* <!--
+								<input type="hidden" id="add_product_category_channel_id" value="" />
+								<input type="hidden" id="add_product_category_parent_id" value="" />
+								--> *}
+								<button type="button" class="btn btn-default" data-dismiss="modal">{$smarty.const.TEXT_BUTTON_CANCEL}</button>
+								<button type="button" class="btn btn-primary" id="add_product_file_submit">{$smarty.const.TEXT_BUTTON_SAVE}</button>
+						</div>
+				</div>
+		</div>
+</div>

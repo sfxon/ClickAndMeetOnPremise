@@ -1,0 +1,39 @@
+<div class="mv-container-min-full">
+    <main class="form-signin">
+      <form action="{$LOGIN_FORM_URL}" method="post">
+          <h1 class="h3 mb-3 fw-normal">Click&Meet</h1>
+          <p>Bitte log dich mit deinen Zugangsdaten ein.</p>
+          
+          {if is_array($ERRORS)}
+              {if isset($ERRORS['wrong_login_data'])}
+                  <div class="alert alert-danger" role="alert">
+                      {$ERRORS.wrong_login_data}
+                  </div>
+              {/if}
+          {/if}
+          
+          
+          <label for="mail" class="visually-hidden">E-Mail Adresse</label>
+          <input type="mail" id="mail" name="mail" class="form-control{if isset($ERRORS.mail)} is-invalid{/if}" placeholder="E-Mail Adresse" autofocus="autofocus" value="{$DATA.mail}">
+          <small id="mail_error" class="text-danger"{if !isset($ERRORS.mail)} style="display: none;"{/if}>{if isset($ERRORS.mail)}{$ERRORS.mail}{/if}</small>
+          
+          <label for="pass" class="visually-hidden">Passwort</label>
+          <input type="password" id="pass" name="pass" class="form-control{if isset($ERRORS.pass)} is-invalid{/if}" placeholder="Passwort">
+          
+          <div class="checkbox mb-3">
+            <label>
+              <input type="checkbox" value="1" name="keep_logged_in" id="keep_logged_in" data-on="Eingeloggt bleiben" data-off="Nicht eingeloggt bleiben" data-onstyle="success" data-offstyle="danger" class="mv-keep-logged-in-toggle"{if $DATA.keep_logged_in == 1} checked="checked"{/if}>
+              Eingeloggt bleiben
+            </label>
+          </div>
+          <button class="w-100 btn btn-lg btn-primary" type="submit">Einloggen</button>
+          <div class="col-sm text-right mv-recover-passwd"><a href="{$TEMPLATE_URL}recover-password">Passwort vergessen?</a></div>
+          
+          <small id="mv-error-message" class="text-danger" {if count($ERRORS) == 0}style="display: none;"{/if}>
+              <br />Irgendwas stimmt nicht. Bitte prüfe deine Eingaben nochmal.
+          </small>
+          
+          <p style="margin-top:30px;">Du kannst stattdessen auch einen <a href="{$TEMPLATE_URL}registrieren"><b>neuen Account erstellen</b></a>.</p>
+      </form>
+    </main>
+</div>

@@ -1,0 +1,163 @@
+<div class="container-fluid">
+		<nav class="navbar navbar-default mv-navbar" role="navigation">
+				<div class="container-fluid">
+						<div class="navbar-header">
+								<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+										<span class="sr-only">{$smarty.const.TEXT_TOGGLE_NAVIGATION}</span>
+										<span class="icon-bar"></span>
+										<span class="icon-bar"></span>
+										<span class="icon-bar"></span>
+								</button>
+						</div>
+		
+						<!-- Collect the nav links, forms, and other content for toggling -->
+						<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+								<ul class="nav navbar-nav navbar-left">
+										<li><a href="index.php?s=cAdminproductcategories">/</a></li>
+										{foreach from=$CATEGORY_PATHS item=item name=categorypath} 
+												{if $smarty.foreach.categorypath.iteration > 1}
+														<li><a href="#">/</a></li>
+												{/if}
+												
+												{if $item.type == 'channel'}
+														<li><a href="index.php?s=cAdminproductcategories&amp;channel_id={$DATA.channel_id}"><i class="fa fa-folder"></i> {$item.title}</a></li>
+												{else}
+														<li {if $smarty.foreach.categorypath.last == TRUE}class="active"{/if}><a href="index.php?s=cAdminproductcategories&amp;channel_id={$DATA.channel_id}&amp;category_id={$item.id}"><i class="fa fa-folder-o"></i> {$item.title}</a></li>
+												{/if}
+										{/foreach}
+								</ul>
+								{* <!--
+								<form class="navbar-form navbar-left" role="search" method="post" action="index.php?s=product_categories&amp;action=search">
+										<div class="form-group">
+												<input type="text" class="form-control" placeholder="{$smarty.const.TEXT_PLACEHOLDER_SEARCH}" name="searchterm" value="{$DATA.searchterm}">
+										</div>
+										
+										<div class="form-group">
+												<select class="form-control selectpicker" name="search_mode">
+														<option value="all"{if $DATA.search_mode == 'all'} selected="selected"{/if}>{$smarty.const.TEXT_SEARCH_ALL_FIELDS}</option>
+														<option value="id"{if $DATA.search_mode == 'id'} selected="selected"{/if}>{$smarty.const.TEXT_ID}</option>
+												</select>
+										</div>
+										
+										<button type="submit" class="btn btn-default btn-sm">{$smarty.const.TEXT_BUTTON_SEARCH_SUBMIT}</button>
+								</form>
+								--> *}
+								
+								
+								<div class="navbar-form navbar-right">
+										<div class="form-group">
+												<a href="index.php?s=cAdminproductcategories&amp;action=new&amp;channel_id={$DATA.channel_id}&amp;category_id={$DATA.category_id}">
+														<button type="submit" class="btn btn-default btn-sm">{$smarty.const.TEXT_BUTTON_NEW}</button>
+												</a>
+										</div>
+								</div>
+								
+						</div><!-- /.navbar-collapse -->
+				</div><!-- /.container-fluid -->
+		</nav>
+		
+		{* <!-- KATEGORIEN KATEGORIEN KATEGORIEN KATEGORIEN KATEGORIEN KATEGORIEN KATEGORIEN --> *}
+		<h1>Kategorien</h1>
+		<div class="mv-force-table-responsive">
+				<table class="table table-hover table-condensed table-bordered table-striped">
+						<thead>
+								<tr>
+										<th>{$smarty.const.TEXT_TABLE_HEADING_ID}</th>
+										<th>{$smarty.const.TEXT_TABLE_HEADING_CATEGORY_NAME}</th>
+										<th>{$smarty.const.TEXT_TABLE_HEADING_ACTION}</th>
+								</tr>
+						</thead>
+						
+						<tbody>
+								{if $CATEGORIES_PARENT_CATEGORY_ID === FALSE}
+										<tr>
+												<td>&nbsp;</td>
+												<td>
+														<a href="index.php?s=cAdminproductcategories"><i class="fa fa-folder-o"></i> ..</a>
+												</td>
+												<td>&nbsp;</td>
+										</tr>
+								{elseif $CATEGORIES_PARENT_CATEGORY_ID === '0'}
+										<tr>
+												<td>&nbsp;</td>
+												<td>
+														<a href="index.php?s=cAdminproductcategories&amp;channel_id={$DATA.channel_id}"><i class="fa fa-folder-o"></i> ..</a>
+												</td>
+												<td>&nbsp;</td>
+										</tr>
+								{else}
+										<tr>
+												<td>&nbsp;</td>
+												<td>
+														<a href="index.php?s=cAdminproductcategories&amp;channel_id={$DATA.channel_id}&amp;category_id={$CATEGORIES_PARENT_CATEGORY_ID}"><i class="fa fa-folder-o"></i> ..</a>
+												</td>
+												<td>&nbsp;</td>
+										</tr>
+								{/if}
+								
+								{if $DATA.categories_list|count == 0}
+										<tr><td colspan="3">{$smarty.const.TEXT_NO_SUBCATEGORIES}</td></tr>
+								{else}
+										{foreach from=$DATA.categories_list item=dataitem name=categoryforeach}
+												{if false !== $dataitem}
+														<tr>
+																<td>{$dataitem.product_categories_id}</td>
+																<td>
+																		<a href="index.php?s=cAdminproductcategories&amp;channel_id={$DATA.channel_id}&amp;category_id={$dataitem.product_categories_id}">
+																				<i class="fa fa-folder-o"></i> {$dataitem.title}
+																		</a>
+																 </td>
+																 <td>
+																		<a href="index.php?s=cAdminproductcategories&amp;channel_id={$DATA.channel_id}&amp;category_id={$dataitem.product_categories_id}&amp;action=edit">
+																				<i class="fa fa-pencil"></i>
+																		</a>
+																 </td>
+														</tr>
+												{/if}
+										{/foreach}
+								{/if}
+						</tbody>
+				</table>
+		</div>
+		
+		<br /><br /><br />
+		
+		
+		
+		<h1>Artikel in dieser Kategorie</h1>
+		<div class="mv-force-table-responsive">
+				<table class="table table-hover table-condensed table-bordered table-striped">
+						<thead>
+								<tr>
+										<th>{$smarty.const.TEXT_TABLE_HEADING_ID}</th>
+										<th>{$smarty.const.TEXT_TABLE_HEADING_PRODUCTS_NUMBER}</th>
+										<th>{$smarty.const.TEXT_TITLE}</th>
+										<th>{$smarty.const.TEXT_TABLE_HEADING_ACTION}</th>
+								</tr>
+						</thead>
+						
+						<tbody>
+								{if $DATA.products|count == 0}
+										<tr><td colspan="4">{$smarty.const.TEXT_NO_PRODUCTS_IN_THIS_CATEGORY}</td></tr>
+								{else}
+										{foreach from=$DATA.products item=dataitem}
+												{if false !== $dataitem}
+														<tr>
+																<td>{$dataitem.id}</td>
+																<td>{$dataitem.products_number}</td>
+																<td>
+																		{$dataitem.display_title}
+																</td>
+																<td>
+																		<a href="index.php?s=cAdminproducts&amp;action=edit&amp;id={$dataitem.id}">
+																				<i class="fa fa-pencil"></i>
+																		</a>
+																</td>
+														</tr>
+												{/if}
+										{/foreach}
+								{/if}
+						</tbody>
+				</table>
+		</div>
+</div>

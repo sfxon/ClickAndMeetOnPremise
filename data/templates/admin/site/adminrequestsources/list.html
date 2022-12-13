@@ -1,0 +1,74 @@
+<div class="container-fluid">
+		<nav class="navbar navbar-default mv-navbar" role="navigation">
+				<div class="navbar-header">
+						<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+								<span class="sr-only">{$smarty.const.TEXT_TOGGLE_NAVIGATION}</span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+						</button>
+				</div>
+				
+				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+						<div class="navbar-left navbar-text">
+								{$NAVBAR_TITLE}
+						</div>
+						
+						<div class="navbar-form navbar-right">
+								<div class="form-group">
+										<a href="index.php?s=cAdminrequestsources&amp;action=new">
+												<button type="submit" class="btn btn-default btn-sm">{$smarty.const.TEXT_BUTTON_NEW}</button>
+										</a>
+								</div>
+						</div>
+				</div>
+		</nav>
+
+		<div class="mv-force-table-responsive">
+				<table class="table table-hover table-condensed table-bordered table-striped">
+						<thead>
+								<tr>
+										<th>{$smarty.const.TEXT_TABLE_HEADING_ID}</th>
+										<th>{$smarty.const.TEXT_TABLE_HEADING_TITLE}</th>
+										<th>{$smarty.const.TEXT_TABLE_HEADING_STATUS}</th>
+										<th>{$smarty.const.TEXT_TABLE_HEADING_IS_REQUEST}</th>
+										<th>{$smarty.const.TEXT_TABLE_HEADING_EXTERNAL_IDENTIFIER}</th>
+										<th>Sparten-Code</th>
+										<th>{$smarty.const.TEXT_TABLE_HEADING_ACTION}</th>
+								</tr>
+						</thead>
+						
+						<tbody>
+								{if $DATA.list|count == 0}
+										<tr><td colspan="3">{$smarty.const.TEXT_NO_DATA}</td></tr>
+								{else}
+										{foreach from=$DATA.list item=dataitem name=listforeach}
+												{if false !== $dataitem}
+														<tr>
+																<td>{$dataitem.id}</td>
+																<td>{$dataitem.title}</td>
+																<td>{if $dataitem.status == 1}{$smarty.const.TEXT_STATUS_ACTIVE}{else}{$smarty.const.TEXT_STATUS_INACTIVE}{/if}</td>
+																<td>{if $dataitem.is_request == 1}{$smarty.const.TEXT_LABEL_IS_EXTERNAL_REQUEST}{else}{$smarty.const.TEXT_LABEL_IS_NOT_A_REQUEST}{/if}</td>
+																<td>{$dataitem.external_identifier}</td>
+																<td>{$dataitem.sparten_code}</td>
+																 <td>
+																 		{strip}
+																		<a href="index.php?s=cAdminrequestsources&amp;id={$dataitem.id}&amp;action=edit">
+																				<i class="fa fa-pencil"></i>
+																		</a>
+																		{/strip}
+																		
+																		{strip}
+																		<a href="index.php?s=cAdminrequestsourcestoludwig&amp;id={$dataitem.id}&amp;action=edit">
+																				<button>Zuordnung zu Ludwig bearbeiten</button>
+																		</a>
+																		{/strip}
+																 </td>
+														</tr>
+												{/if}
+										{/foreach}
+								{/if}
+						</tbody>
+				</table>
+		</div>
+</div>

@@ -1,0 +1,25 @@
+<?php
+
+require_once('master/cCmAppointmentStatusMaster.master.class.php');
+
+///////////////////////////////////////////////////////////////////////////////////////
+// Use this class to implement your own code to enhance the class.
+///////////////////////////////////////////////////////////////////////////////////////
+class cCmAppointmentStatus extends cCmAppointmentStatusMaster {
+		//////////////////////////////////////////////////////////////////////
+		// Indexierte Liste laden.
+		//////////////////////////////////////////////////////////////////////
+		function loadIndexedList() {
+				$data = $this->loadList();
+				
+				$retval = array();
+				
+				foreach($data as $d) {
+						$retval[$d['id']] = $d;
+				}
+				
+				return $retval;
+		}
+}
+
+?>

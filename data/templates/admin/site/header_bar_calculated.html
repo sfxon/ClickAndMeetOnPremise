@@ -1,0 +1,70 @@
+<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+		<div class="container-fluid">
+				<div class="navbar-header">
+        		<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#mv-main-navbar" aria-expanded="false" aria-controls="navbar">
+								<span class="button-label">Menü</span>
+								<span class="button-bars">														
+										<span class="icon-bar"></span>
+										<span class="icon-bar"></span>
+										<span class="icon-bar"></span>
+								</span>
+						</button>
+        </div>
+        
+        <div class="navbar-collapse collapse" id="mv-main-navbar">
+						<ul class="nav navbar-nav navbar-left">
+    
+            		{foreach $ADMIN_MENU item=menu_item}
+                		<li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                            {$menu_item.title}
+                        </a>
+                        {if $menu_item.sub_menu_items|count > 0}
+                            <ul class="dropdown-menu">
+                                {foreach $menu_item.sub_menu_items item=sub_menu_item}
+                                    {if $sub_menu_item.sub_menu_items|count == 0}
+                                        <li><a href="{$sub_menu_item.url}">{$sub_menu_item.title}</a></li>
+                                    {else}
+                                    		<li class="dropdown">
+                                        		<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{$sub_menu_item.title}</a>
+                                            <ul class="dropdown-menu">
+                                                {foreach $sub_menu_item.sub_menu_items item=sub_sub_menu_item}
+                                                    <li><a href="{$sub_sub_menu_item.url}">{$sub_sub_menu_item.title}</a></li>
+                                                {/foreach}
+                                            </ul>
+                                        </li>
+                                    {/if}
+                                {/foreach}
+                            </ul>
+                        {/if}
+                    </li>
+                {/foreach}
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+{if $BREADCRUMB|count > 0}
+		<div class="container-fluid">
+				<ol class="breadcrumb">
+						{foreach from=$BREADCRUMB item=crumb name=breadcrumbs}
+								<li{if $smarty.foreach.breadcrumbs.last} class="active"{/if}>{if $crumb.url|strlen > 0}<a href="{$crumb.url}">{/if}{$crumb.title}{if $crumb.url|strlen > 0}</a>{/if}</li>
+						{/foreach}
+				</ol>
+		</div>
+{/if}
+
+{literal}
+		<script>
+				$('ul.dropdown-menu [data-toggle=dropdown]').on('click', function(event) {
+						// Avoid following the href location when clicking
+						event.preventDefault(); 
+						// Avoid having the menu to close when clicking
+						event.stopPropagation(); 
+						// Re-add .open to parent sub-menu item
+						$(this).parent().toggleClass('open');
+						$(this).parent().find("ul").parent().find("li.dropdown").addClass('open');
+				});
+		</script>
+{/literal}

@@ -1,0 +1,69 @@
+<div class="mvbox">
+		<div class="mvbox-body">
+				<div class="row">
+						<div class="col-xs-12">
+								{if $DATA.data.id != 0}								
+										<div class="row">
+												<div class="form-group col-sm-12">
+														<label for="id">{$smarty.const.TEXT_LABEL_CONTENT_ID}</label>
+														<input type="text" class="form-control" placeholder="{$smarty.const.TEXT_LABEL_CONTENT_ID}" name="id" value="{$DATA.data.id}" readonly="readonly" />
+												</div>
+										</div>
+								{/if}
+								
+								<div class="row">
+										<div class="form-group col-sm-12">
+												<label for="user_id">{$smarty.const.TEXT_LABEL_USER_ID}</label>
+												<input type="text" class="form-control" placeholder="{$smarty.const.TEXT_LABEL_USER_ID}" name="user_id" value="{$DATA.data.user_id}" readonly="readonly" id="user_id" />
+										</div>
+								</div>
+								
+								<div class="row">
+										<div class="form-group col-sm-12">
+												<label for="status">{$smarty.const.TEXT_LABEL_STATUS}</label>
+												<select name="status" class="form-control">
+														<option value="0"{if 0 == $DATA.data.status} selected="selected"{/if}>Deaktiviert</option>
+														<option value="1"{if 1 == $DATA.data.status} selected="selected"{/if}>Aktiviert</option>
+												</select>
+										</div>
+								</div>
+								
+								<div class="row">
+										<div class="form-group col-sm-12">
+												<label for="webseller_session_key">{$smarty.const.TEXT_LABEL_WEBSELLER_SESSION_KEY}</label>
+												<input type="text" class="form-control" placeholder="{$smarty.const.TEXT_LABEL_WEBSELLER_SESSION_KEY}" name="webseller_session_key" value="{$DATA.data.webseller_session_key}" />
+										</div>
+								</div>
+								
+								<div class="row">
+										<div class="form-group col-sm-12">
+												<label for="start_date">{$smarty.const.TEXT_LABEL_START_DATE}</label>
+												<input type="text" class="form-control" placeholder="{$smarty.const.TEXT_LABEL_START_DATE}" name="start_date" value="{$DATA.data.start_date}" />
+										</div>
+								</div>
+								
+								<div class="row">
+										<div class="form-group col-sm-12">
+												<label for="webseller_machines_id">{$smarty.const.TEXT_LABEL_WEBSELLER_MACHINE}</label>
+												<select name="webseller_machines_id" class="form-control">
+														{* <!-- <option value="0">{$smarty.const.TEXT_PLEASE_CHOOSE}</option> //Commented out, because we always need a state machine selected! --> *}
+																{foreach from=$DATA.webseller_machines item=machine}
+																		<option value="{$machine.id}"{if $machine.id == $DATA.data.webseller_machines_id} selected="selected"{/if}>{$machine.title}</option>
+																{/foreach}
+												</select>
+										</div>
+								</div>
+								
+								<div class="row">
+										<div class="form-group col-sm-12">
+												<label for="session_type">{$smarty.const.TEXT_LABEL_SESSION_TYPE}</label>
+												<select name="session_type" class="form-control">
+														<option value="1"{if 1 == $DATA.data.session_type} selected="selected"{/if}>Rookie</option>
+														<option value="2"{if 2 == $DATA.data.session_type} selected="selected"{/if}>Power-Seller</option>
+												</select>
+										</div>
+								</div>
+						</div>
+				</div>
+		</div>
+</div>

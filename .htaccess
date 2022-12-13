@@ -1,0 +1,26 @@
+###################################
+# Specific for 1and1 managed server
+#
+# Sets php veresion to 5.5 for
+# this directory.
+###################################
+#AddType x-mapp-php5.5 .php
+#AddHandler x-mapp-php5.5 .php
+
+#order deny,allow
+#deny from all
+#allow from 84.173.215.186
+
+###################################
+# Speaking URL's
+###################################
+# If requested resource exists as a file or directory go to it
+RewriteEngine on
+RewriteBase /
+
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule (.*) - [L]
+
+# Else rewrite requests for non-existent resources to /index.php
+RewriteRule (.*) /index.php?seourl=$1 [L,QSA]   #QSA is used, to pass the query string!.

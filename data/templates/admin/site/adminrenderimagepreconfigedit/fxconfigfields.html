@@ -1,0 +1,10 @@
+{foreach from=$RENDERERFXCONFIGFIELDS item=field name="renderfxconfigfieldsforeach"}
+		{if $field.type_id == 'image_file'}
+				<label for="renderfxconfigfields_{$field.id}">{$field.name}</label>
+				<input type="file" id="renderfxconfigfields_{$field.id}" class="form-control renderfxconfigfields_input" name="renderfxconfigfields_{$field.id}" />
+		{else}
+				{* <!-- default input type is always simple text input.. --> *}		
+				<label for="renderfxconfigfields_{$field.id}">{$field.name}</label>
+				<input type="text" id="renderfxconfigfields_{$field.id}" class="form-control renderfxconfigfields_input" name="renderfxconfigfields_{$field.id}" />
+		{/if}
+{/foreach}

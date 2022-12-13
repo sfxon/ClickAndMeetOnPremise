@@ -1,0 +1,11 @@
+{if FALSE === $NEWS_DATA}
+		Der aktuelle Newsfeed konnte leider nicht geladen werden.
+{else}
+		<p>{$NEWS_DATA->channel->title|htmlspecialchars} <span class="mv-dashboard-rss-news-date">({$NEWS_DATA->channel->pubDate|htmlspecialchars})</span><br /></p>
+		{foreach from=$NEWS_DATA->channel->item item=news}
+				<div class="mv-dashboard-rss-news-entry">
+						<p class="mv-dashboard-rss-news-headline">{$news->title|htmlspecialchars} <span class="mv-dashboard-rss-news-date">({$news->pubDate|htmlspecialchars})</span></p>
+						<p class="mv-dashboard-rss-news-text">{$news->description|htmlspecialchars}</p>
+				</div>
+		{/foreach}
+{/if}

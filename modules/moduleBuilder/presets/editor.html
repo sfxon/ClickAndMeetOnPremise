@@ -1,0 +1,56 @@
+<div class="container-fluid">
+		<nav class="navbar navbar-default mv-navbar" role="navigation">
+				<div class="navbar-header">
+						<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+								<span class="sr-only">{literal}{{/literal}$smarty.const.TEXT_TOGGLE_NAVIGATION{literal}}{/literal}</span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+						</button>
+				</div>
+				
+				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+						<div class="navbar-left navbar-text">
+								{literal}{{/literal}$NAVBAR_TITLE{literal}}{/literal}
+						</div>
+				</div>
+		</nav>
+		
+		<div class="mv-box">
+				<div class="mvbox">
+						<div class="mvbox-body">
+								<div class="row">
+										<div class="col-xs-12">
+												<form role="form" action="{literal}{{/literal}$DATA.url{literal}}{/literal}" method="POST" class="form">
+														{literal}{{/literal}if 0 != $DATA.data.id{literal}}{/literal}
+																<div class="row">
+																		<div class="form-group col-sm-12">
+																				<label for="id">ID</label>
+																				<input type="text" class="form-control" placeholder="ID" name="id" value="{literal}{{/literal}$DATA.data.id{literal}}{/literal}" readonly="readonly" />
+																		</div>
+																</div>
+														{literal}{{/literal}/if{literal}}{/literal}
+                            
+                            {foreach from=$DATA.data.fields item=field}
+                                {if $field.field_name != 'id'}
+                                    <div class="row">
+                                        <div class="form-group col-sm-12">
+                                            <label for="{$field.field_name}">{$field.title}</label>
+                                            <input type="text" class="form-control" placeholder="{$field.title}" name="{$field.field_name}" value="{literal}{{/literal}$DATA.data.{$field.field_name}{literal}}{/literal}" />
+                                        </div>
+                                    </div>
+                                {/if}
+                            {/foreach}
+														
+														<div class="row">
+																<div class="form-group col-sm-12">
+																		<button type="submit" class="btn btn-primary">{literal}{{/literal}$smarty.const.TEXT_BUTTON_SAVE{literal}}{/literal}</button>
+																</div>
+														</div>
+												</form>
+										</div>
+								</div>
+						</div>
+				</div>
+		</div>
+</div>

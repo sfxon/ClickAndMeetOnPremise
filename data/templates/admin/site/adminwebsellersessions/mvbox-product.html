@@ -1,0 +1,100 @@
+<div class="mvbox blue mv-toggle-products-box" id="mv-product-box-{$PRODUCTS_DATA.id}">
+		<div class="mvbox-title">
+				<div class="caption">{$PRODUCTS_DATA.titles[1][0][1]}</div>
+				<div class="toolbox">
+						<i class="fa fa-minus-square-o mv-toggle-icon"></i>
+						<i class="fa fa-times text-alert mv-remove-product-from-list" data-attr-products-id="{$PRODUCTS_DATA.id}"></i>
+				</div>
+		</div>
+		<div class="mvbox-body mv-toggleable-products-box">
+				<table class="table table-hover table-condensed table-bordered table-striped">
+						<thead>
+								<tr>
+										<th>Info</th>
+										<th>Kunden-Artikelbild (Ersetzt das Artikelbild in der Anzeige)</th>
+										<th>Aktion</th>
+								</tr>
+						</thead>
+						<tbody>
+								<tr>
+										<th colspan="3">Artikel-Bilder</th>
+								</tr>
+								{foreach from=$PRODUCTS_IMAGES_ARRAY.product_images item=image}
+										<tr>
+												<td>Bild</td>
+												<td class="image-container">
+														{if $image.image_exists == true}
+																<img src="{$image.image_src}" />
+														{else}
+																&nbsp;
+														{/if}
+												</td>
+												<td>
+														<div class="fileinput fileinput-new" data-provides="fileinput" data-attr-image-id="{$image.id}" data-attr-image-type="product">
+																<span class="btn btn-default btn-file">
+																		<span class="fileinput-new">{$smarty.const.TEXT_SELECT_FILE_IMAGE}</span>
+																		<span class="fileinput-exists">{$smarty.const.TEXT_SELECT_FILE_IMAGE}</span>
+																		<input type="file" name="new_image" class="product-image-file" id="product-{$image.id}" data-attr-products-id="{$PRODUCTS_DATA.id}">
+																		<input type="hidden" name="MAX_FILE_SIZE" value="300000" />
+																</span>
+																<div class="fileinput-preview fileinput-exists thumbnail" style="width: 40px; height: 40px;"></div>
+														</div>
+												</td>
+										</tr>
+								{/foreach}
+								<tr>
+										<th colspan="3">Attribut-Bilder</th>
+								</tr>
+								{foreach from=$PRODUCTS_IMAGES_ARRAY.attributes_images item=image}
+										<tr>
+												<td>{$image.products_options_title}: {$image.products_options_values_title}</td>
+												<td class="image-container">
+														{if $image.image_exists == true}
+																<img src="{$image.image_src}" />
+														{else}
+																&nbsp;
+														{/if}
+												</td>
+												<td>
+														<div class="fileinput fileinput-new" data-provides="fileinput" data-attr-image-id="{$image.id}" data-attr-image-type="attribute">
+																<span class="btn btn-default btn-file">
+																		<span class="fileinput-new">{$smarty.const.TEXT_SELECT_FILE_IMAGE}</span>
+																		<span class="fileinput-exists">{$smarty.const.TEXT_SELECT_FILE_IMAGE}</span>
+																		<input type="file" name="new_image" class="product-image-file" id="attribute-{$image.id}" data-attr-products-id="{$PRODUCTS_DATA.id}">
+																		<input type="hidden" name="MAX_FILE_SIZE" value="300000" />
+																</span>
+																<div class="fileinput-preview fileinput-exists thumbnail" style="width: 40px; height: 40px;"></div>
+														</div>
+												</td>
+										</tr>
+								{/foreach}
+								<tr>
+										<th colspan="3">Eigenschafts-Bilder</th>
+								</tr>
+								{foreach from=$PRODUCTS_IMAGES_ARRAY.features_images item=image}
+										<tr>
+												<td>{$image.products_featuresets_title}: {$image.products_featuresets_values_title}</td>
+												<td class="image-container">
+														{if $image.image_exists == true}
+																<img src="{$image.image_src}" />
+														{else}
+																&nbsp;
+														{/if}
+												</td>
+												<td>
+														<div class="fileinput fileinput-new" data-provides="fileinput" data-attr-image-id="{$image.id}" data-attr-image-type="feature">
+																<span class="btn btn-default btn-file">
+																		<span class="fileinput-new">{$smarty.const.TEXT_SELECT_FILE_IMAGE}</span>
+																		<span class="fileinput-exists">{$smarty.const.TEXT_SELECT_FILE_IMAGE}</span>
+																		<input type="file" name="new_image" class="product-image-file" id="feature-{$image.id}" data-attr-products-id="{$PRODUCTS_DATA.id}">
+																		<input type="hidden" name="MAX_FILE_SIZE" value="300000" />
+																</span>
+																<div class="fileinput-preview fileinput-exists thumbnail" style="width: 40px; height: 40px;"></div>
+														</div>
+												</td>
+										</tr>
+								{/foreach}
+						</tbody>
+				</table>
+		</div>
+</div>

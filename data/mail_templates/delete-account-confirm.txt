@@ -1,0 +1,14 @@
+Hi,
+
+wir schreiben dir,
+weil jemand die Löschung deines Accounts beantragt hat.
+Falls du das warst, kannst du deinen Account jetzt löschen, indem du diese URL aufrufst:
+
+{$URL}
+
+Wenn du die Änderung nicht veranlasst hast,
+solltest du Kontakt zu uns aufnehmen.
+
+Liebe Grüße
+
+dein Team.

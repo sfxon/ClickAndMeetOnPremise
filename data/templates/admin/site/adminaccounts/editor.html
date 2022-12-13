@@ -1,0 +1,96 @@
+<div class="container-fluid">
+		<nav class="navbar navbar-default mv-navbar" role="navigation">
+				<div class="navbar-header">
+						<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+								<span class="sr-only">{$smarty.const.TEXT_TOGGLE_NAVIGATION}</span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+						</button>
+				</div>
+				
+				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+						<div class="navbar-left navbar-text">
+								{$NAVBAR_TITLE}
+						</div>
+				</div>
+		</nav>
+    
+    {if isset($smarty.get.success)}
+    		<div class="alert alert-success">Die Einstellungen wurden gespeichert.</div><br />
+    {/if}
+		
+		<div class="mvbox">
+				<div class="mvbox-body">
+						<form role="form" action="{$DATA.url}" method="POST" class="form">
+								<div class="row">
+										<div class="col-xs-12 col-md-8">					
+												
+												{if $DATA.data.id != 0}								
+														<div class="row">
+																<div class="form-group col-sm-12">
+																		<label for="id">{$smarty.const.TEXT_LABEL_CONTENT_ID}</label>
+																		<input type="text" class="form-control" placeholder="{$smarty.const.TEXT_LABEL_CONTENT_ID}" name="id" value="{$DATA.data.id}" readonly="readonly" />
+																</div>
+														</div>
+												{/if}
+												<div class="row">
+														<div class="form-group col-sm-12">
+																<label for="account_type">{$smarty.const.TEXT_LABEL_ACCOUNT_TYPE}</label>
+																<select name="account_type" class="form-control">
+																		<option value="0"{if 0 == $DATA.data.account_type} selected="selected"{/if}>Deaktiviert</option>
+																		<option value="1"{if 1 == $DATA.data.account_type} selected="selected"{/if}>Administrator</option>
+																		<option value="2"{if 2 == $DATA.data.account_type} selected="selected"{/if}>Moderator</option>
+																</select>
+														</div>
+												</div>
+												
+												<div class="row">
+														<div class="form-group col-sm-12">
+																<label for="email">{$smarty.const.TEXT_LABEL_EMAIL}</label>
+																{if isset($ERRORS['email_exists'])}
+																		<div class="alert alert-danger" role="alert">{$smarty.const.TEXT_ERROR_EMAIL_ADDRESS_ALREADY_EXISTS}</div>
+																{/if}
+																<input type="text" class="form-control" placeholder="{$smarty.const.TEXT_LABEL_EMAIL}" name="email" value="{$DATA.data.email}" />
+														</div>
+												</div>
+                        
+                        <div class="row">
+														<div class="form-group col-sm-12">
+																<label for="password">{$smarty.const.TEXT_LABEL_PASSWORD}</label>
+																{if isset($ERRORS['password_no_uppercase_char']) || isset($ERRORS['password_no_lowercase_char']) || isset($ERRORS['password_no_number']) || isset($ERRORS['password_length'])}
+																		<div class="alert alert-danger" role="alert">
+																				Das Passwort muss mindestens 8 Zeichen lang sein, und mindestens jeweils einen Großbuchstaben, Kleinbuchstaben sowie eine Zahl enthalten.<br />
+																				Das aktuelle Passwort weißt folgende Probleme auf:<br />
+																				{if isset($ERRORS['password_no_uppercase_char'])}
+																						<br />-es enthält keinen Großbuchstaben
+																				{/if}
+																				{if isset($ERRORS['password_no_lowercase_char'])}
+																						<br />-es enthält keinen Kleinbuchstaben
+																				{/if}
+																				{if isset($ERRORS['password_no_number'])}
+																						<br />-es enthält keine Zahl
+																				{/if}
+																				{if isset($ERRORS['password_length'])}
+																						<br />-es ist zu kurz. Bitte geben Sie mindestens 8 Zeichen ein.
+																				{/if}
+																		</div>
+																{/if}
+																<input type="password" class="form-control" placeholder="{$smarty.const.TEXT_LABEL_PASSWORD}" name="password" value="" />
+														</div>
+												</div>
+                    </div>
+                    
+										<div class="col-xs-12">
+												<div class="row">
+														<div class="form-group col-sm-12">
+																<input type="hidden" name="id" id="id" value="{$DATA.data.id}" />
+																<button type="submit" class="btn btn-primary">{$smarty.const.TEXT_BUTTON_SAVE}</button>
+														</div>
+												</div>
+										</div>
+								</form>
+						</div>
+				</div>
+		</div>
+</div>

@@ -1,0 +1,39 @@
+{if $PRODUCTS_FEATURES|@count == 0}
+    {$smarty.const.TEXT_INFO_NO_FEATURE_FOR_THIS_PRODUCT}
+{else}
+    <table class="table table-hover table-condensed table-bordered">
+        <thead>
+            <tr>
+                <th>{$smarty.const.TEXT_PRODUCTS_FEATURESET} ({$smarty.const.TEXT_HEADING_FEATURES_FEATURESET_VALUES})</th>
+                <th>{$smarty.const.TEXT_LABEL_SORT_ORDER}</th>
+								<th>{$smarty.const.TEXT_LABEL_DESCRIPTION}</th>
+                <th>{$smarty.const.TEXT_LABEL_ACTION}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {foreach from=$PRODUCTS_FEATURES item=attr}
+                {strip}
+                <tr{/strip} {strip}
+                    class="mv_products_feature"{/strip} {strip}
+                    data-value-features-id="{$attr.features_id}"{/strip} {strip}
+                    data-value-products-featuresets-id="{$attr.products_featuresets_id}"{/strip} {strip}
+                    data-value-tmp-products-featuresets-id="{$attr.tmp_products_featuresets_id}"{/strip} {strip}
+                    data-value-products-featuresets-values-id="{$attr.products_featuresets_values_id}"{/strip} {strip}
+                    data-value-tmp-products-featuresets-values-id="{$attr.tmp_products_featuresets_values_id}"{/strip} {strip}
+                    data-value-products-featuresets-title="{$attr.products_featuresets_title}"{/strip} {strip}
+                    data-value-sort-order="{$attr.sort_order}"{/strip} {strip}
+										data-value-description="{$attr.description|htmlentities}"
+                >
+                {/strip}
+                    <td>{$attr.products_featuresets_title} ({$attr.products_featuresets_values_title})</td>
+                    <td class="mv_products_features_order">{$attr.sort_order}</td>
+										<td class="mv_products_features_description">{$attr.description|htmlentities}</td>
+                    <td class="mv_feature_edit_button_container">
+                        <button class="mv_edit_products_feature btn btn-xs btn-default" type="button">{$smarty.const.TEXT_BUTTON_EDIT}</button>
+                        <button class="mv_remove_feature btn btn-xs btn-default" type="button">{$smarty.const.TEXT_BUTTON_DELETE}</button>
+                    </td>
+                </tr>
+            {/foreach}   		
+        </tbody>
+    </table>
+{/if}

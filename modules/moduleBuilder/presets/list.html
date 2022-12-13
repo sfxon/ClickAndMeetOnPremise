@@ -1,0 +1,83 @@
+<div class="container-fluid">
+		<nav class="navbar navbar-default mv-navbar" role="navigation">
+				<div class="navbar-header">
+						<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+								<span class="sr-only">{literal}{$smarty.const.TEXT_TOGGLE_NAVIGATION}{/literal}</span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+						</button>
+				</div>
+				
+				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+						<div class="navbar-left navbar-text">
+								{literal}{$NAVBAR_TITLE}{/literal}
+						</div>
+						
+						<div class="navbar-form navbar-right">
+								<div class="form-group">
+										{literal}{strip}{/literal}
+										<a href="index.php?s={$DATA.data.admin_module}&amp;action=new">
+												<button type="submit" class="btn btn-default btn-sm">Neu</button>
+										</a>
+										{literal}{/strip}{/literal}
+								</div>
+						</div>
+				</div>
+		</nav>
+
+		<div class="mv-force-table-responsive">
+				<table class="table table-hover table-condensed table-bordered table-striped">
+						<thead>
+								<tr>
+										<th>ID</th>
+                    {foreach from=$DATA.data.fields item=field}
+                    		{if $field.field_name != 'id'}
+                        		<th>{$field.title}</th>
+                        {/if}
+                    {/foreach}
+										<th>Aktion</th>
+								</tr>
+						</thead>
+						
+						<tbody>
+								{literal}{if $DATA.list|count == 0}{/literal}
+										<tr><td colspan="{$DATA.data.fields|count+1}">Es wurden keine Datens&auml;tze gefunden...</td></tr>
+								{literal}{else}{/literal}
+										{literal}{foreach from=$DATA.list item=dataitem name=listforeach}{/literal}
+												{literal}{if false !== $dataitem}{/literal}
+														<tr>
+																<td>{literal}{$dataitem.id}{/literal}</td>
+																
+                                {foreach from=$DATA.data.fields item=field}
+		                                {if $field.field_name != 'id'}
+                                    		<td>{literal}{{/literal}$dataitem.{$field.field_name}|htmlspecialchars{literal}}{/literal}</td>
+                                    {/if}
+                                {/foreach}
+                                
+																<td>
+                                    {literal}{strip}{/literal}
+																		<a href="index.php?s={$DATA.data.admin_module}&amp;id={literal}{{/literal}$dataitem.id{literal}}{/literal}&amp;action=edit">
+																				<i class="fa fa-pencil"></i>
+																		</a>
+																		{literal}{/strip}{/literal}
+                                    
+																		{literal}{strip}{/literal}
+                                    <a href="index.php?s={$DATA.data.admin_module}&amp;id={literal}{{/literal}$dataitem.id{literal}}{/literal}&amp;action=confirm_delete" title="Löschen">
+                                        <i class="fa fa-ban text-danger mv-fa-inline"></i>
+                                    </a>
+                                    {literal}{/strip}{/literal}
+                                    
+																		<!--{strip}
+																				<a href="index.php?s=cAdminDemoSubValues&amp;demo_id={$dataitem.id}&amp;action=list">
+																						<button>Untereinträge bearbeiten</button>
+																				</a>
+																		{/strip}-->
+																 </td>
+														</tr>
+												{literal}{/if}{/literal}
+										{literal}{/foreach}{/literal}
+								{literal}{/if}{/literal}
+				</table>
+		</div>
+</div>

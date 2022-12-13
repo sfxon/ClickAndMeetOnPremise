@@ -1,0 +1,42 @@
+<div class="kalender">
+    <input type="hidden" id="mv-kalender-current-selected-day" value="{$DATA.date.today_day}" />
+    <input type="hidden" id="mv-kalender-current-selected-month" value="{$DATA.date.today_month}" />
+    <input type="hidden" id="mv-kalender-current-selected-year" value="{$DATA.date.today_year}" />
+    
+    <div class="kalender-top">
+        <div class="kalender-month">
+            <label for="current_month" class="kalender-top-label">{$MV_CALENDAR_TEXTS['calendar_month_title']}</label>
+            <input type="text" value="{$DATA.date.current_month}" id="current_month" class="kalender-top-input" style="width: 80px;" />
+        </div>
+        <div class="kalender-year">
+            <label for="current_month" class="kalender-top-label">{$MV_CALENDAR_TEXTS['calendar_year_title']}</label>
+            <input type="text" value="{$DATA.date.current_year}" id="current_year" class="kalender-top-input" style="width: 80px;" />
+        </div>
+        <div class="kalender-top-nav pull-right">
+            {strip}
+                <div class="kalender-top-nav-prev"><i class="fa fa-chevron-left"></i></div>
+                <div class="kalender-top-nav-next"><i class="fa fa-chevron-right"></i></div>
+            {/strip}
+        </div>
+        <div class="mv-clearfix"></div>
+    </div>
+    
+    <div class="kalender-header">
+        {strip}
+            <div class="kalender-header-weeknumber">{$MV_CALENDAR_TEXTS['cal_kw_short']}</div>
+            <div class="kalender-header-day">{$MV_CALENDAR_TEXTS['cal_monday_short']}</div>
+            <div class="kalender-header-day">{$MV_CALENDAR_TEXTS['cal_tuesday_short']}</div>
+            <div class="kalender-header-day">{$MV_CALENDAR_TEXTS['cal_wednesday_short']}</div>
+            <div class="kalender-header-day">{$MV_CALENDAR_TEXTS['cal_thursday_short']}</div>
+            <div class="kalender-header-day">{$MV_CALENDAR_TEXTS['cal_friday_short']}</div>
+            <div class="kalender-header-day">{$MV_CALENDAR_TEXTS['cal_sat_short']}</div>
+            <div class="kalender-header-day">{$MV_CALENDAR_TEXTS['cal_sun_short']}</div>
+        {/strip}
+    </div>                            
+    
+    <div class="calendar-content-loading">{$MV_CALENDAR_TEXTS['loading_data_title']}</div>
+    
+    <div class="calendar-content" style="display: none;">
+        
+    </div>
+</div>

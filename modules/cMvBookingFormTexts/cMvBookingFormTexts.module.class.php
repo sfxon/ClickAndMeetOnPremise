@@ -1,0 +1,25 @@
+<?php
+
+require_once('master/cMvBookingFormTextsMaster.master.class.php');
+
+///////////////////////////////////////////////////////////////////////////////////////
+// Use this class to implement your own code to enhance the class.
+///////////////////////////////////////////////////////////////////////////////////////
+class cMvBookingFormTexts extends cMvBookingFormTextsMaster {
+		//////////////////////////////////////////////////////////////////////
+		// Indexierte Liste laden.
+		//////////////////////////////////////////////////////////////////////
+		function loadIndexedList() {
+				$data = $this->loadList();
+				
+				$retval = array();
+				
+				foreach($data as $d) {
+						$retval[$d['internal_identifier']] = $d['field_value'];
+				}
+				
+				return $retval;
+		}
+}
+
+?>

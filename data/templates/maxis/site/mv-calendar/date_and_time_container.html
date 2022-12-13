@@ -1,0 +1,20 @@
+<div class="row" style="padding: 0 10px;">
+		<div class="col-md-9">
+    		{$kalenderblaetter_html}
+    </div>
+    <div class="col-md-3 mv-kalender-scroll-container mv-padding-0 mv-kalender-time-table-container">
+    		{$time_table_html}
+    </div>
+</div>
+<div class="row mv-termin-gespraechstypen-listing-color-legende">
+		<div class="col-md-12">
+    		Termin-Farben: 
+        {foreach from=$termin_gespraechstypen item=gt}
+        		{if $gt.listing_color != ''}
+            		<div class="mv-termin-gespraechstyp-listing-color-legende-icon" style="color: {$gt.listing_color|htmlspecialchars}">
+                		{$gt.title}
+                </div>
+            {/if}
+        {/foreach}
+    </div>
+</div>

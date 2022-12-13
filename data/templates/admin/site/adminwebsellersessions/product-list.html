@@ -1,0 +1,22 @@
+<table class="table table-hover table-condensed table-bordered table-striped websellersessions-products-table">
+		<thead>
+				<tr>
+						<th>Artikel-Nr.</th>
+						<th>ID</th>
+						<th>EAN</th>
+						<th>Name</th>
+						<th>Aktion</th>
+				</tr>
+		</thead>
+		<tbody>
+				{foreach from=$PRODUCTS item=product}
+						<tr>
+								<td>{$product.products_number}</td>
+								<td>{$product.id}</td>
+								<td>{$product.ean}</td>
+								<td>{$product.titles[1][0][1]}</td>
+								<td><button type="button" class="btn btn-default websellersessions-product-add-to-list" data-attr-id="{$product.id}">Hinzufügen</button></td>
+						</tr>
+				{/foreach}
+		</tbody>
+</table>

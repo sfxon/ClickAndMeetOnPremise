@@ -1,0 +1,80 @@
+{foreach from=$CHANNELS item=channel}
+		<div class="mvbox">
+				<div class="mvbox-body">
+						<div class="row">
+								<div class="col col-md-12 col-sm-12">
+										<div class="mvbox{if $channel.channel_type == 0} blue{/if}{if $channel.channel_type == 1} green{/if}{if $channel.channel_type == 2} red{/if}{if $channel.channel_type == 3} yellow{/if}{if $channel.channel_type == 4} black{/if}{if $channel.channel_type == 5} light-blue{/if}">
+												<div class="mvbox-title">
+														<div class="caption">{$channel.title} ({$channel.channel_type_data.title})</div>
+														<div class="toolbox">
+																<i class="fa{if $CHANNEL_LANGUAGES_OPENED[{$channel.id}][{$tmp_datalanguage.id}].channel_opened == TRUE} fa-minus-square-o mvbox-minimize-button{else} fa-plus-square-o mvbox-maximize-button{/if}"></i>
+														</div>
+												</div>
+												<div class="mvbox-body" {if $CHANNEL_LANGUAGES_OPENED[{$channel.id}][{$tmp_datalanguage.id}].channel_opened == FALSE}style="display: none"{/if}>
+														<div class="row">
+																<p class="form-group col-md-12">{$channel.description}</p>
+														</div>
+														
+														<div class="row">
+																<div class="form-group col-md-2">
+																		<label for="dimensional_weight">{$smarty.const.TEXT_LABEL_TITLE}</label>
+																</div>
+																<div class="form-group col-md-10">
+																		<input type="text" value="{$DATA.data.titles[{$tmp_datalanguage.id}][{$channel.id}][1]}" class="form-control" name="title[{$tmp_datalanguage.id}][{$channel.id}][1]" />
+																</div>
+														</div>
+												
+														<div class="row">
+																<div class="form-group col-md-2">
+																		<label for="dimensional_weight">{$smarty.const.TEXT_LABEL_SHORT_TITLE}</label>
+																</div>
+																<div class="form-group col-md-10">
+																		<input type="text" value="{$DATA.data.titles[{$tmp_datalanguage.id}][{$channel.id}][2]}" class="form-control" name="title[{$tmp_datalanguage.id}][{$channel.id}][2]" />
+																</div>
+														</div>
+														
+														<div class="row">
+																<div class="form-group col-md-2">
+																		<label for="dimensional_weight">{$smarty.const.TEXT_LABEL_META_TITLE}</label>
+																</div>
+																<div class="form-group col-md-10">
+																		<input type="text" value="{$DATA.data.titles[{$tmp_datalanguage.id}][{$channel.id}][3]}" class="form-control" name="title[{$tmp_datalanguage.id}][{$channel.id}][3]" />
+																</div>
+														</div>
+														
+														<div class="row">
+																<div class="form-group col-md-2">
+																		<label for="dimensional_weight">{$smarty.const.TEXT_LABEL_META_KEYWORDS}</label>
+																</div>
+																<div class="form-group col-md-10">
+																		<input type="text" value="{$DATA.data.titles[{$tmp_datalanguage.id}][{$channel.id}][4]}" class="form-control" name="title[{$tmp_datalanguage.id}][{$channel.id}][4]" />
+																</div>
+														</div>
+														
+														<div class="row">
+																<div class="form-group col-md-12">
+																		<label for="dimensional_weight">{$smarty.const.TEXT_LABEL_DESCRIPTION}</label>
+																		<textarea name="description[{$tmp_datalanguage.id}][{$channel.id}][1]" class="tinymce form-control">{$DATA.data.descriptions[{$tmp_datalanguage.id}][{$channel.id}][1]}</textarea>
+																</div>
+														</div>
+														
+														<div class="row">
+																<div class="form-group col-md-12">
+																		<label for="dimensional_weight">{$smarty.const.TEXT_LABEL_SHORT_DESCRIPTION}</label>
+																		<textarea name="description[{$tmp_datalanguage.id}][{$channel.id}][2]" class="tinymce form-control">{$DATA.data.descriptions[{$tmp_datalanguage.id}][{$channel.id}][2]}</textarea>
+																</div>
+														</div>
+														
+														<div class="row">
+																<div class="form-group col-md-12">
+																		<label for="dimensional_weight">{$smarty.const.TEXT_LABEL_META_DESCRIPTION}</label>
+																		<textarea name="description[{$tmp_datalanguage.id}][{$channel.id}][3]" class="tinymce form-control">{$DATA.data.descriptions[{$tmp_datalanguage.id}][{$channel.id}][3]}</textarea>
+																</div>
+														</div>
+												</div>
+										</div>
+								</div>
+						</div>
+				</div>
+		</div>
+{/foreach}

@@ -1,0 +1,88 @@
+<div class="container-fluid">
+		<nav class="navbar navbar-default mv-navbar" role="navigation">
+				<div class="navbar-header">
+						<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+								<span class="sr-only">{$smarty.const.TEXT_TOGGLE_NAVIGATION}</span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+						</button>
+				</div>
+				
+				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+						<div class="navbar-left navbar-text">
+								{$NAVBAR_TITLE}
+						</div>
+				</div>
+		</nav>
+		
+		<div class="mv-box">
+				<div class="mvbox">
+						<div class="mvbox-body">
+								{* <!-- Fehlermeldungen --> *}
+								{if $ERRORS|count > 0}
+										{foreach from=$ERRORS item=error}
+												<div class="alert alert-danger">
+														<b>Fehler: </b>
+														<span>
+																{if $error == 190}
+																		Bitte wählen Sie eine CSV Datei zum hochladen aus.
+																{/if}
+																
+																{if $error == 191}
+																		Es ist ein Fehler beim Upload aufgetreten.
+																{/if}
+																
+																{if $error == 192}
+																		{if isset($ERRORS_DESCRIPTION[$error])}
+																				{$ERRORS_DESCRIPTION[$error]}
+																		{else}
+																				Fehler beim Verarbeiten der CSV Datei.
+																		{/if}
+																{/if}
+														</span>
+												</div>
+										{/foreach}
+								{/if}
+								
+								{* <!-- Erfolgsmeldungen --> *}
+								{if $SUCCESS == 64}
+										<div class="alert alert-success">
+												<b>Upload Abgeschlossen: </b>
+												<span>Es wurden {$IMPORTED_LINES} Datensätze eingefügt/aktualisiert.</span>
+										</div>
+								{/if}
+						
+								<div class="row">
+										<div class="col-xs-12">
+												<h1>{$smarty.const.TEXT_HEADING_BUSINESSSECTOR_CSV_UPLOAD}</h1>
+												<p>Die CSV Datei ist einfach eine Liste von IP Adressen, also nur eine Spalte.</p>
+										
+												<form role="form" action="{$DATA.url}" method="POST" class="form" enctype="multipart/form-data">
+														<div class="row">
+																<div class="form-group col-sm-12">
+																		<label for="csv_file">{$smarty.const.TEXT_LABEL_CHOOSE_CSV_FILE}</label>
+																		<input type="file" class="form-control" placeholder="{$smarty.const.TEXT_LABEL_CHOOSE_CSV_FILE}" name="csv_file" />
+																</div>
+														</div>
+														
+														<div class="row">
+																<div class="form-group col-sm-12">
+																		<button type="submit" class="btn btn-primary">{$smarty.const.TEXT_BUTTON_CHECK_AND_UPLOAD}</button>
+																</div>
+														</div>
+												</form>
+										</div>
+								</div>
+								
+								{include file="./result_list.html"}
+						</div>
+				</div>
+		</div>
+</div>
+
+{literal}
+<style>
+		input[type=file] { border: 0; box-shadow: none; -webkit-box-shadow: none; }
+</style>
+{/literal}

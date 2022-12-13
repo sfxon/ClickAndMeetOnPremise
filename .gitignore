@@ -1,0 +1,5 @@
+.vscode
+/data/admindb
+/data/config/systemdb.ini
+/data/tmp/smarty/templates_c
+/data/tmp/uploads

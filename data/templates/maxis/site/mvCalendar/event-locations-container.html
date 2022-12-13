@@ -1,0 +1,9 @@
+<div class="kalender-event-location">
+    <label for="mv-kalender-event-location">{$MV_CALENDAR_TEXTS['event_location_title']}</label>
+    <select id="mv-kalender-event-location" class="form-control">
+        <option value="0">{$MV_CALENDAR_TEXTS['event_locations_all']}</option>
+        {foreach from=$EVENT_LOCATIONS item=el}
+            <option value="{$el.id}">{$el.title}</option>
+        {/foreach}
+    </select>
+</div>

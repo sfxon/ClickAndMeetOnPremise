@@ -1,0 +1,14 @@
+{if $RESULTS|count > 0}
+		<div class="row">
+				<div class="col-md-12"><h1>Ergebnisse</h1></div>
+		</div>
+		
+		<table>
+				{foreach from=$RESULTS item=result}
+						<tr>
+								<td>{$result.ip}</td>
+								<td>{$result.country}</td>
+						</tr>
+				{/foreach}
+		</table>
+{/if}

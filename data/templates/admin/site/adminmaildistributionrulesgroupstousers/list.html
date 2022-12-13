@@ -1,0 +1,137 @@
+<div class="container-fluid">
+		<nav class="navbar navbar-default mv-navbar" role="navigation">
+				<div class="navbar-header">
+						<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+								<span class="sr-only">{$smarty.const.TEXT_TOGGLE_NAVIGATION}</span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+						</button>
+				</div>
+        
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <div class="navbar-left navbar-text">
+            		{$NAVBAR_TITLE}
+            </div>
+            
+            <div class="navbar-form navbar-right">
+                <div class="form-group">
+                    <a href="http://wiki/doku.php?id=verteiler_e-mail_gruppen_teilnehmer#hilfe_zur_listenansicht_verteiler_e-mail_gruppen" target="_blank">
+												<button type="submit" class="btn btn-success btn-sm">Hilfe</button>
+										</a>
+										
+										<a href="index.php?s=cAdminmaildistributionrulesgroupstousers&amp;action=new&amp;groups_id={$GROUPS_ID}">
+                        <button type="submit" class="btn btn-default btn-sm">{$smarty.const.TEXT_BUTTON_NEW}</button>
+                    </a>
+                </div>
+            </div>
+        </div>
+		</nav>
+		
+		{foreach from=$INFO_MESSAGES item=info_message}
+				{if $info_message == 1}
+						<div class="alert alert-info" role="alert">Der Vorgang wurde abgebrochen. Der Account wurde nicht gelöscht.</div>
+				{/if}
+		{/foreach}
+		{foreach from=$SUCCESS_MESSAGES item=success_message}
+				{if $success_message == 24}
+						<div class="alert alert-success" role="alert">Der Account wurde gelöscht.</div>
+				{/if}
+		{/foreach}
+		
+		<div class="row">
+				<div class="col-md-12 text-right">
+						Legende: 
+						<i class="fa fa-pencil"></i> = Eintrag bearbeiten |&nbsp;&nbsp;&nbsp;
+						{* <!-- <i class="fa fa-user"></i> = Hinterlegte E-Mail Benutzer anzeigen |&nbsp;&nbsp;&nbsp; --> *}
+						<i class="fa fa-share" aria-hidden="true"></i> = E-Mail Weiterleitungen für die Gruppe einstellen (CC, BCC) |&nbsp;&nbsp;&nbsp;
+						<i class="fa fa-times text-danger" aria-hidden="true"></i> = Eintrag entfernen
+				</div>
+		</div>
+		
+		<div class="mv-force-table-responsive">
+				<table class="table table-hover table-condensed table-bordered table-striped">
+						<thead>
+								<tr>
+										<th>{$smarty.const.TEXT_TABLE_HEADING_ID}</th>
+										<th>{$smarty.const.TEXT_TABLE_HEADING_USERS_ID}</th>
+										<th>{$smarty.const.TEXT_TABLE_HEADING_USERS_MAIL_ADDRESS}</th>
+										<th>{$smarty.const.TEXT_TABLE_HEADING_MAX_MAILS_PER_DAY}</th>
+										<th>{$smarty.const.TEXT_TABLE_HEADING_MAIL_FORWARD}</th>
+										<th>{$smarty.const.TEXT_TABLE_HEADING_ACTION}</th>
+								</tr>
+						</thead>
+						
+						<tbody>
+								{if $DATA.list|count == 0}
+										<tr><td colspan="6">{$smarty.const.TEXT_NO_DATA}</td></tr>
+								{else}
+										{foreach from=$DATA.list item=dataitem name=listforeach}
+												{if false !== $dataitem}
+														<tr>
+																<td>{$dataitem.id}</td>
+																<td>{$dataitem.users_id|htmlspecialchars}</td>
+																<td>{$dataitem.user_email|htmlspecialchars}</td>
+																<td>{$dataitem.max_mails_per_day|htmlspecialchars}</td>
+																
+																<td>
+																		{foreach from=$dataitem.mail_forwards item=forward name=mail_forward_list}
+																				{if !isset($forward.mail_forward_account_data.email)}
+																						Benutzer Accountdaten fehlen! ({$forward.id}){if $smarty.foreach.mail_forward_list.iteration > 1}<br />{/if}
+																				{else}
+																						{$forward.mail_forward_account_data.email} ({$forward.id}){if $smarty.foreach.mail_forward_list.iteration > 1}<br />{/if}
+																				{/if}
+																		{/foreach}
+																</td>
+																
+																<td>
+																 		{strip}
+																				<a href="index.php?s=cAdminmaildistributionrulesgroupstousers&amp;id={$dataitem.id}&amp;action=edit&amp;groups_id={$GROUPS_ID}" title="Bearbeiten">
+																						<i class="fa fa-pencil"></i>
+																				</a>
+																				
+																				&nbsp;&nbsp;&nbsp;
+																				<a href="index.php?s=cAdminmaildistributionrulesgroupstousersmailforward&amp;groups_id={$GROUPS_ID}&amp;groups_users_id={$dataitem.id}" title="Mails weiterleiten">
+																						<i class="fa fa-share" aria-hidden="true"></i>
+																				</a>
+																				
+																				&nbsp;&nbsp;&nbsp;
+																				<a href="index.php?s=cAdminmaildistributionrulesgroupstousers&amp;id={$dataitem.id}&amp;groups_id={$GROUPS_ID}&amp;action=delete" title="Löschen">
+																						<i class="fa fa-times text-danger" aria-hidden="true"></i>
+																				</a>
+																				
+																				{* <!--
+																				&nbsp;&nbsp;&nbsp;
+																				<a href="index.php?s=cAdminwebsellersessions&amp;user_id={$dataitem.id}" title="Webseller Sessions">
+																						<i class="fa fa-book"></i>
+																				</a>
+																				&nbsp;&nbsp;&nbsp;
+																				<a href="index.php?s=cAdminaccountsrights&amp;accounts_id={$dataitem.id}" title="Admin-Rechte verwalten">
+																						<i class="fa fa-gavel" aria-hidden="true"></i>
+																				</a>
+																				--> *}
+																				{* <!--
+																				&nbsp;&nbsp;&nbsp;
+																				<a href="index.php?s=cAdminaccountlicences&amp;accounts_id={$dataitem.id}" title="Lizensen">
+																						<i class="fa fa-money"></i>
+																				</a>
+																				--> *}
+																				
+																				{* <!--
+																				{if $ADMINRIGHT_DELETE_ACCOUNT == 1}
+																						&nbsp;&nbsp;&nbsp;
+																						<a href="index.php?s=cAdminaccounts&amp;id={$dataitem.id}&amp;action=confirm_delete" title="Löschen">
+																								<i class="fa fa-ban text-danger mv-fa-inline"></i>
+																						</a>
+																				{/if}
+																				--> *}
+																		{/strip}
+																</td>
+														</tr>
+												{/if}
+										{/foreach}
+								{/if}
+						</tbody>
+				</table>
+		</div>
+</div>

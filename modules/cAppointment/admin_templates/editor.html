@@ -1,0 +1,220 @@
+<div class="container-fluid">
+		<nav class="navbar navbar-default mv-navbar" role="navigation">
+				<div class="navbar-header">
+						<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+								<span class="sr-only">{$smarty.const.TEXT_TOGGLE_NAVIGATION}</span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+						</button>
+				</div>
+				
+				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+						<div class="navbar-left navbar-text">
+								{$NAVBAR_TITLE}
+						</div>
+				</div>
+		</nav>
+		
+		<div class="mv-box">
+				<div class="mvbox">
+						<div class="mvbox-body">
+								<div class="row">
+										<div class="col-xs-12">
+												<form role="form" action="{$DATA.url}" method="POST" class="form">
+														{if 0 != $DATA.data.id}
+																<div class="row">
+																		<div class="form-group col-sm-12">
+																				<label for="id">ID</label>
+																				<input type="text" class="form-control" placeholder="ID" name="id" value="{$DATA.data.id}" readonly="readonly" />
+																		</div>
+																</div>
+														{/if}
+                            
+                                                                                                                                                            <div class="row">
+                                        <div class="form-group col-sm-12">
+                                            <label for="title">Name</label>
+                                            <input type="text" class="form-control" placeholder="Name" name="title" value="{$DATA.data.title}" />
+                                        </div>
+                                    </div>
+                                                                                                                                <div class="row">
+                                        <div class="form-group col-sm-12">
+                                            <label for="datetime_of_event">Zeitpunkt</label>
+                                            <input type="text" class="form-control" placeholder="Zeitpunkt" name="datetime_of_event" value="{$DATA.data.datetime_of_event}" />
+                                        </div>
+                                    </div>
+                                                                                                                                <div class="row">
+                                        <div class="form-group col-sm-12">
+                                            <label for="event_location_id">ID der Event Location</label>
+                                            <input type="text" class="form-control" placeholder="ID der Event Location" name="event_location_id" value="{$DATA.data.event_location_id}" />
+                                        </div>
+                                    </div>
+                                                                                                                                <div class="row">
+                                        <div class="form-group col-sm-12">
+                                            <label for="user_unit_id">Abteilung/Mitarbeiter/Team</label>
+                                            <input type="text" class="form-control" placeholder="Abteilung/Mitarbeiter/Team" name="user_unit_id" value="{$DATA.data.user_unit_id}" />
+                                        </div>
+                                    </div>
+                                                                                                                                <div class="row">
+                                        <div class="form-group col-sm-12">
+                                            <label for="status">Status</label>
+                                            <input type="text" class="form-control" placeholder="Status" name="status" value="{$DATA.data.status}" />
+                                        </div>
+                                    </div>
+                                                                                                                                <div class="row">
+                                        <div class="form-group col-sm-12">
+                                            <label for="created_by">Erstellt von</label>
+                                            <input type="text" class="form-control" placeholder="Erstellt von" name="created_by" value="{$DATA.data.created_by}" />
+                                        </div>
+                                    </div>
+                                                                                                                                <div class="row">
+                                        <div class="form-group col-sm-12">
+                                            <label for="datetime_checkin">Zeitpunkt Checkin</label>
+                                            <input type="text" class="form-control" placeholder="Zeitpunkt Checkin" name="datetime_checkin" value="{$DATA.data.datetime_checkin}" />
+                                        </div>
+                                    </div>
+                                                                                                                                <div class="row">
+                                        <div class="form-group col-sm-12">
+                                            <label for="datetime_checkout">Zeitpunkt Checkout</label>
+                                            <input type="text" class="form-control" placeholder="Zeitpunkt Checkout" name="datetime_checkout" value="{$DATA.data.datetime_checkout}" />
+                                        </div>
+                                    </div>
+                                                                                                                                <div class="row">
+                                        <div class="form-group col-sm-12">
+                                            <label for="visitor_user_id">Besucher-ID</label>
+                                            <input type="text" class="form-control" placeholder="Besucher-ID" name="visitor_user_id" value="{$DATA.data.visitor_user_id}" />
+                                        </div>
+                                    </div>
+                                                                                                                                <div class="row">
+                                        <div class="form-group col-sm-12">
+                                            <label for="checkin_by">Checkin durchgeführt von</label>
+                                            <input type="text" class="form-control" placeholder="Checkin durchgeführt von" name="checkin_by" value="{$DATA.data.checkin_by}" />
+                                        </div>
+                                    </div>
+                                                                                                                                <div class="row">
+                                        <div class="form-group col-sm-12">
+                                            <label for="checkout_by">Checkout durchgeführt von</label>
+                                            <input type="text" class="form-control" placeholder="Checkout durchgeführt von" name="checkout_by" value="{$DATA.data.checkout_by}" />
+                                        </div>
+                                    </div>
+                                                                                                                                <div class="row">
+                                        <div class="form-group col-sm-12">
+                                            <label for="comment_checkin">Kommentar beim Checkin</label>
+                                            <input type="text" class="form-control" placeholder="Kommentar beim Checkin" name="comment_checkin" value="{$DATA.data.comment_checkin}" />
+                                        </div>
+                                    </div>
+                                                                                                                                <div class="row">
+                                        <div class="form-group col-sm-12">
+                                            <label for="comment_checkout">Kommentar beim Checkout</label>
+                                            <input type="text" class="form-control" placeholder="Kommentar beim Checkout" name="comment_checkout" value="{$DATA.data.comment_checkout}" />
+                                        </div>
+                                    </div>
+                                                                                                                                <div class="row">
+                                        <div class="form-group col-sm-12">
+                                            <label for="comment_visitor_booking">Kommentar durch Besucher beim Buchen</label>
+                                            <input type="text" class="form-control" placeholder="Kommentar durch Besucher beim Buchen" name="comment_visitor_booking" value="{$DATA.data.comment_visitor_booking}" />
+                                        </div>
+                                    </div>
+                                                                                                                                <div class="row">
+                                        <div class="form-group col-sm-12">
+                                            <label for="reminder_user_mail">Erinnerungs-Mail Adresse des Besuchers</label>
+                                            <input type="text" class="form-control" placeholder="Erinnerungs-Mail Adresse des Besuchers" name="reminder_user_mail" value="{$DATA.data.reminder_user_mail}" />
+                                        </div>
+                                    </div>
+                                                                                                                                <div class="row">
+                                        <div class="form-group col-sm-12">
+                                            <label for="reminder_active">Reminder Aktiv?</label>
+                                            <input type="text" class="form-control" placeholder="Reminder Aktiv?" name="reminder_active" value="{$DATA.data.reminder_active}" />
+                                        </div>
+                                    </div>
+                                                                                                                                <div class="row">
+                                        <div class="form-group col-sm-12">
+                                            <label for="reminder_user_mail_sent">Reminder Mail versendet?</label>
+                                            <input type="text" class="form-control" placeholder="Reminder Mail versendet?" name="reminder_user_mail_sent" value="{$DATA.data.reminder_user_mail_sent}" />
+                                        </div>
+                                    </div>
+                                                                                                                                <div class="row">
+                                        <div class="form-group col-sm-12">
+                                            <label for="reminder_user_mail_sent_datetime">Reminder-Mail Sendezeitpunkt</label>
+                                            <input type="text" class="form-control" placeholder="Reminder-Mail Sendezeitpunkt" name="reminder_user_mail_sent_datetime" value="{$DATA.data.reminder_user_mail_sent_datetime}" />
+                                        </div>
+                                    </div>
+                                                                                                                                <div class="row">
+                                        <div class="form-group col-sm-12">
+                                            <label for="duration_in_minutes">Termindauer in Minuten</label>
+                                            <input type="text" class="form-control" placeholder="Termindauer in Minuten" name="duration_in_minutes" value="{$DATA.data.duration_in_minutes}" />
+                                        </div>
+                                    </div>
+                                                                                                                                <div class="row">
+                                        <div class="form-group col-sm-12">
+                                            <label for="firstname">Vorname</label>
+                                            <input type="text" class="form-control" placeholder="Vorname" name="firstname" value="{$DATA.data.firstname}" />
+                                        </div>
+                                    </div>
+                                                                                                                                <div class="row">
+                                        <div class="form-group col-sm-12">
+                                            <label for="lastname">Nachname</label>
+                                            <input type="text" class="form-control" placeholder="Nachname" name="lastname" value="{$DATA.data.lastname}" />
+                                        </div>
+                                    </div>
+                                                                                                                                <div class="row">
+                                        <div class="form-group col-sm-12">
+                                            <label for="email_address">E-Mail Adresse</label>
+                                            <input type="text" class="form-control" placeholder="E-Mail Adresse" name="email_address" value="{$DATA.data.email_address}" />
+                                        </div>
+                                    </div>
+                                                                                                                                <div class="row">
+                                        <div class="form-group col-sm-12">
+                                            <label for="customers_number">Kundennummer</label>
+                                            <input type="text" class="form-control" placeholder="Kundennummer" name="customers_number" value="{$DATA.data.customers_number}" />
+                                        </div>
+                                    </div>
+                                                                                                                                <div class="row">
+                                        <div class="form-group col-sm-12">
+                                            <label for="phone">Telefonnummer</label>
+                                            <input type="text" class="form-control" placeholder="Telefonnummer" name="phone" value="{$DATA.data.phone}" />
+                                        </div>
+                                    </div>
+                                                                                                                                <div class="row">
+                                        <div class="form-group col-sm-12">
+                                            <label for="street_number">Straße</label>
+                                            <input type="text" class="form-control" placeholder="Straße" name="street_number" value="{$DATA.data.street_number}" />
+                                        </div>
+                                    </div>
+                                                                                                                                <div class="row">
+                                        <div class="form-group col-sm-12">
+                                            <label for="plz">Postleitzahl</label>
+                                            <input type="text" class="form-control" placeholder="Postleitzahl" name="plz" value="{$DATA.data.plz}" />
+                                        </div>
+                                    </div>
+                                                                                                                                <div class="row">
+                                        <div class="form-group col-sm-12">
+                                            <label for="city">Ort</label>
+                                            <input type="text" class="form-control" placeholder="Ort" name="city" value="{$DATA.data.city}" />
+                                        </div>
+                                    </div>
+                                                                                                                                <div class="row">
+                                        <div class="form-group col-sm-12">
+                                            <label for="street">Straße</label>
+                                            <input type="text" class="form-control" placeholder="Straße" name="street" value="{$DATA.data.street}" />
+                                        </div>
+                                    </div>
+                                                                                                                                <div class="row">
+                                        <div class="form-group col-sm-12">
+                                            <label for="last_save_datetime">Letzter Speicherzeitpunkt</label>
+                                            <input type="text" class="form-control" placeholder="Letzter Speicherzeitpunkt" name="last_save_datetime" value="{$DATA.data.last_save_datetime}" />
+                                        </div>
+                                    </div>
+                                                            														
+														<div class="row">
+																<div class="form-group col-sm-12">
+																		<button type="submit" class="btn btn-primary">{$smarty.const.TEXT_BUTTON_SAVE}</button>
+																</div>
+														</div>
+												</form>
+										</div>
+								</div>
+						</div>
+				</div>
+		</div>
+</div>

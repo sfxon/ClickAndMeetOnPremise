@@ -1,0 +1,76 @@
+<div class="mvbox">
+		<div class="mvbox-body">
+				<div class="row">
+						<div class="col-sm-12">
+								<table id="websellersessions_logo_table" style="width: 100%;" class="table table-hover table-condensed table-bordered table-striped">
+										<thead>
+												<tr>
+														<th>Logo</th>
+														<th>Aktion</th>
+												</tr>
+										</thead>
+										<tbody>
+												<tr>
+														<td style="width:25%;" align="center" id="websellersessions_customer_logo_container">
+																{if $DATA.data.websellersession_logo.file_exists}
+																		<img src="data/webseller/sessions/{$DATA.data.user_id}/{$DATA.data.id}/{$DATA.data.websellersession_logo.image_src}" style="max-width: 90%" />
+																{else}
+																		{$smarty.const.TEXT_NO_WEBSELLERSESSION_LOGO}
+																{/if}
+														</td>	
+														<td>
+																<div class="fileinput fileinput-new" data-provides="fileinput">
+																		<span class="btn btn-default btn-file">
+																				<span class="fileinput-new">{$smarty.const.TEXT_SELECT_FILE_IMAGE}</span>
+																				<span class="fileinput-exists">{$smarty.const.TEXT_SELECT_FILE_IMAGE}</span>
+																				<input type="file" name="new_image" id="logo_image_file">
+																				<input type="hidden" name="MAX_FILE_SIZE" value="300000" />
+																		</span>
+																		<div class="fileinput-preview fileinput-exists thumbnail" style="width: 40px; height: 40px;"></div>
+																</div>
+														</td>
+												</tr>
+										</tbody>
+								</table>
+						</div>
+				</div>
+		</div>
+</div>
+
+{literal}
+		<script>		
+				function handler_logo_image_added(data) {
+						console.log('image added. Data received:');
+						console.log(data);
+						
+						var src = 'data/tmp/tmpuploads/' + data.filename;
+						$('#websellersessions_customer_logo_container').html('<img src="' + src + '" style="max-width: 90%;" />');
+				}
+				
+				//////////////////////////////////////////////////////////////////
+				// When the site has loaded, start this javascript code.
+				//////////////////////////////////////////////////////////////////
+				$(function() {
+						//init file uploader..
+						var params = {
+								s: 'cAdminwebsellersessions',
+								action: 'ajax_upload_logo_image',
+								tmp_websellersessions_id: $('#tmp_websellersessions_id').val(),
+								user_id: $('#user_id').val()
+						};
+						
+						params = $.param(params);
+	
+						$(this).mv_file_uploader({
+								input_file_selector: '',
+								input_upload_button: '',
+								input_file: '#logo_image_file',
+								receiver_url: 'index.php?' + params,
+								trigger_add_post_vars: '',
+								handler_uploaded: handler_logo_image_added,
+								trigger_allow_upload_without_file: false,
+								auto_upload: true
+						});
+				});
+		</script>
+{/literal}

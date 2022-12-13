@@ -1,0 +1,13 @@
+{if false != $DATA}
+		<nav class="navbar navbar-inverse mv-admin-navbar" style="position: fixed; bottom: 0; left: 0; width: 100%; background-color: #FFF; z-index: 999999999;">
+				<div class="container">
+						<div id="mv-admin-navbar" class="">
+								<ul class="nav navbar-nav">
+										{foreach from=$DATA item=navitem}
+												<li{if $navitem.status == 2} class="active"{/if}><a href="{$navitem.url}">{$navitem.title}</a></li>
+										{/foreach}
+								</ul>
+						</div>
+				</div>
+		</nav>
+{/if}

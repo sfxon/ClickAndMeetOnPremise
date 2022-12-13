@@ -1,0 +1,10 @@
+<div class="mv-kalendar-time-table">
+    {foreach from=$time_hours item=time_hour}
+        {foreach from=$time_minutes item=time_minute}
+            <div class="mv-kalendar-times" data-attr-hour="{$time_hour}" data-attr-minute="{$time_minute}">
+                <div class="mv-kalender-times-time-info">{$time_hour}:{$time_minute}</div>
+                <div class="mv-kalender-times-text">&nbsp;</div>
+            </div>
+        {/foreach}
+    {/foreach}
+</div>

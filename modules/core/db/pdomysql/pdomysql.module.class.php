@@ -1,0 +1,209 @@
+<?php
+
+/////////////////////////////////////////////////////////////////////////////////
+// PDO Implementation for a MySQL Connector.
+/////////////////////////////////////////////////////////////////////////////////
+class cPDOMysql extends cModule {
+		var $connection;
+		var $debug;
+		var $db_name;
+		var $stmt;
+		var $query;
+		var $parameters;
+
+		/////////////////////////////////////////////////////////////////////////////////////////////////
+		// Konstruktor
+		/////////////////////////////////////////////////////////////////////////////////////////////////
+		function __construct() {
+			$this->connection = '';
+			$this->debug = true;
+		}
+		
+		/////////////////////////////////////////////////////////////////////////////////////////////////
+		// Query einstellen
+		/////////////////////////////////////////////////////////////////////////////////////////////////
+		function setQuery($query) {
+				$this->stmt = $this->connection->prepare($query);
+				$this->parameters = array();
+		}
+		
+		/////////////////////////////////////////////////////////////////////////////////////////////////	
+		// Char in Query einsetzen
+		/////////////////////////////////////////////////////////////////////////////////////////////////
+		function setChar($position, $text) {
+				$this->parameters[$position] = $text;
+		}
+		
+		/////////////////////////////////////////////////////////////////////////////////////////////////
+		// Bind a value to a key.
+		/////////////////////////////////////////////////////////////////////////////////////////////////
+		function bind($position, $value) {
+				$this->parameters[$position] = $value;
+		}
+		
+		/////////////////////////////////////////////////////////////////////////////////////////////////
+		// Integer in Query einsetzen
+		/////////////////////////////////////////////////////////////////////////////////////////////////
+		function setNumber($position, $number) {
+				$this->parameters[$position] = $number;
+		}
+		
+		/////////////////////////////////////////////////////////////////////////////////////////////////
+		// @INFO set params from array
+		/////////////////////////////////////////////////////////////////////////////////////////////////
+		function setParamsFromArray($params) {
+				foreach($params as $key => $param) {
+						$this->setChar(':' . $key, $param);
+				}
+		}
+		
+		/////////////////////////////////////////////////////////////////////////////////////////////////
+		// build insert
+		//	@INFO						builds the insert string
+		//	@PARAM	params:	associative array with all params, key = column name in table
+		/////////////////////////////////////////////////////////////////////////////////////////////////
+		public function buildInsert($params) {
+				$retval = '';
+				$keys = '';
+				$values = '';
+				
+				foreach($params as $key => $param) {
+						if(strlen($keys) != 0) {
+								$keys .= ', ';
+								$values .= ', ';
+						}
+						
+						$keys .= $key;
+						$values .= ':' . $key;
+						//$this->setChar(':' . $key, $param);
+				}
+				
+				$retval = '(' . $keys . ') VALUES (' . $values . ')';
+				return $retval;
+		}
+		
+		/////////////////////////////////////////////////////////////////////////////////////////////////
+		// build update
+		//	@INFO						builds the update string
+		//	@PARAM	params:	associative array with all params, key = column name in table
+		/////////////////////////////////////////////////////////////////////////////////////////////////
+		public function buildUpdate($params) {
+				$retval = '';
+				
+				foreach($params as $key => $param) {
+						if(strlen($retval) != 0) {
+								$retval .= ', ';
+						}
+						
+						$retval .= $key . ' = :' . $key;
+						//$this->setChar(':' . $key, $param);
+				}
+				
+				return $retval;
+		}
+		
+		/////////////////////////////////////////////////////////////////////////////////////////////////
+		// Query ausführen
+		/////////////////////////////////////////////////////////////////////////////////////////////////
+		function execute() {
+				$this->bindArrayValues();
+				
+				$result = $this->stmt->execute();
+				
+				if(!$result) {
+						echo 'Es ist ein schwerer Fehler aufgetreten. Bitte informieren Sie den Serverbetreiber.';
+
+						if($this->debug) {
+								echo '<b>Fehler: </b>';
+								var_dump($this->stmt->errorInfo());
+								echo '<br />' . $this->query;
+								
+								echo '<br /><br />';
+								echo $this->stmt->debugDumpParams();
+								echo '<br /><br />';
+								
+								var_dump(debug_backtrace());
+						}
+						die;
+				}
+
+				$db_result = new cDBResult($this->stmt);
+
+				return($db_result);
+		}
+
+		/////////////////////////////////////////////////////////////////////////////////////////////////
+		// Verbindung herstellen
+		/////////////////////////////////////////////////////////////////////////////////////////////////
+		function connect($host, $database, $user, $password) {
+				$this->connection = new PDO('mysql:host=' . $host . ';dbname=' . $database, $user, $password);
+				
+				if(!$this->connection) {
+						return false;
+				}
+				
+				$this->db_name = $database;
+				
+				return true;
+		}
+		
+		/////////////////////////////////////////////////////////////////////////////////////////////////
+		// Übergebene Parameter binden..
+		/////////////////////////////////////////////////////////////////////////////////////////////////
+		function bindArrayValues() {
+				foreach($this->parameters as $key => $value) {
+						/*if(is_int($value)) {
+								$param = PDO::PARAM_INT;
+						} elseif(is_bool($value)) {
+								$param = PDO::PARAM_BOOL;
+						} elseif(is_null($value)) {
+								$param = PDO::PARAM_NULL;
+						} elseif(is_string($value)) {
+								$param = PDO::PARAM_STR;
+						} else {
+								$param = FALSE;
+						}*/
+						
+						//if($param) {
+								$this->stmt->bindValue("$key",$value);
+						//}
+			 }
+		}
+		
+		/////////////////////////////////////////////////////////////////////////////////////////////////
+		// affected_rows
+		/////////////////////////////////////////////////////////////////////////////////////////////////
+		function affectedRows() {
+				return $this->stmt->rowCount();
+		}
+		
+		/////////////////////////////////////////////////////////////////////////////////////////////////
+		// insert_id
+		/////////////////////////////////////////////////////////////////////////////////////////////////
+		function insertId() {
+				return $this->connection->lastInsertId();
+		}
+		
+		/////////////////////////////////////////////////////////////////////////////////////////////////
+		// insert_id
+		/////////////////////////////////////////////////////////////////////////////////////////////////
+		public function checkTableExistence($table_name) {
+				$this->setQuery(
+						'SELECT TABLE_NAME FROM information_schema.tables WHERE TABLE_SCHEMA = :table_schema AND TABLE_NAME = :table_name'
+				);
+				
+				$this->bind(':table_schema', $this->db_name);
+				$this->bind(':table_name', $table_name);
+				$result = $this->execute();
+				
+				$data = $result->fetchArrayAssoc();
+				
+				if(false === $data) {
+						return false;
+				}
+				
+				return true;
+		}
+}
+
+?>

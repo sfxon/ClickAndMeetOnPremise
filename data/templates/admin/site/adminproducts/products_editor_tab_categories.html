@@ -1,0 +1,88 @@
+<input type="hidden" id="text_delete_button" value="{$smarty.const.TEXT_BUTTON_DELETE}" />
+
+<div class="mvbox">
+		<div class="mvbox-body">
+				{foreach from=$CHANNELS item=channel}
+						<div class="row">
+								<div class="col col-md-12 col-sm-12">
+										<div class="mvbox{if $channel.channel_type == 0} blue{/if}{if $channel.channel_type == 1} green{/if}{if $channel.channel_type == 2} red{/if}{if $channel.channel_type == 3} yellow{/if}{if $channel.channel_type == 4} black{/if}{if $channel.channel_type == 5} light-blue{/if}">
+												<div class="mvbox-title">
+														<div class="caption">{$channel.title} ({$channel.channel_type_data.title})</div>
+												</div>
+												<div class="mvbox-body">
+														<table class="table table-hover table-condensed table-bordered table-striped" id="product_category_table_{$channel.id}">
+																<tbody>
+																		{if $DATA.data.products_categories !== false && $DATA.data.products_categories[$channel.id] !== false}
+																				{foreach from=$DATA.data.products_categories[$channel.id] item=pcat}
+																						<tr id="data_product_category_{$channel.id}_{$pcat.categories_id}">
+																								<td>
+																										{$pcat.categories_string}
+																								</td>
+																								<td class="text-right">
+																										<button type="button" class="remove_category_from_channel" data-channel-id="{$channel.id}" data-categories-id="{$pcat.categories_id}">{$smarty.const.TEXT_BUTTON_DELETE}</button>
+																								</td>
+																						</tr>
+																				{/foreach}
+																		{/if}
+																</tbody>
+														</table>
+														
+														<button type="button" class="btn btn-success add_category_button" id="add_category_button_{$channel.id}">{$smarty.const.TEXT_BUTTON_ADD_CATEGORY}</button>
+														<div class="add_category" id="add_category_{$channel.id}">
+														</div>
+												</div>
+										</div>
+								</div>
+						</div>
+				{/foreach}
+		</div>
+</div>
+
+{literal}
+		<script>
+				$(function() {
+						$('.add_category_button').click(function() {
+								var channel_id = $(this).attr('id');
+								channel_id = channel_id.substr(20);
+						
+								$(this).products_categories_selector({
+																							tmp_products_id: "{/literal}{$DATA.data.tmp_products_id}{literal}",
+																							selector: $(this).attr('id'),
+																							input_container: "add_category_" + channel_id,
+																							channel_id: channel_id
+								});
+						});
+						
+						//add the remove action for the button
+						$('.remove_category_from_channel').off('click');
+						$('.remove_category_from_channel').on('click', function() {
+								remove_products_category(this);
+						});
+				});
+		</script>
+{/literal}
+
+{* <!-- Modal Dialog for adding a new category --> *}
+<!-- Modal -->
+<div class="modal fade" id="products_categories_add_editor" tabindex="-1" role="dialog" aria-labelledby="{$smarty.const.TEXT_ADD_PRODUCTS_CATEGORY}" aria-hidden="true">
+		<div class="modal-dialog">
+				<div class="modal-content">
+						<div class="modal-header">
+						
+								<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">{$smarty.const.TEXT_BUTTON_CLOSE}</span></button>
+								<h4 class="modal-title" id="myModalLabel">{$smarty.const.TEXT_ADD_PRODUCTS_CATEGORY}</h4>
+						</div>
+						<div class="modal-body">
+								<div id="add_product_category_title_error" class="red_text" style="display: none;">{$smarty.const.TEXT_PRODUCTS_CATEGORY_TITLE_TOO_SHORT}</div>
+								<label>{$smarty.const.TEXT_LABEL_PRODUCTS_CATEGORY_TITLE}</label>
+								<input type="text" name="add_product_category_title" id="add_product_category_title" value="" />
+						</div>
+						<div class="modal-footer">
+								<input type="hidden" id="add_product_category_channel_id" value="" />
+								<input type="hidden" id="add_product_category_parent_id" value="" />
+								<button type="button" class="btn btn-default" data-dismiss="modal">{$smarty.const.TEXT_BUTTON_CANCEL}</button>
+								<button type="button" class="btn btn-primary" id="add_product_category_submit">{$smarty.const.TEXT_BUTTON_SAVE}</button>
+						</div>
+				</div>
+		</div>
+</div>

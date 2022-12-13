@@ -1,0 +1,20 @@
+Hi,
+
+wir schreiben dir,
+weil deine E-Mail Adresse
+geändert wurde.
+
+Neue Mail Adresse: {$NEW_MAIL}
+
+Wenn du diese Änderung nicht durchgeführt hast,
+kannst du über diesen Link deine alte Adresse wiederherstellen:
+
+{$URL}
+
+Wenn du die Änderung veranlasst hast,
+kannst du diese Mail einfach ignorieren.
+
+
+Liebe Grüße
+
+dein Team.

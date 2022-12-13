@@ -1,0 +1,95 @@
+<div class="container-fluid">
+		<nav class="navbar navbar-default mv-navbar" role="navigation">
+				<div class="navbar-header">
+						<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+								<span class="sr-only">{$smarty.const.TEXT_TOGGLE_NAVIGATION}</span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+						</button>
+				</div>
+				
+				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+						<div class="navbar-left navbar-text">
+								{$NAVBAR_TITLE}
+						</div>
+						
+						<div class="navbar-form navbar-right">
+								<div class="form-group">
+										{strip}
+										<a href="index.php?s=cAdminUserUnit&amp;action=new">
+												<button type="submit" class="btn btn-default btn-sm">Neu</button>
+										</a>
+										{/strip}
+								</div>
+						</div>
+				</div>
+		</nav>
+
+		{if isset($smarty.get.error)}
+			<div class="alert alert-danger">
+				{if $smarty.get.error == 1001}
+					Dieser Eintrag ist Terminen zugeordnet, und kann deswegen nicht gelöscht werden.
+				{/if}
+				{if $smarty.get.error == 331}
+					Die Aktion wurde abgebrochen
+				{/if}
+			</div>
+			<br />
+		{/if}
+
+		<div class="mv-force-table-responsive">
+				<table class="table table-hover table-condensed table-bordered table-striped">
+						<thead>
+								<tr>
+										<th>ID</th>
+                                        		                                        		                        		<th>Name</th>
+                                                                		                        		<th>E-Mail Adresse</th>
+                                                                		                        		<th>Status</th>
+                                                                		                        		<th>Event-Location</th>
+                                                                		                        		<th>Buchungs-Mail senden</th>
+                                            										<th>Aktion</th>
+								</tr>
+						</thead>
+						
+						<tbody>
+								{if $DATA.list|count == 0}
+										<tr><td colspan="7">Es wurden keine Datens&auml;tze gefunden...</td></tr>
+								{else}
+										{foreach from=$DATA.list item=dataitem name=listforeach}
+												{if false !== $dataitem}
+														<tr>
+																<td>{$dataitem.id}</td>
+																
+                                		                                                                		                                                                    		<td>{$dataitem.title|htmlspecialchars}</td>
+                                <td>{$dataitem.email_address|htmlspecialchars}</td>
+                                <td>{if $dataitem.status == 0}Inaktiv{else}Aktiv{/if}</td>
+                                <td>{if isset($EVENT_LOCATIONS[$dataitem.event_location_id])}{$EVENT_LOCATIONS[$dataitem.event_location_id].title|htmlspecialchars}{/if}</td>
+                                <td>{if $dataitem.booking_info_by_mail == 0}Nein{else}Ja{/if}</td>
+                                                                                                    
+																<td>
+                                    {strip}
+																		<a href="index.php?s=cAdminUserUnit&amp;id={$dataitem.id}&amp;action=edit">
+																				<i class="fa fa-pencil"></i>
+																		</a>
+																		{/strip}
+                                    
+																		{strip}
+                                    <a href="index.php?s=cAdminUserUnit&amp;id={$dataitem.id}&amp;action=confirm_delete" title="Löschen">
+                                        <i class="fa fa-ban text-danger mv-fa-inline"></i>
+                                    </a>
+                                    {/strip}
+                                    
+																		<!--<a href="index.php?s=cAdminDemoSubValues&amp;demo_id=<br />
+<b>Notice</b>:  Undefined index: dataitem in <b>/var/www/vhosts/demo2.clickandmeet.org/httpdocs/data/tmp/smarty/templates_c/4d8aff137ddb8daaf54581213aa00928fc32ef3e.string.php</b> on line <b>112</b><br />
+<br />
+<b>Notice</b>:  Trying to get property 'value' of non-object in <b>/var/www/vhosts/demo2.clickandmeet.org/httpdocs/data/tmp/smarty/templates_c/4d8aff137ddb8daaf54581213aa00928fc32ef3e.string.php</b> on line <b>112</b><br />
+&amp;action=list"><button>Untereinträge bearbeiten</button></a>-->
+																 </td>
+														</tr>
+												{/if}
+										{/foreach}
+								{/if}
+				</table>
+		</div>
+</div>

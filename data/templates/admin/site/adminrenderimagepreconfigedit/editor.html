@@ -1,0 +1,105 @@
+<div class="container-fluid">
+		<div class="row">
+				<div class="col-xs-12">
+						<div class="row">
+								<div class="col-md-8">
+										<div class="mvbox green">
+												<div class="mvbox-title">
+														<div class="caption">Vorschau-Bild</div>
+												</div>
+										</div>
+										<div class="mvbox-body">
+												<div id="mv-render-preview-container"></div>
+										</div>
+								</div>
+								<div class="col-md-4">
+										<div class="mvbox green">
+												<div class="mvbox-title">
+														<div class="caption">Ebenen</div>
+														<div class="toolbox">
+																<a href="#" id="add-layer" data-toggle="modal" data-target="#layer_edit_modal"><i class="fa fa-plus" aria-hidden="true"></i></a>
+														</div>
+												</div>
+										</div>
+										<div class="mvbox-body">
+												<div id="mv-renderer-image-layers"></div>
+										</div>
+										
+										<div class="mvbox green">
+												<div class="mvbox-title">
+														<div class="caption">Vorschau-Logo</div>
+												</div>
+										
+												<div class="mvbox-body">
+														<div class="row">
+																<div class="col-md-4">Aktuelles Logo:</div>
+																<div class="col-md-4">
+																		<div id="mv-renderer-logo-current-filename">{if $DATA.data.logo_image != ''}{$DATA.data.logo_image}{else}Standard-Logo{/if}</div>
+																</div>
+																<div class="col-md-4" id="mv-renderer-logo-remove-container">
+																		{if $DATA.data.logo_image != ''}<button type="button" id="mv-renderer-logo-remove">Zurücksetzen</button>{/if}
+																</div>
+														</div>
+														<div id="mv-renderer-upload-different-logo-container">
+																<div class="row">
+																		<div class="col-md-8">
+																				<input type="file" name="mv-renderer-upload-different-logo-input" id="mv-renderer-upload-different-logo-input" class="form-control" />
+																		</div>
+																		<div class="col-md-4">
+																				<button type="button" id="mv-renderer-upload-different-logo-button" class="btn btn-default btn-sm">Logo hochladen</button>
+																		</div>
+																</div>
+														</div>
+														
+														<div class="row">
+																<div class="col-md-12">
+																		<div id="mv-renderer-image-preview">
+																				{if $DATA.data.logo_image != ''}
+																						<img src="data/images/webseller_layer_images/{$DATA.data.logo_image}" />
+																				{else}
+																						<img src="data/images/renderer_default_image.png" />
+																				{/if}
+																		</div>
+																</div>
+														</div>
+												</div>
+										</div>
+								</div>
+						</div>
+				</div>
+				<div class="col-xs-12">
+						<div class="row">
+								<div class="form-group col-sm-12">
+										<input type="hidden" name="id" id="id" value="{$DATA.data.id}" />
+										Hinweis: Alle Änderungen werden sofort gespeichert. Es gibt keinen "Zurück" Button. Bitte seien Sie vorsichtig!
+								</div>
+						</div>
+				</div>
+		</div>
+</div>
+
+{* <!--  ------- Dialog for adding or editing a layer ------- --> *}
+<div class="modal fade" id="layer_edit_modal">
+  	<div class="modal-dialog" role="document">
+				<div class="modal-content">
+						<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+										<span aria-hidden="true">&times;</span>
+								</button>
+								<h4 class="modal-title">Layer hinzufügen/Layer bearbeiten</h4>
+						</div>
+						<div class="modal-body">
+								<div id="renderfx_dropdown_container">Loading fx dropdown..</div>
+								<hr />
+								<div id="renderfxconfigfields_error_message_container"></div>
+								<div id="renderfxconfigfields_container">Loading config fields..</div>
+						</div>
+						
+						<div class="modal-footer">
+								<input type="hidden" id="renderer_image_preconfig_layers_id" value="" />
+								<button type="button" class="btn btn-secondary" data-dismiss="modal">Abbrechen</button>
+								<button type="button" class="btn btn-primary" id="layer_edit_modal_save_button">Speichern</button>
+						</div>
+				</div>{* <!-- /.modal-content --> *}
+		</div>{* <!-- /.modal-dialog --> *}
+</div>{* <!-- /.modal --> *}

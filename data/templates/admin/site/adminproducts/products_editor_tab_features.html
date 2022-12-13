@@ -1,0 +1,1011 @@
+<div class="mvbox">
+		<div class="mvbox-body">
+				<div class="row">
+						<div id="mv_categories_editor">
+								<div class="col col-md-3">
+										<div class="mvbox gray">
+												<div class="mvbox-title">
+														<div class="caption">
+																{$smarty.const.TEXT_HEADING_FEATURES_FEATURESET}													
+														</div>
+														<div class="toolbox">
+																<i class="fa fa-plus" id="products_featureset_add"></i>
+														</div>
+												</div>
+												
+												<!-- Modal Dialog for adding and editing products featuresets -->
+												<div class="modal fade" id="products_featureset_editor" tabindex="-1" role="dialog" aria-labelledby="{$smarty.const.TEXT_ADD_PRODUCTS_FEATURESET}" aria-hidden="true">
+														<div class="modal-dialog">
+																<div class="modal-content">
+																		<div class="modal-header">
+																		
+																				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">{$smarty.const.TEXT_BUTTON_CLOSE}</span></button>
+																				<h4 class="modal-title" id="myModalLabel">{$smarty.const.TEXT_ADD_PRODUCTS_FEATURESET}</h4>
+																		</div>
+																		<div class="modal-body">
+																				<div class="row">
+																						<div class="form-group col-md-3">
+																								<label>{$smarty.const.TEXT_LABEL_SORT_ORDER}</label>
+																						</div>
+																						<div class="form-group col-md-9">
+																								<input type="text" id="products_featureset_sort_order" value="" class="form-control" />
+																						</div>
+																				</div>
+																				
+																				{foreach from=$DATALANGUAGES item=datalang}
+																						<div class="row">
+																								<div class="form-group col-md-3">
+																										<label>{$smarty.const.TEXT_PRODUCTS_FEATURESET_TITLE} {$datalang.title}</label>
+																								</div>
+																								<div class="form-group col-md-9">
+																										<input type="text" id="products_featureset_title_{$datalang.id}" value="" class="form-control products_featureset_title" />
+																								</div>
+																						</div>
+																				{/foreach}
+																		</div>
+																		
+																		<div class="modal-footer">
+																				<input type="hidden" id="featureset_editor_products_featuresets_id" value="" />
+																				<input type="hidden" id="featureset_editor_tmp_products_featuresets_id" value="" />
+																				<button type="button" class="btn btn-default" data-dismiss="modal">{$smarty.const.TEXT_BUTTON_CANCEL}</button>
+																				<button type="button" class="btn btn-primary" id="save_product_featureset">{$smarty.const.TEXT_BUTTON_SAVE}</button>
+																		</div>
+																</div>
+														</div>
+												</div>
+												
+												{literal}
+														<script>
+																var tmp_products_featuresets_editor_edit_row = false;
+																
+																/////////////////////////////////////////////////////////
+																// featureset editor function that opens the dialog
+																/////////////////////////////////////////////////////////
+																function show_products_featureset_editor() {
+																		$('#products_featureset_editor').modal();
+																}
+																
+																////////////////////////////////////////////////////////
+																// add a products featureset click event
+																////////////////////////////////////////////////////////
+																$('#products_featureset_add').on('click', function(event) {
+																		//prefill the editor with the values we got
+																		tmp_products_featuresets_editor_edit_row = false;
+																		
+																		$('#featureset_editor_tmp_products_featuresets_id').val('');
+																		$('#featureset_editor_products_featuresets_id').val(0);
+																		$('#products_featureset_sort_order').val('');
+																		
+																		{/literal}
+																				{foreach from=$DATALANGUAGES item=datalang}
+																						{literal}
+																								$('#products_featureset_title_{/literal}{$datalang.id}{literal}').val('');
+																						{/literal}
+																				{/foreach}
+																		{literal}
+																		
+																		event.stopPropagation();
+																		show_products_featureset_editor(this);
+																});
+																
+																///////////////////////////////////////////////////////
+																// save event in products featuresets editor
+																///////////////////////////////////////////////////////
+																$('#save_product_featureset').on('click', function(event) {
+																		event.stopPropagation();
+																		
+																		var data = {
+																				s: 'cAdminproducts',
+																				action: 'ajax_product_featureset_save',
+																				tmp_products_id: $('#tmp_products_id').val(),
+																				sort_order: $('#products_featureset_sort_order').val(),
+																				products_featuresets_id: $('#featureset_editor_products_featuresets_id').val(),
+																				tmp_products_featuresets_id: $('#featureset_editor_tmp_products_featuresets_id').val(),
+																				
+																				{/literal}
+																						{foreach from=$DATALANGUAGES item=datalang name=datalangloop}
+																								{literal}products_featureset_title_{/literal}{$datalang.id}{literal}: $('#products_featureset_title_{/literal}{$datalang.id}{literal}').val(){/literal}
+																								{if $smarty.foreach.datalangloop.last == FALSE},{/if}
+																						{/foreach}
+																				{literal}
+																				};
+																				
+																		params = $.param(data);
+																		
+																		var title_current_language = $('#products_featureset_title_{/literal}{$datalang.id}{literal}').val();
+																		
+																		mv_product_featureset_save(event, this, params, title_current_language);
+																});
+																
+																//////////////////////////////////////////////////////
+																// save function for product featuresets editor
+																//////////////////////////////////////////////////////
+																function mv_product_featureset_save(event, item, params) {
+																		$.ajax({
+																				type: "POST",
+																				url: "index.php?" + params,
+																		}).done(function( msg ) {
+																				//get the tmp products id..
+																				var tmp_products_featuresets_id = '';
+																				
+																				try {
+																						var jsondata = $.parseJSON(msg);
+																						tmp_products_featuresets_id = jsondata.tmp_products_featuresets_id;
+																				} catch (e) {
+																						// not json
+																						alert('An error occured in "products_editor_tab_features.html". Please inform an admin. We suggest to save your changes and after that re-open this product for editing. Additional information: ' + msg);
+																				}
+																		
+																				//if this row is to update
+																				if(tmp_products_featuresets_editor_edit_row != false) {
+																						var row = tmp_products_featuresets_editor_edit_row;
+																						
+																						$(row).attr('data-attr-tmp-products-featuresets-id', tmp_products_featuresets_id);
+																						$(row).attr('data-attr-id', $('#featureset_editor_products_featuresets_id').val());
+																						$(row).attr('data-attr-sort-order', $('#products_featureset_sort_order').val());
+																						
+																						{/literal}
+																								{foreach from=$DATALANGUAGES item=datalang}
+																										{literal}
+																												$(row).attr('data-attr-title-{/literal}{$datalang.id}{literal}', $('#products_featureset_title_{/literal}{$datalang.id}{literal}').val());
+																										{/literal}
+																								{/foreach}
+																						{literal}
+																						
+																						$(row).html( $('#products_featureset_title_{/literal}{$CURRENT_DATALANGUAGE_ID}{literal}').val() + '<i class="fa fa-pencil mv_product_featureset_button_right"></i>');
+																				} else {
+																						//we have to add a new row
+																						var tmp_html = '';
+																						
+																						tmp_html += '<div class="mv_product_featureset"';
+																							tmp_html += ' data-attr-id="0"';
+																							tmp_html += ' data-attr-sort-order="' + $('#products_featureset_sort_order').val() + '"';
+																							
+																							{/literal}
+																								{foreach from=$DATALANGUAGES item=datalang}
+																										{literal}
+																												tmp_html += ' data-attr-title-{/literal}{$datalang.id}{literal}="' + $('#products_featureset_title_{/literal}{$datalang.id}{literal}').val() + '"';
+																										{/literal}
+																								{/foreach}
+																							{literal}
+																							
+																							tmp_html += ' data-attr-tmp-products-featuresets-id="' + tmp_products_featuresets_id + '"';
+																						
+																						tmp_html += '>';
+																								tmp_html += $('#products_featureset_title_{/literal}{$CURRENT_DATALANGUAGE_ID}{literal}').val() + '<i class="fa fa-pencil mv_product_featureset_button_right"></i>';
+																						tmp_html += '</div>';
+																						
+																						$('#mv_products_featuresets_editor').append(tmp_html);
+																				}
+																				
+																				// deactivate the action buttons, and reactivate them
+																				$('.mv_product_featureset_button_right').off('click');																		
+																				$('.mv_product_featureset_button_right').on('click', function(event) {
+																						mv_product_featureset_edit(event, this);
+																				});
+																				
+																				$('.mv_product_featureset').off('click');
+																				$('.mv_product_featureset').on('click', function(event) {
+																						mv_product_featureset_select(event, this);
+																				});
+																				
+																				$('.mv_product_featureset_value_button_right').off('click');
+																				$('.mv_product_featureset_value_button_right').on('click', function(event) {
+																						mv_product_featureset_value_editor_show(event, this);
+																				});
+																				
+																				//close the editor window
+																				$('#products_featureset_editor').modal('hide');
+																		});
+																}
+																
+																//////////////////////////////////////////////////////
+																// edit button clicked function for product featureset
+																//////////////////////////////////////////////////////
+																function mv_product_featureset_edit(event, item) {
+																		//get the products rows data
+																		var row = $(item).closest('.mv_product_featureset');
+																		
+																		tmp_products_featuresets_editor_edit_row = row;
+																		
+																		var products_featuresets_id = $(row).attr('data-attr-id');
+																		var tmp_products_featuresets_id = $(row).attr('data-attr-tmp-products-featuresets-id');
+																		var products_featuresets_sort_order = $(row).attr('data-attr-sort-order');
+																		
+																		{/literal}
+																				{foreach from=$DATALANGUAGES item=datalang}
+																						{literal}
+																								var products_featuresets_title_{/literal}{$datalang.id}{literal} = $(row).attr('data-attr-title-{/literal}{$datalang.id}{literal}');
+																						{/literal}
+																				{/foreach}
+																		{literal}
+																		
+																		//prefill the editor with the values we got
+																		$('#featureset_editor_tmp_products_featuresets_id').val( tmp_products_featuresets_id );
+																		$('#featureset_editor_products_featuresets_id').val( products_featuresets_id );
+																		$('#products_featureset_sort_order').val(products_featuresets_sort_order);
+																		
+																		{/literal}
+																				{foreach from=$DATALANGUAGES item=datalang}
+																						{literal}
+																								$('#products_featureset_title_{/literal}{$datalang.id}{literal}').val(products_featuresets_title_{/literal}{$datalang.id}{literal});
+																						{/literal}
+																				{/foreach}
+																		{literal}
+																		
+																		event.stopPropagation();
+																		show_products_featureset_editor(this);
+																}
+																
+																//////////////////////////////////////////////////////
+																// select an product_featureset in the list
+																//////////////////////////////////////////////////////
+																function mv_product_featureset_select(event, item) {
+																		var tmp_html = '';
+																		
+																		//remove the active states
+																		$('.mv_product_featureset').each( function() {
+																				$(this).removeClass('mv_product_featureset_activated');
+																				$(this).find('i.fa.fa-play-circle').remove();
+																		});
+																		
+																		//get the current ones edit button (because we have to insert the right arrow before it - because of float: right)
+																		var tmp_item = $(item).find('.fa.fa-pencil');
+																		
+																		//insert the right arror																
+																		$(' <i class="fa fa-play-circle mv_product_featureset_right"></i>').insertBefore(tmp_item);
+																		
+																		//give the background color
+																		$(item).addClass('mv_product_featureset_activated');
+																		
+																		//set the featuresets id
+																		var featuresets_id = $(item).attr('data-attr-id');
+																		var tmp_featuresets_id = $(item).attr('data-attr-tmp-products-featuresets-id');
+																		
+																		$('#mv_editor_action_featuresets_id').val(featuresets_id);
+																		$('#mv_editor_action_tmp_featuresets_id').val(tmp_featuresets_id);
+																		
+																		//load products featuresets values
+																		reload_products_featuresets_values_pane(featuresets_id, tmp_featuresets_id);
+																}
+																
+																//////////////////////////////////////////////////////
+																// reload the products featuresets values pane (center part of the editor)
+																//////////////////////////////////////////////////////
+																function reload_products_featuresets_values_pane(products_featuresets_id, tmp_products_featuresets_id) {
+																		//do an ajax call to get the current values.
+																		//this will return a table and if there are some available, also the values as rows in the table
+																		var tmp_products_id = $('#tmp_products_id').val();
+																		
+																		var params = {
+																						products_featuresets_id: products_featuresets_id,
+																						tmp_products_featuresets_id: tmp_products_featuresets_id
+																		};
+																								
+																		var url_params = {
+																						s: 'cAdminproducts',
+																						action: 'ajax_products_featuresets_values_load',
+																						tmp_products_id: tmp_products_id
+																		};
+		
+																		url_params = $.param(url_params);
+																								
+																		$.ajax({
+																				type: "POST",
+																				url: "index.php?" + url_params,
+																				data: params,
+																				cache: false
+																		}).done( function( data ) {
+																				$('#mv_products_featuresets_values_editor').html(data);
+																				
+																				//deactivate and re-activate the edit buttons for the products featuresets values entries
+																				$('.mv_product_featureset_value_button_right').off('click');
+																				$('.mv_product_featureset_value_button_right').on('click', function(event) {
+																						mv_product_featureset_value_editor_show(event, this);
+																				});
+																				
+																				$('.products_features_add').off('click');
+																						$('.products_features_add').on('click', function(event) {
+																								products_features_add_button_clicked(event, this);
+																						});
+																				});
+																}
+																
+																//////////////////////////////////////////////////////
+																// activate the edit buttons for products featuresets
+																//////////////////////////////////////////////////////
+																$(function() {
+																		$('.mv_product_featureset_button_right').on('click', function(event) {
+																				mv_product_featureset_edit(event, this);
+																		});
+																		
+																		$('.mv_product_featureset').on('click', function(event) {
+																				mv_product_featureset_select(event, this);
+																		});
+																});
+																
+														</script>
+												{/literal}
+												
+												<div class="mvbox-body">
+														<!-- Featuresettabelle links -->										
+														<div class="mv_editor_content" id="mv_products_featuresets_editor">
+																{foreach from=$PRODUCTS_FEATURESETS item=po}
+																		{strip}
+																		<div 
+																				{/strip} {strip}class="mv_product_featureset"
+																				{/strip} {strip}data-attr-tmp-products-featuresets-id=""
+																				{/strip} {strip}data-attr-id="{$po.id}" 
+																				{/strip} {strip}data-attr-sort-order="{$po.sort_order}"
+																				{foreach from=$DATALANGUAGES item=datalang}
+																						{/strip} {strip}data-attr-title-{$datalang.id}="{$po.descriptions[$datalang.id].title}"
+																				{/foreach}
+																				>
+																		{/strip}
+																				{$po.descriptions[$CURRENT_DATALANGUAGE_ID].title}
+																				<i class="fa fa-pencil mv_product_featureset_button_right"></i>
+																		</div>
+																{/foreach}
+														</div>
+												</div>
+										</div>
+								</div>
+								
+								<!-- Featuresetswerte Editor (Mitte) -->
+								<div class="col col-md-6">
+										<div class="mvbox gray">
+												<div class="mvbox-title">
+														<div class="caption">{$smarty.const.TEXT_HEADING_FEATURES_FEATURESET_VALUES}</div>
+														<div class="toolbox">
+																<i class="fa fa-plus" id="products_featureset_value_add"></i>
+														</div>
+												</div>
+												<div class="mvbox-body">
+														<div class="mv_editor_content" id="mv_products_featuresets_values_editor">
+																<div class="mv_products_featuresets_values_editor_information">
+																		<i class="fa fa-arrow-left"></i> {$smarty.const.TEXT_INFO_PLEASE_CHOOSE_AN_FEATURESET}
+																</div>
+														</div>
+														
+														<div class="mv_editor_footer">
+																<div class="mv_editor_heading_right"><span id="mv_editor_select_all_featuresets">{$smarty.const.TEXT_BUTTON_ADD_ALL}</span></div>
+														</div>
+												</div>
+										</div>
+								</div>
+								
+								<!-- Modal Dialog for adding and editing products featuresets value -->
+												<div class="modal fade" id="products_featureset_value_editor" tabindex="-1" role="dialog" aria-labelledby="{$smarty.const.TEXT_ADD_PRODUCTS_FEATURESETS_VALUE}" aria-hidden="true">
+														<div class="modal-dialog">
+																<div class="modal-content">
+																		<div class="modal-header">
+																				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">{$smarty.const.TEXT_BUTTON_CLOSE}</span></button>
+																				<h4 class="modal-title" id="myModalLabel">{$smarty.const.TEXT_ADD_PRODUCTS_FEATURESETS_VALUE}</h4>
+																		</div>
+																		<div class="modal-body">
+																				<p class="text-danger" id="products_featureset_value_editor_errors"></p>
+																		
+																				<input type="hidden" value="" id="mv_editor_action_featuresets_id" />
+																				<input type="hidden" value="" id="mv_editor_action_tmp_featuresets_id" />
+																				<input type="hidden" value="" id="mv_editor_action_featuresets_values_id" />
+																				<input type="hidden" value="" id="mv_editor_action_tmp_featuresets_values_id" />
+																		
+																				<div class="row">
+																						<div class="form-group col-md-3">
+																								<label>{$smarty.const.TEXT_LABEL_SORT_ORDER}</label>
+																						</div>
+																						<div class="form-group col-md-9">
+																								<input type="text" id="products_featuresets_values_sort_order" value="" class="form-control" />
+																						</div>
+																				</div>
+																				
+																				{foreach from=$DATALANGUAGES item=datalang}
+																						<div class="row">
+																								<div class="form-group col-md-3">
+																										<label>{$smarty.const.TEXT_PRODUCTS_FEATURESETS_VALUE_TITLE} {$datalang.title}</label>
+																								</div>
+																								<div class="form-group col-md-9">
+																										<input type="text" id="products_featuresets_values_title_{$datalang.id}" value="" class="form-control products_featuresets_values_title_" />
+																								</div>
+																						</div>
+																				{/foreach}
+																		</div>
+																		
+																		<div class="modal-footer">
+																				<input type="hidden" id="featureset_editor_products_featuresets_id" value="" />
+																				<input type="hidden" id="featureset_editor_tmp_products_featuresets_id" value="" />
+																				<button type="button" class="btn btn-default" data-dismiss="modal">{$smarty.const.TEXT_BUTTON_CANCEL}</button>
+																				<button type="button" class="btn btn-primary" id="save_product_featureset_value">{$smarty.const.TEXT_BUTTON_SAVE}</button>
+																		</div>
+																</div>
+														</div>
+												</div>
+								
+								{literal}
+								<script>
+										/////////////////////////////////////////////////////////
+										// start featureset value editor in edit mode..
+										/////////////////////////////////////////////////////////
+										function mv_product_featureset_value_editor_show(event, item) {
+												//Eltern-Element holen, da es die eigentlichen Daten enthält
+												var tablerow = $(item).closest('td');
+												
+												console.log(tablerow);
+												
+												//Benötigte Daten laden -----------------------------
+												//featuresets_id
+												var featuresets_id = $(tablerow).attr('data-attr-products-featuresets-id');
+												
+												if(featuresets_id.length == 0) {
+														featuresets_id = 0;
+												}
+												
+												$('#mv_editor_action_featuresets_id').val(featuresets_id);
+												
+												//tmp featuresets id
+												var tmp_products_featuresets_id = $(tablerow).attr('data-attr-tmp-products-featuresets-id');
+												$('#mv_editor_action_tmp_featuresets_id').val(tmp_products_featuresets_id);
+												
+												//featuresets_values_id
+												var products_featuresets_values_id = $(tablerow).attr('data-attr-products-featuresets-values-id');
+												$('#mv_editor_action_featuresets_values_id').val(products_featuresets_values_id);
+												
+												//tmp_featuresets_values_id
+												var tmp_products_featuresets_values_id = $(tablerow).attr('data-attr-tmp-products-featuresets-values-id');
+												$('#mv_editor_action_tmp_featuresets_values_id').val(tmp_products_featuresets_values_id);
+												
+												//Sortierreihenfolge
+												$('#products_featuresets_values_sort_order').val( $(tablerow).attr('data-attr-products-featuresets-values-sort-order') );
+												
+												//Titel
+												{/literal}
+														{foreach from=$DATALANGUAGES item=datalang}
+																{literal}
+																		$('#products_featuresets_values_title_{/literal}{$datalang.id}{literal}').val( $(tablerow).attr('data-attr-products-featuresets-values-title-{/literal}{$datalang.id}{literal}')  );
+																{/literal}
+														{/foreach}
+												{literal}
+												
+												//Editor anzeigen -----------------------------------
+												$('#products_featureset_value_editor_errors').html('');
+												$('#products_featureset_value_editor').modal();
+										}
+								
+										/////////////////////////////////////////////////////////
+										// featureset value editor function that opens the dialog
+										/////////////////////////////////////////////////////////
+										function show_products_featureset_value_editor() {
+												//Benötigte Daten überprüfen
+												var featuresets_id = $('#mv_editor_action_featuresets_id').val();
+												
+												if(featuresets_id == '') {
+														alert("{/literal}{$smarty.const.TEXT_ERROR_FEATURES_PLEASE_CHOOSE_AN_FEATURESET}{literal}");
+														return;
+												}
+												
+												//init and show the editor
+												$('#products_featureset_value_editor_errors').html('');
+												$('#products_featureset_value_editor').modal();
+										}
+										
+										////////////////////////////////////////////////////////
+										// start the products featureset value editor (click event)
+										////////////////////////////////////////////////////////
+										$('#products_featureset_value_add').on('click', function(event) {
+												//prefill the editor with the values we got
+												//tmp_products_featuresets_editor_edit_row = false;										
+												//$('#mv_editor_action_featuresets_id').val('');
+												//$('#mv_editor_action_tmp_featuresets_id').val(0);
+												//$('#products_featureset_sort_order').val('');
+												
+												
+												//alle benötigten Daten ermitteln -----------------------------------
+												//featuresets_id
+												var featuresets_id = $('#mv_editor_action_featuresets_id').val();
+												
+												if(featuresets_id == '') {
+														alert("{/literal}{$smarty.const.TEXT_ERROR_FEATURES_PLEASE_CHOOSE_AN_FEATURESET}{literal}");
+														return;
+												}
+												
+												//$('#mv_editor_action_tmp_featuresets_id').val('');
+												$('#mv_editor_action_featuresets_values_id').val('');
+												$('#mv_editor_action_tmp_featuresets_values_id').val('');
+												
+												$('#products_featuresets_values_sort_order').val('');
+												
+												{/literal}
+														{foreach from=$DATALANGUAGES item=datalang}
+																{literal}
+																		$('#products_featuresets_values_title_{/literal}{$datalang.id}{literal}').val('');
+																{/literal}
+														{/foreach}
+												{literal}
+												
+												event.stopPropagation();
+												show_products_featureset_value_editor(this);
+										});
+								
+										/* add an feature (and featureset) */
+										function products_featuresets_values_add_new(event, item) {
+												event.stopPropagation();
+												
+												//Titel überprüfen (Sind alle gesetzt?)
+												var tmp_title;
+												
+												{/literal}
+														{foreach from=$DATALANGUAGES item=datalang name=datalangloop}
+																{literal}
+																		tmp_title = $.trim($('#products_featuresets_values_title_{/literal}{$datalang.id}{literal}').val());
+																		
+																		if(tmp_title.length == 0) {
+																				//Fehlermeldung anzeigen!
+																				$('#products_featureset_value_editor_errors').html("{/literal}{$smarty.const.TEXT_ERROR_FEATURES_TITLE_PLEASE_ENTER_TEXT} ({$datalang.title}){literal}");
+																				return;
+																		}
+																{/literal}
+														{/foreach}
+												{literal}
+												
+												//alle benötigten Daten ermitteln
+												var featuresets_id = $('#mv_editor_action_featuresets_id').val();
+												
+												if(featuresets_id == '') {
+														alert("{/literal}{$smarty.const.TEXT_ERROR_FEATURES_PLEASE_CHOOSE_AN_FEATURESET}{literal}");
+														return;
+												}
+												
+												var tmp_featuresets_id = $('#mv_editor_action_tmp_featuresets_id').val()
+												var tmp_products_id = $('#tmp_products_id').val();
+												var featuresets_values_id = $('#mv_editor_action_featuresets_values_id').val();
+												var tmp_featuresets_values_id = $('#mv_editor_action_tmp_featuresets_values_id').val();
+												
+												var sort_order = $('#products_featuresets_values_sort_order').val();
+												
+												//send an ajax call to add the item.
+												var url_params = {
+															s: 'cAdminproducts',
+															action: 'ajax_products_featuresets_values_add',
+												};
+												
+												url_params = $.param(url_params);
+												
+												var params = {
+														tmp_products_id: tmp_products_id,
+														products_featuresets_id: featuresets_id,
+														tmp_products_featuresets_id: tmp_featuresets_id,
+														products_featuresets_values_id: featuresets_values_id,
+														tmp_products_featuresets_values_id: tmp_featuresets_values_id,
+														
+														{/literal}
+																{foreach from=$DATALANGUAGES item=datalang name=datalangloop}
+																		{literal}products_featuresets_values_title_{/literal}{$datalang.id}{literal}: $('#products_featuresets_values_title_{/literal}{$datalang.id}{literal}').val(){/literal}
+																		{if $smarty.foreach.datalangloop.last == FALSE},{/if}
+																{/foreach}
+														{literal},
+														sort_order: sort_order
+												};
+														
+												
+												$.ajax({
+														type: "POST",
+														url: "index.php?" + url_params,
+														data: params,
+														cache: false
+												}).done( function( data ) {
+														console.log(data);
+														
+														//check the result..
+														data = $.parseJSON(data);
+														
+														if(data.status == 'error') {
+																$('#products_featureset_value_editor_errors').html(data.message.replace(/\n/g,"<br>"));
+																return;
+														} else {
+																$('#mv_products_featuresets_values_editor').html(data.html_table);		//reset the featuresets values table with the new values. This is rock!
+																
+																//deactivate and re-activate the edit buttons for the products featuresets values entries
+																$('.mv_product_featureset_value_button_right').off('click');
+																$('.mv_product_featureset_value_button_right').on('click', function(event) {
+																		mv_product_featureset_value_editor_show(event, this);
+																});
+																
+																$('.products_features_add').off('click');
+																$('.products_features_add').on('click', function(event) {
+																		products_features_add_button_clicked(event, this);
+																});
+														}
+														
+														$('#products_featureset_value_editor').modal('hide');
+												});
+										}
+										
+										/* activate actions when page load is done */
+										$(function() {
+												$('#save_product_featureset_value').on('click', function(event) {
+														products_featuresets_values_add_new(event, this);
+												});
+										});
+								</script>
+								{/literal}
+								
+								<!-- Attributwerte (Rechts) -->
+								<div class="col col-md-3">
+										<div class="mvbox gray">
+												<div class="mvbox-title">
+														<div class="caption">{$smarty.const.TEXT_HEADING_FEATURE_SETTINGS}</div>
+														<div class="toolbox">
+																<i class="fa fa-info-circle yellow-on-hover buttonlike" data-content="{$smarty.const.TEXT_FEATURE_SETTINGS_INFORMATION}" data-container="body" data-toggle="popover" data-trigger="hover" data-placement="auto"></i>
+																{literal}
+																<script>
+																$(function() {
+																		$(function () {
+																				$('[data-toggle="popover"]').popover();
+																		});
+																});
+																</script>
+																{/literal}
+														</div>
+												</div>
+												<div class="mvbox-body">
+														
+														<div class="mv_editor_action">
+																<table class="mv_feature_site_editor">
+																		<tr>
+																				<td>{$smarty.const.TEXT_LABEL_FEATURE_EDITOR_SORT_ORDER}</td>
+																				<td>
+																						<input type="text" value="" id="mv_features_editor_action_sort_order" class="form-control" />
+																				</td>
+																		</tr>
+																		
+																		<tr>
+																				<td>{$smarty.const.TEXT_LABEL_FEATURE_EDITOR_DESCRIPTION}</a></td>
+																				<td>
+																						<textarea id="mv_features_editor_action_description" class="form-control"></textarea>
+																				</td>
+																		</tr>
+																</table>
+														</div>
+												</div>
+										</div>
+								</div>
+						</div>
+				</div>
+		
+		
+				<div class="row">
+						<!-- Aktive Feature -->
+						<div class="col col-md-12 col-sm-12">
+								<div class="mvbox gray">
+										<div class="mvbox-title">
+												<div class="caption">{$smarty.const.TEXT_LABEL_ACTIVE_FEATURES}</div>
+										</div>
+										<div class="mvbox-body">
+												<div class="mv_editor_content" id="mv_features_editor">
+														{if '' != $PRODUCTS_FEATURES_HTML_TABLE}{$PRODUCTS_FEATURES_HTML_TABLE}{else}{$smarty.const.TEXT_PRODUCT_HAS_NO_FEATURES}{/if}
+												</div>
+										</div>
+								</div>
+						</div>
+				</div>
+		</div>
+</div>
+		
+{literal}
+<script>
+		/* script code for the features -------------------------------------------- */
+		
+		////////////////////////////////////////////////////////////////////////////////
+		// activate features edit and delete buttons on page load
+		////////////////////////////////////////////////////////////////////////////////
+		$(function() {
+				//deactivate and reactivate the actions (edit and delete)
+				$('.mv_edit_products_feature').off('click');
+				$('.mv_edit_products_feature').on('click', function(event) {
+						mv_products_feature_open_for_edit(event, this);
+				});
+				
+				$('.mv_remove_feature').off('click');
+				$('.mv_remove_feature').on('click', function(event) {
+						mv_products_feature_delete(event, this);
+				});
+		});
+		
+		
+		
+		////////////////////////////////////////////////////////////////////////////////
+		// cancel the edit mode
+		////////////////////////////////////////////////////////////////////////////////
+		function mv_products_features_edit_cancel(event, parent_tr) {
+				//1. remove save and cancel button
+				$(parent_tr).find('.edit_feature_button_save').remove();
+				$(parent_tr).find('.edit_feature_button_cancel').remove();
+				
+				//2. change edit fields to values
+				container = $(parent_tr).children('.mv_products_features_order');
+				value = $(parent_tr).attr('data-value-sort-order');
+				$(container).html(value);
+				
+				container = $(parent_tr).children('.mv_products_features_description');
+				value = $(parent_tr).attr('data-value-description');
+				$(container).html(value);
+				
+				//3. show edit and remove buttons
+				$(parent_tr).find('button.mv_edit_products_feature').show();
+				$(parent_tr).find('button.mv_remove_feature').show();
+				$(parent_tr).find('.products_features_slave_edit').show();
+				
+				//4. re-enable the click actions on that buttons
+				$(parent_tr).find('.mv_edit_products_feature').on('click', function(event) {
+						mv_products_feature_open_for_edit(event, parent_tr);
+				});
+				
+				$(parent_tr).find('.mv_remove_feature').on('click', function(event) {
+						mv_products_feature_delete(event, this);
+				});
+				
+				//reactivate the poopover
+				$('[data-toggle="popover"]').popover();
+				
+		}
+		
+		////////////////////////////////////////////////////////////////////////////////
+		// save the edit
+		////////////////////////////////////////////////////////////////////////////////
+		function mv_products_features_edit_save(event, parent_tr) {
+				//Werte zum indentifizieren des Features
+				var products_id 										= $('#id').val();
+				var tmp_products_id 								= $('#tmp_products_id').val();
+				var features_id 									=	$(parent_tr).attr('data-value-features-id');
+				var products_featuresets_id 						=	$(parent_tr).attr('data-value-products-featuresets-id');
+				var tmp_products_featuresets_id 				= $(parent_tr).attr('data-value-tmp-products-featuresets-id');
+				var products_featuresets_values_id 			= $(parent_tr).attr('data-value-products-featuresets-values-id');
+				var tmp_products_featuresets_values_id	= $(parent_tr).attr('data-value-tmp-products-featuresets-values-id');
+				
+				//Zu aktualisierende Werte des Features ermitteln.
+				var features_order = $(parent_tr).find('.mv_products_features_order input').val();
+				var features_description = $(parent_tr).find('.mv_products_features_description textarea').val();
+				
+				//build parameters for the ajax call (post and get)
+				var params = {
+						tmp_products_featuresets_id: tmp_products_featuresets_id,
+						tmp_products_featuresets_value_id: tmp_products_featuresets_values_id,
+						products_featuresets_id: products_featuresets_id,
+						products_featuresets_values_id: products_featuresets_values_id,
+						sort_order: features_order,
+						description: features_description
+				};
+				
+				var url_params = {
+						s: 'cAdminproducts',
+						action: 'ajax_products_feature_save',
+						tmp_products_id: tmp_products_id,
+						products_id: products_id
+				};
+				
+				url_params = $.param(url_params);
+				
+				$.ajax({
+						type: "POST",
+						url: "index.php?" + url_params,
+						data: params,
+						cache: false
+				}).done( function( data ) {
+						var data_text = data;
+						
+						try {
+								data = $.parseJSON(data);
+								
+								if(data.status == 'success') {
+										$('#mv_features_editor').html( data.html_table );
+										
+										//deactivate and reactivate the actions (edit and delete)
+										$('.mv_edit_products_feature').off('click');
+										$('.mv_edit_products_feature').on('click', function(event) {
+												mv_products_feature_open_for_edit(event, this);
+										});
+										
+										$('.mv_remove_feature').off('click');
+										$('.mv_remove_feature').on('click', function(event) {
+												mv_products_feature_delete(event, this);
+										});
+										
+										//popover (infomeldungen neben dem info button) wieder aktivieren
+										$('[data-toggle="popover"]').popover();
+								}
+						} catch(err) {
+								alert('{/literal}{$smarty.const.TEXT_UNHANDLEBAR_ERROR}{literal} ' + err + ': ' + data_text);
+						}
+				});
+		}
+						
+		////////////////////////////////////////////////////////////////////////////////
+		// delete an item
+		////////////////////////////////////////////////////////////////////////////////
+		function mv_products_feature_delete(event, item) {
+				//1. Sicherheitsabfrage: Wirklich löschen?
+				if(false == confirm('Wirklich löschen?')) {
+						return;
+				}
+				
+				//2. get the parent tr container. This contains all data we'll need
+				var parent_tr = $(item).closest('tr');
+				
+				//3. Werte zum indentifizieren des Features
+				var products_id 										= $('#id').val();
+				var tmp_products_id 								= $('#tmp_products_id').val();
+				var features_id 									=	$(parent_tr).attr('data-value-features-id');				
+				var products_featuresets_id 						=	$(parent_tr).attr('data-value-products-featuresets-id');
+				var tmp_products_featuresets_id 				= $(parent_tr).attr('data-value-tmp-products-featuresets-id');
+				var products_featuresets_values_id 			= $(parent_tr).attr('data-value-products-featuresets-values-id');
+				var tmp_products_featuresets_values_id	= $(parent_tr).attr('data-value-tmp-products-featuresets-values-id');
+				
+				//build parameters for the ajax call (post and get)
+				var params = {
+						tmp_products_featuresets_id: tmp_products_featuresets_id,
+						tmp_products_featuresets_value_id: tmp_products_featuresets_values_id,
+						products_featuresets_id: products_featuresets_id,
+						products_featuresets_values_id: products_featuresets_values_id,
+				};
+				
+				var url_params = {
+						s: 'cAdminproducts',
+						action: 'ajax_products_feature_set_delete_flag',
+						tmp_products_id: tmp_products_id,
+						products_id: products_id
+				};
+				
+				url_params = $.param(url_params);
+				
+				$.ajax({
+						type: "POST",
+						url: "index.php?" + url_params,
+						data: params,
+						cache: false
+				}).done( function( data ) {
+						var data_text = data;
+						
+						try {
+								data = $.parseJSON(data);
+								
+								if(data.status == 'success') {
+										$('#mv_features_editor').html( data.html_table );
+										
+										//deactivate and reactivate the actions (edit and delete)
+										$('.mv_edit_products_feature').off('click');
+										$('.mv_edit_products_feature').on('click', function(event) {
+												mv_products_feature_open_for_edit(event, this);
+										});
+										
+										$('.mv_remove_feature').off('click');
+										$('.mv_remove_feature').on('click', function(event) {
+												mv_products_feature_delete(event, this);
+										});
+										
+										//infomeldungen (mit kleinem icon bei hover) wieder aktivieren
+										$('[data-toggle="popover"]').popover();
+								}
+						} catch(err) {
+								alert('{/literal}{$smarty.const.TEXT_UNHANDLEBAR_ERROR}{literal} ' + err + ': ' + data_text);
+						}
+				});
+		}
+		
+		////////////////////////////////////////////////////////////////////////////////
+		// open for edit
+		////////////////////////////////////////////////////////////////////////////////
+		function mv_products_feature_open_for_edit(event, item) {
+				//different from store. We make the values become input fields and add a save button
+				//1. get the parent tr container. This contains all data we'll need
+				var parent_tr = $(item).closest('tr');
+				
+				//2. show the edit fields
+				container = $(parent_tr).children('.mv_products_features_order');
+				value = $(parent_tr).attr('data-value-sort-order');
+				$(container).html('<input value="' + value + '" class="edit_feature_sort_order form-control" />');
+				
+				container = $(parent_tr).children('.mv_products_features_description');
+				value = $(parent_tr).attr('data-value-description');
+				$(container).html('<textarea value="' + value + '" class="edit_feature_description form-control" />');
+				
+				//3. disable buttons that have actions we don't need in editing..
+				$(parent_tr).find('button.mv_edit_products_feature').hide();
+				$(parent_tr).find('button.mv_edit_products_feature').off('click');
+				$(parent_tr).find('button.mv_remove_feature').hide();
+				$(parent_tr).find('button.mv_remove_feature').off('click');
+				$(parent_tr).find('.products_features_slave_edit').hide();
+
+				//4. add save and cancel buttons
+				container = $(parent_tr).children('.mv_feature_edit_button_container');
+				value = container.html();
+				value += '<button class="edit_feature_button_save btn btn-primary btn-xs" type="button">{/literal}{$smarty.const.TEXT_BUTTON_SAVE}{literal}</button>';
+				value += '&nbsp;';
+				value += '<button class="edit_feature_button_cancel btn btn-default btn-xs" type="button">{/literal}{$smarty.const.TEXT_BUTTON_CANCEL}{literal}</button>';
+				$(container).html( value );
+
+				//5. set start actions for new buttons
+				$(parent_tr).find('.edit_feature_button_save').off('click');
+				$(parent_tr).find('.edit_feature_button_cancel').off('click');
+				$(parent_tr).find('.edit_feature_button_save').on('click', function(event) {
+						mv_products_features_edit_save(event, parent_tr);
+				});
+				$(parent_tr).find('.edit_feature_button_cancel').on('click', function(event) {
+						mv_products_features_edit_cancel(event, parent_tr);
+				});
+		}
+		
+		////////////////////////////////////////////////////////////////////////////////
+		// if an features add button has been clicked
+		////////////////////////////////////////////////////////////////////////////////
+		function products_features_add_button_clicked(event, item) {
+				//collect all values ------------------------
+				var products_id = $('#id').val();
+				var tmp_products_id = $('#tmp_products_id').val();
+				
+				//get the td element with all the values..
+				var data_td = $(item).closest('td').prev('td');
+								
+				var tmp_products_featuresets_id = $(data_td).attr('data-attr-tmp-products-featuresets-id');
+				var tmp_products_featuresets_value_id = $(data_td).attr('data-attr-tmp-products-featuresets-values-id');
+				var products_featuresets_id = $(data_td).attr('data-attr-products-featuresets-id');
+				var products_featuresets_values_id = $(data_td).attr('data-attr-products-featuresets-values-id');
+
+				var sort_order = $('#mv_features_editor_action_sort_order').val();
+				var description = $('#mv_features_editor_action_description').val();
+				
+				//build parameters for the ajax call (post and get)
+				var params = {
+						tmp_products_featuresets_id: tmp_products_featuresets_id,
+						tmp_products_featuresets_value_id: tmp_products_featuresets_value_id,
+						products_featuresets_id: products_featuresets_id,
+						products_featuresets_values_id: products_featuresets_values_id,
+						sort_order: sort_order,
+						description: description
+				};
+				
+				console.log(params);
+				
+				var url_params = {
+						s: 'cAdminproducts',
+						action: 'ajax_products_feature_save',
+						tmp_products_id: tmp_products_id,
+						products_id: products_id
+				};
+				
+				url_params = $.param(url_params);
+				
+				$.ajax({
+						type: "POST",
+						url: "index.php?" + url_params,
+						data: params,
+						cache: false
+				}).done( function( data ) {
+						var data_text = data;
+						
+						try {
+								data = $.parseJSON(data);
+								
+								if(data.status == 'success') {
+										$('#mv_features_editor').html( data.html_table );
+										
+										//deactivate and reactivate the actions (edit and delete)
+										$('.mv_edit_products_feature').off('click');
+										$('.mv_edit_products_feature').on('click', function(event) {
+												mv_products_feature_open_for_edit(event, this);
+										});
+										
+										$('.mv_remove_feature').off('click');
+										$('.mv_remove_feature').on('click', function(event) {
+												mv_products_feature_delete(event, this);
+										});
+										
+										//reactivate the popover texts.
+										$('[data-toggle="popover"]').popover();
+								}
+						} catch(err) {
+								alert('{/literal}{$smarty.const.TEXT_UNHANDLEBAR_ERROR}{literal} ' + err + ': ' + data_text);
+						}
+				});
+		}
+</script>
+{/literal}

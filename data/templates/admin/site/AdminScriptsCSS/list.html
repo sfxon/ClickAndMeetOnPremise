@@ -1,0 +1,119 @@
+<div class="container-fluid">
+		<nav class="navbar navbar-default mv-navbar" role="navigation">
+				<div class="navbar-header">
+						<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+								<span class="sr-only">{$smarty.const.TEXT_TOGGLE_NAVIGATION}</span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+						</button>
+				</div>
+        
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <div class="navbar-left navbar-text">
+            		{$NAVBAR_TITLE}
+            </div>
+            
+            <div class="navbar-form navbar-right">
+                <div class="form-group">
+                    <a href="http://wiki/doku.php?id=scripting-AdminScriptsCSS#liste" target="_blank">
+												<button type="submit" class="btn btn-success btn-sm">Hilfe</button>
+										</a>
+										
+										<a href="index.php?s=cAdminScriptsCSS&amp;action=new">
+                        <button type="submit" class="btn btn-default btn-sm">{$smarty.const.TEXT_BUTTON_NEW}</button>
+                    </a>
+                </div>
+            </div>
+        </div>
+		</nav>
+		
+		{foreach from=$INFO_MESSAGES item=info_message}
+				{if $info_message == 1}
+						<div class="alert alert-info" role="alert">Der Vorgang wurde abgebrochen. Der Eintrag wurde nicht gelöscht.</div>
+				{/if}
+		{/foreach}
+		{foreach from=$SUCCESS_MESSAGES item=success_message}
+				{if $success_message == 24}
+						<div class="alert alert-success" role="alert">Der Eintrag wurde gelöscht.</div>
+				{/if}
+		{/foreach}
+		
+		<div class="row">
+				<div class="col-md-12 text-right">
+						Legende: 
+						<i class="fa fa-pencil"></i> = Eintrag bearbeiten |&nbsp;&nbsp;&nbsp;
+						<i class="fa fa-times text-danger" aria-hidden="true"></i> = Eintrag entfernen
+				</div>
+		</div>
+		
+		<div class="mv-force-table-responsive">
+				<table class="table table-hover table-condensed table-bordered table-striped">
+						<thead>
+								<tr>
+										<th>{$smarty.const.TEXT_TABLE_HEADING_ID}</th>
+										<th>{$smarty.const.TEXT_TABLE_HEADING_TITLE}</th>
+										<th>{$smarty.const.TEXT_TABLE_HEADING_CLASS_NAME}</th>
+										<th>{$smarty.const.TEXT_TABLE_HEADING_CSS}</th>
+										<th>{$smarty.const.TEXT_TABLE_HEADING_ACTION}</th>
+								</tr>
+						</thead>
+						
+						<tbody>
+								{if $DATA.list|count == 0}
+										<tr><td colspan="5">{$smarty.const.TEXT_NO_DATA}</td></tr>
+								{else}
+										{foreach from=$DATA.list item=dataitem name=listforeach}
+												{if false !== $dataitem}
+														<tr>
+																<td>{$dataitem.id}</td>
+																<td>{$dataitem.title|htmlspecialchars}</td>
+																<td>{$dataitem.class_name|htmlspecialchars}</td>
+																<td>{$dataitem.css|htmlspecialchars}</td>
+																
+																<td>
+																 		{strip}
+																				<a href="index.php?s=cAdminScriptsCSS&amp;id={$dataitem.id}&amp;action=edit" title="Bearbeiten">
+																						<i class="fa fa-pencil"></i>
+																				</a>
+																				
+																				&nbsp;&nbsp;&nbsp;
+																				<a href="index.php?s=cAdminScriptsCSS&amp;id={$dataitem.id}&amp;action=delete" title="Löschen">
+																						<i class="fa fa-times text-danger" aria-hidden="true"></i>
+																				</a>
+																				
+																				{* <!--
+																				&nbsp;&nbsp;&nbsp;
+																				<a href="index.php?s=cAdminwebsellersessions&amp;user_id={$dataitem.id}" title="Webseller Sessions">
+																						<i class="fa fa-book"></i>
+																				</a>
+																				&nbsp;&nbsp;&nbsp;
+																				<a href="index.php?s=cAdminaccountsrights&amp;accounts_id={$dataitem.id}" title="Admin-Rechte verwalten">
+																						<i class="fa fa-gavel" aria-hidden="true"></i>
+																				</a>
+																				--> *}
+																				{* <!--
+																				&nbsp;&nbsp;&nbsp;
+																				<a href="index.php?s=cAdminaccountlicences&amp;accounts_id={$dataitem.id}" title="Lizensen">
+																						<i class="fa fa-money"></i>
+																				</a>
+																				--> *}
+																				
+																				{* <!--
+																				{if $ADMINRIGHT_DELETE_ACCOUNT == 1}
+																						&nbsp;&nbsp;&nbsp;
+																						<a href="index.php?s=cAdminaccounts&amp;id={$dataitem.id}&amp;action=confirm_delete" title="Löschen">
+																								<i class="fa fa-ban text-danger mv-fa-inline"></i>
+																						</a>
+																				{/if}
+																				--> *}
+																		{/strip}
+																</td>
+														</tr>
+												{/if}
+										{/foreach}
+								{/if}
+						</tbody>
+				</table>
+		</div>
+</div>

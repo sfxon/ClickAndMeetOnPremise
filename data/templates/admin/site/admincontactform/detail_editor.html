@@ -1,0 +1,142 @@
+<div class="container-fluid">
+		<nav class="navbar navbar-default mv-navbar" role="navigation">
+				<div class="navbar-header">
+						<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+								<span class="sr-only">{$smarty.const.TEXT_TOGGLE_NAVIGATION}</span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+						</button>
+				</div>
+        
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <div class="navbar-left navbar-text">
+            		{$NAVBAR_TITLE}
+            </div>
+        </div>
+		</nav>
+
+		<div class="mvbox">
+				<div class="mvbox-body">
+						<div class="mv-force-table-responsive">
+								<form role="form" action="{$DATA.url}" method="POST" class="form">
+										{if 0 != $DATA.detail_data.id}
+												<div class="row">
+														<div class="form-group col-sm-12">
+																<label for="detail_id">{$smarty.const.TEXT_LABEL_CONTACTOFRM_DETAIL_ID}</label>
+																<input type="text" class="form-control" placeholder="{$smarty.const.TEXT_LABEL_TEXTVARIABLE_ID}" name="detail_id" value="{$DATA.detail_data.id}" readonly="readonly" />
+														</div>
+												</div>
+										{/if}
+										
+										<div class="row">
+												<div class="form-group col-sm-12">
+														<label for="contactform_id">{$smarty.const.TEXT_LABEL_CONTACTFORM_ID}</label>
+														<input type="text" class="form-control" placeholder="{$smarty.const.TEXT_LABEL_CONTACTFORM_ID}" name="contactform_id" value="{$DATA.data.id}" readonly="readonly" />
+												</div>
+										</div>
+										
+										<div class="row">
+												<div class="form-group col-sm-12">
+														<label for="status">{$smarty.const.TEXT_LABEL_CONTACTFORM_DETAIL_STATUS}</label>
+														<select class="form-control" name="status" id="status">
+																<option value="1"{if $DATA.detail_data.status == 1} selected="selected"{/if}>{$smarty.const.TEXT_LABEL_CONTACTFORM_STATUS_ACTIVE}</option>
+																<option value="0"{if $DATA.detail_data.status == 0} selected="selected"{/if}>{$smarty.const.TEXT_LABEL_CONTACTFORM_STATUS_INACTIVE}</option>
+														</select>
+												</div>
+										</div>
+										
+										<div class="row">
+												<div class="form-group col-sm-12">
+														<label for="input_type">{$smarty.const.TEXT_LABEL_CONTACTFORM_DETAIL_INPUT_TYPE}</label>
+														<select name="input_type" id="input_type" class="form-control">
+																<option value="0"{if $DATA.detail_data.input_type == 0} selected="selected"{/if}>Statischer Text</option>
+																<option value="1"{if $DATA.detail_data.input_type == 1} selected="selected"{/if}>Eingabefeld</option>
+																<option value="2"{if $DATA.detail_data.input_type == 2} selected="selected"{/if}>Passwortfeld</option>
+																<option value="3"{if $DATA.detail_data.input_type == 3} selected="selected"{/if}>Text-Feld</option>
+																<option value="4"{if $DATA.detail_data.input_type == 4} selected="selected"{/if}>Select Anfang</option>
+																<option value="5"{if $DATA.detail_data.input_type == 5} selected="selected"{/if}>Select-Option</option>
+																<option value="8"{if $DATA.detail_data.input_type == 8} selected="selected"{/if}>Select-Ende</option>
+																<option value="6"{if $DATA.detail_data.input_type == 6} selected="selected"{/if}>Checkbox</option>
+																<option value="9"{if $DATA.detail_data.input_type == 9} selected="selected"{/if}>Checkbox - Typ 2</option>
+																<option value="7"{if $DATA.detail_data.input_type == 7} selected="selected"{/if}>Absenden Button</option>
+														</select>
+												</div>
+										</div>
+										
+										<div class="row">
+												<div class="form-group col-sm-12">
+														<label for="title">{$smarty.const.TEXT_LABEL_CONTACTFORM_DETAIL_TITLE}</label>
+														<input type="text" class="form-control" placeholder="{$smarty.const.TEXT_LABEL_CONTACTFORM_DETAIL_TITLE}" name="title" value="{$DATA.detail_data.title|htmlspecialchars}" />
+												</div>
+										</div>
+										
+										<div class="row">
+												<div class="form-group col-sm-12">
+														<label for="name">{$smarty.const.TEXT_LABEL_CONTACTFORM_DETAIL_NAME}</label>
+														<input type="text" class="form-control" placeholder="{$smarty.const.TEXT_LABEL_CONTACTFORM_DETAIL_NAME}" name="name" value="{$DATA.detail_data.name}" />
+												</div>
+										</div>
+										
+										<div class="row">
+												<div class="form-group col-sm-12">
+														<label for="value">{$smarty.const.TEXT_LABEL_CONTACTFORM_DETAIL_VALUE}</label>
+														<input type="text" class="form-control" placeholder="{$smarty.const.TEXT_LABEL_CONTACTFORM_DETAIL_VALUE}" name="value" value="{$DATA.detail_data.value}" />
+												</div>
+										</div>
+										
+										<div class="row">
+												<div class="form-group col-sm-12">
+														<label for="description">{$smarty.const.TEXT_LABEL_CONTACTFORM_DETAIL_DESCRIPTION}</label>
+														<input type="text" class="form-control" placeholder="{$smarty.const.TEXT_LABEL_CONTACTFORM_DETAIL_DESCRIPTION}" name="description" value="{$DATA.detail_data.description}" />
+												</div>
+										</div>
+										
+										<div class="row">
+												<div class="form-group col-sm-12">
+														<label for="required">{$smarty.const.TEXT_LABEL_CONTACTFORM_DETAIL_REQUIRED}</label>
+														<select name="required" id="required" class="form-control">
+																<option value="0"{if $DATA.detail_data.required == 0} selected="selected"{/if}>{$smarty.const.TEXT_LABEL_CONTACTFORM_REQUIRED_NO}</option>
+																<option value="1"{if $DATA.detail_data.required == 1} selected="selected"{/if}>{$smarty.const.TEXT_LABEL_CONTACTFORM_REQUIRED_YES}</option>
+														</select>
+												</div>
+										</div>
+										
+										<div class="row">
+												<div class="form-group col-sm-12">
+														<label for="error_text_variable">{$smarty.const.TEXT_LABEL_CONTACTFORM_DETAIL_ERROR_TEXT_VARIABLE}</label>
+														<input type="text" class="form-control" placeholder="{$smarty.const.TEXT_LABEL_CONTACTFORM_DETAIL_ERROR_TEXT_VARIABLE}" name="error_text_variable" value="{$DATA.detail_data.error_text_variable}" />
+												</div>
+										</div>
+										
+										<div class="row">
+												<div class="form-group col-sm-12">
+														<label for="contactform_details_parent_id">{$smarty.const.TEXT_LABEL_CONTACTFORM_DETAIL_CONTACTFORM_DETAILS_PARENT_ID}</label>
+														<input type="text" class="form-control" placeholder="{$smarty.const.TEXT_LABEL_CONTACTFORM_DETAIL_CONTACTFORM_DETAILS_PARENT_ID}" name="contactform_details_parent_id" value="{$DATA.detail_data.contactform_details_parent_id}" />
+												</div>
+										</div>
+										
+										<div class="row">
+												<div class="form-group col-sm-12">
+														<label for="sort_order">{$smarty.const.TEXT_LABEL_CONTACTFORM_DETAIL_SORT_ORDER}</label>
+														<input type="text" class="form-control" placeholder="{$smarty.const.TEXT_LABEL_CONTACTFORM_DETAIL_SORT_ORDER}" name="sort_order" value="{$DATA.detail_data.sort_order}" />
+												</div>
+										</div>
+										
+										<div class="row">
+												<div class="form-group col-sm-12">
+														<label for="input_processing">{$smarty.const.TEXT_LABEL_CONTACTFORM_DETAIL_INPUT_PROCESSING}</label>
+														<input type="text" class="form-control" placeholder="{$smarty.const.TEXT_LABEL_CONTACTFORM_DETAIL_INPUT_PROCESSING}" name="input_processing" value="{$DATA.detail_data.input_processing}" />
+												</div>
+										</div>
+										
+										<div class="row">
+												<div class="form-group col-sm-12">
+														<button type="submit" class="btn btn-primary">{$smarty.const.TEXT_BUTTON_SAVE}</button>
+												</div>
+										</div>
+								</form>
+						</div>
+				</div>
+		</div>
+</div>

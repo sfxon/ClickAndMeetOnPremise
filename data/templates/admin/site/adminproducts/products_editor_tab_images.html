@@ -1,0 +1,490 @@
+<div class="mvbox">
+		<div class="mvbox-body">
+				<div class="row">
+						<br />
+						<div class="form-group col-sm-12">
+								<button type="button" id="add_product_image" class="btn btn-default">{$smarty.const.TEXT_BUTTON_ADD_PRODUCT_IMAGE}</button>
+						</div>
+						
+						<div class="form-group col-sm-12">
+								<table id="products_editor_images_table" style="width: 100%" class="table table-hover table-condensed table-bordered table-striped">
+										<thead>
+												<tr>
+														<th>{$smarty.const.TEXT_TABLE_HEADING_IMAGE}</th>
+														<th>{$smarty.const.TEXT_TABLE_HEADING_DATA}</th>
+														<th>{$smarty.const.TEXT_TABLE_HEADING_ACTION}</th>
+												</tr>
+												
+												{foreach from=$PRODUCTS_IMAGES item=products_image}
+														{strip}
+														<tr{/strip} {strip}
+																data-attr-documents-id="{$products_image.id}"{/strip} {strip}
+																data-attr-sort-order="{$products_image.sort_order}"{/strip} {strip}
+																data-attr-image-source="{$products_image.file_source}"{/strip} {strip}
+																data-attr-license-type="{$products_image.license_type}"{/strip} {strip}
+																data-attr-image-qualifier="{$products_image.qualifier}"{/strip} {strip}
+																data-attr-tmp-products-image=""{/strip} {strip}
+																
+																{foreach from=$DATALANGUAGES item=datalang name=datalangloop}
+																		data-attr-title-tag-{$datalang.id}="{$products_image.products_images_descriptions[$datalang.id].alt_tag}"{/strip} {strip}
+																		data-attr-alt-tag-{$datalang.id}="{$products_image.products_images_descriptions[$datalang.id].title_tag}"{/strip} {strip}
+																{/foreach}
+														>
+														{/strip}
+																<td style="width:25%;" align="center"><img src="data/images/product_images/{$products_image.id}.{$products_image.file_extension}" style="max-width: 90%" /></td>
+																<td valign="top">
+																		{$smarty.const.TEXT_SORT_ORDER}: {$products_image.sort_order}<br />
+																		{$smarty.const.TEXT_FILE_SOURCE}: {$products_image.file_source}<br />
+																		{$smarty.const.TEXT_FILE_LICENSE}: {$products_image.license_type}<br />
+																		{$smarty.const.TEXT_FILE_QUALIFIER}: {$products_image.qualifier}<br />
+																		{$smarty.const.TEXT_IMAGE_ALT_TAG}: {$products_image.products_images_descriptions[$CURRENT_DATALANGUAGE_ID].alt_tag}<br />
+																		{$smarty.const.TEXT_IMAGE_TITLE_TAG}: {$products_image.products_images_descriptions[$CURRENT_DATALANGUAGE_ID].title_tag}<br />
+																</td>
+																<td>
+																		<button type="button" class="btn btn-success edit_products_image">{$smarty.const.TEXT_BUTTON_EDIT}</button>
+																		<button type="button" class="btn btn-danger delete_products_image">{$smarty.const.TEXT_BUTTON_DELETE}</button>
+																</td>
+														</tr>
+												{/foreach}
+										</thead>
+										<tbody>
+										</tbody>
+								</table>
+						</div>
+				</div>
+		</div>
+</div>
+
+{literal}
+<script>
+var products_editor_images_current_edit_row = '';
+
+function products_images_item_buttons_live() {
+		$('.edit_products_image').off('click');																						
+		$('.edit_products_image').on('click', function(event) {
+				edit_products_image_dialog(event, this);
+		});
+		
+		$('.delete_products_image').off('click');
+		$('.delete_products_image').on('click', function(event) {
+				edit_products_image_delete_dialog(event, this);
+		});
+}
+
+$(function() {
+		products_images_item_buttons_live();		//let the products images button actions live!
+
+		$('#add_product_image').click( function(event) {
+				event.stopPropagation();
+
+				//clear the file inputs
+				$('.fileinput').fileinput('clear');
+				
+				//clear all additional fields
+				$('#products_image_sort_order').val('');
+				$('#products_image_source').val('');
+				$('#products_image_license_type').val('');
+				$('#products_image_qualifier').val('');
+				$('#tmp_products_image').val('');
+				$('#products_images_documents_id').val('');
+				
+				{/literal}
+						{foreach from=$DATALANGUAGES item=datalang name=datalangloop}
+										{literal}$('#products_image_title_tag_{/literal}{$datalang.id}{literal}').val('');{/literal}
+						{/foreach}
+						{foreach from=$DATALANGUAGES item=datalang name=datalangloop}
+										{literal}$('#products_image_alt_tag_{/literal}{$datalang.id}{literal}').val('');{/literal}
+						{/foreach}
+				{literal}
+				
+				//clear the row variable, since we are not editing - we are adding an item				
+				products_editor_images_current_edit_row = '';
+				
+				show_products_images_editor(this);
+		});
+});
+</script>
+{/literal}
+
+<!-- hidden fields for the modal edit and delete dialogs for buying prices -->
+{* <!-- <input type="hidden" id="buying_prices_add_buying_price_id" value="0" /> --> *}
+
+<!-- Modal dialog for deleting an image -->
+<div class="modal fade" id="products_images_delete_editor" tabindex="-1" role="dialog" aria-labbelledby="{$smarty.const.TEXT_TITLE_DELETE_PRODUCTS_IMAGE}" aria-hidden="true">
+		<div class="modal-dialog">
+				<div class="modal-content">
+						<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">{$smarty.const.TEXT_BUTTON_CLOSE}</span></button>
+								<h4 class="modal-title" id="myModalLabel">{$smarty.const.TEXT_TITLE_DELETE_PRODUCTS_IMAGE}</h4>
+						</div>
+						
+						<div class="modal-body">
+								<p>{$smarty.const.TEXT_DELETE_PRODUCTS_IMAGE}</p>
+						</div>
+						<div class="modal-footer">
+								{* <!--
+								<input type="hidden" id="add_product_category_channel_id" value="" />
+								<input type="hidden" id="add_product_category_parent_id" value="" />
+								--> *}
+								<button type="button" class="btn btn-default" data-dismiss="modal">{$smarty.const.TEXT_BUTTON_CANCEL}</button>
+								<button type="button" class="btn btn-primary" id="edit_products_image_delete_action">{$smarty.const.TEXT_BUTTON_DELETE}</button>
+						</div>
+				</div>
+		</div>
+</div>
+
+<!-- Modal Dialog for adding a products image -->
+<div class="modal fade" id="products_images_add_editor" tabindex="-1" role="dialog" aria-labelledby="{$smarty.const.TEXT_ADD_PRODUCTS_IMAGE}" aria-hidden="true">
+		<div class="modal-dialog">
+				<div class="modal-content">
+						<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">{$smarty.const.TEXT_BUTTON_CLOSE}</span></button>
+								<h4 class="modal-title" id="myModalLabel">{$smarty.const.TEXT_ADD_PRODUCTS_IMAGE}</h4>
+						</div>
+						<div class="modal-body">
+								<div class="row">
+										<div class="col-sm-6">
+												<div class="form-group col-sm-12">
+														<input type="hidden" value="" id="tmp_products_image" />
+														<input type="hidden" value="" id="products_images_documents_id" />
+														<label for="new_image">{$smarty.const.TEXT_LABEL_NEW_IMAGE}</label>
+														<div>
+																<div class="fileinput fileinput-new" data-provides="fileinput">
+																		<span class="btn btn-default btn-file">
+																				<span class="fileinput-new">{$smarty.const.TEXT_SELECT_FILE_IMAGE}</span>
+																				<span class="fileinput-exists">{$smarty.const.TEXT_SELECT_FILE_IMAGE}</span>
+																				<input type="file" name="new_image" id="new_product_image_file">
+																				<input type="hidden" name="MAX_FILE_SIZE" value="300000" />
+																		</span>
+																		<div class="fileinput-preview fileinput-exists thumbnail" style="width: 40px; height: 40px;"></div>
+																		{* <!-- <button type="button" class="btn btn-primary fileinput-exists" id="new_product_image_upload">{$smarty.const.TEXT_UPLOAD_FILE}</button> --> *}
+																</div>
+														</div>
+														{literal}
+																<script>
+																		///////////////////////////////////////////////////////////////
+																		//function to start the dialog to edit an image
+																		///////////////////////////////////////////////////////////////
+																		function edit_products_image_delete_dialog(event, item) {
+																				event.stopPropagation();
+																				
+																				//get the parent tr..
+																				var row = $(item).closest("tr");
+																				products_editor_images_current_edit_row = row;
+																				
+																				//set the editors data fields
+																				var tmp_products_image = $(row).attr('data-attr-tmp-products-image');
+																				var documents_id = $(row).attr('data-attr-documents-id');
+																				
+																				$('#tmp_products_image').val(tmp_products_image);
+																				$('#products_images_documents_id').val(documents_id);
+																				
+																				show_products_images_delete_editor(this);
+																		}
+																
+																		///////////////////////////////////////////////////////////////
+																		//function to start the dialog to edit an image
+																		///////////////////////////////////////////////////////////////
+																		function edit_products_image_dialog(event, item) {
+																				event.stopPropagation();
+														
+																				//get the parent tr..
+																				var row = $(item).closest("tr");
+																				products_editor_images_current_edit_row = row;
+																				
+																				//reset the file input field
+																				//var input = $('#new_product_image_file');
+																				//input.replaceWith(input.val('').clone(true));
+																				$('.fileinput').fileinput('clear');
+																				
+																				//set the editors data fields
+																				var sort_order = $(row).attr('data-attr-sort-order');
+																				var image_source = $(row).attr('data-attr-image-source');
+																				var license_type = $(row).attr('data-attr-license-type');
+																				var image_qualifier = $(row).attr('data-attr-image-qualifier');
+																				var tmp_products_image = $(row).attr('data-attr-tmp-products-image');
+																				var documents_id = $(row).attr('data-attr-documents-id');
+																				
+																				$('#products_image_sort_order').val(sort_order);
+																				$('#products_image_source').val(image_source);
+																				$('#products_image_license_type').val(license_type);
+																				$('#products_image_qualifier').val(image_qualifier);
+																				$('#tmp_products_image').val(tmp_products_image);
+																				$('#products_images_documents_id').val(documents_id);
+																				
+																				//set editor data fields part 2: html-tag texts
+																				//Das ist ein geiles Konstrukt - das wird nie wieder jemand verstehen.. 
+																				// :P
+																				//Aber jetzt mal im Ernst: Wenn es unverständlich ist: HTML Ausgabe ansehen
+																				{/literal}
+																						{foreach from=$DATALANGUAGES item=datalang name=datalangloop}
+																										{literal}var title_tag_{/literal}{$datalang.id}{literal} = $(row).attr('data-attr-title-tag-{/literal}{$datalang.id}{literal}');{/literal}
+																										{literal}$('#products_image_title_tag_{/literal}{$datalang.id}{literal}').val( title_tag_{/literal}{$datalang.id}{literal} );{/literal}
+																						{/foreach}
+																						{foreach from=$DATALANGUAGES item=datalang name=datalangloop}
+																										{literal}var alt_tag_{/literal}{$datalang.id}{literal} = $(row).attr('data-attr-alt-tag-{/literal}{$datalang.id}{literal}');{/literal}
+																										{literal}$('#products_image_alt_tag_{/literal}{$datalang.id}{literal}').val( alt_tag_{/literal}{$datalang.id}{literal} );{/literal}
+																						{/foreach}
+																				{literal}
+																				
+																				//show the editor..
+																				show_products_images_editor(this);
+																		}
+																		
+																		$( function() {
+																				/////////////////////////////////////////////////////////////////////////////////////////
+																				var trigger_allow_upload_without_file = function trigger_allow_upload_without_file_func(data) {
+																						if(
+																								($('#products_images_documents_id').val() == '' || $('#products_images_documents_id').val() == undefined) &&
+																								($('#tmp_products_image').val() == '' || $('#tmp_products_image').val() == undefined)
+																							) {
+																									alert('{/literal}{$smarty.const.TEXT_ERROR_NO_FILE_FOR_UPLOAD_SELECTED}{literal}');
+																									return false;
+																						} else {
+																								return true;
+																						}
+																				}
+																				
+																				/////////////////////////////////////////////////////////////////////////////////////////
+																				//function to add or update a table row (this is a callback..)
+																				/////////////////////////////////////////////////////////////////////////////////////////
+																				var handler_image_added = function handler_image_added_func(data) {
+																						//if this is true, add an item..
+																						if(products_editor_images_current_edit_row == '') {
+																								var imgurl = data.server + data.destination_path + data.filename;
+																								
+																								var trow = '<tr';
+																								//add data attributes to the table row
+																								trow += ' data-attr-sort-order="' + $('#products_image_sort_order').val() + '"';
+																								trow += ' data-attr-image-source="' + $('#products_image_source').val() + '"';
+																								trow += ' data-attr-license-type="' + $('#products_image_license_type').val() + '"';
+																								trow += ' data-attr-image-qualifier="' + $('#products_image_qualifier').val() + '"';
+																								trow += ' data-attr-tmp-products-image="' + data.filename + '"';
+																								
+																								//console.log(data);
+																								
+																								//html-tags texts
+																								{/literal}
+																										{foreach from=$DATALANGUAGES item=datalang name=datalangloop}
+																														{literal}trow += ' data-attr-title-tag-{/literal}{$datalang.id}{literal}="' + $('#products_image_title_tag_{/literal}{$datalang.id}{literal}').val() + '"';{/literal}
+																										{/foreach}
+																										{foreach from=$DATALANGUAGES item=datalang name=datalangloop}
+																														{literal}trow += ' data-attr-alt-tag-{/literal}{$datalang.id}{literal}="' + $('#products_image_alt_tag_{/literal}{$datalang.id}{literal}').val() + '"';{/literal}
+																										{/foreach}
+																								{literal}
+																								trow += '>';
+																								
+																								//set columns
+																										trow += '<td style="width:25%;" align="center"><img src="' + imgurl + '" style="max-width: 90%" /></td>';
+																										trow += '<td valign="top">';
+																												trow += '{/literal}{$smarty.const.TEXT_SORT_ORDER}{literal}: ' + $('#products_image_sort_order').val() + '<br />';
+																												trow += '{/literal}{$smarty.const.TEXT_FILE_SOURCE}{literal}: ' + $('#products_image_source').val() + '<br />';
+																												trow += '{/literal}{$smarty.const.TEXT_FILE_LICENSE}{literal}: ' + $('#products_image_license_type').val() + '<br />';
+																												trow += '{/literal}{$smarty.const.TEXT_FILE_QUALIFIER}{literal}: ' + $('#products_image_qualifier').val() + '<br />';
+																												trow += '{/literal}{$smarty.const.TEXT_IMAGE_ALT_TAG}{literal}: ' + $('#products_image_alt_tag_' + $('#current_datalanguage_id').val()).val() + '<br />';
+																												trow += '{/literal}{$smarty.const.TEXT_IMAGE_TITLE_TAG}{literal}: ' + $('#products_image_title_tag_' + $('#current_datalanguage_id').val()).val() + '<br />';
+																										
+																										trow += '</td>';
+																										trow += '<td>';
+																												trow += '<button type="button" class="btn btn-success edit_products_image">{/literal}{$smarty.const.TEXT_BUTTON_EDIT}{literal}</button>';
+																												trow += ' <button type="button" class="btn btn-danger delete_products_image">{/literal}{$smarty.const.TEXT_BUTTON_DELETE}{literal}</button>';
+																								trow += '</tr>';
+																								
+																								$('#products_editor_images_table tbody').append(trow);
+																								
+																								//close the dialog
+																								$('#products_images_add_editor').modal('hide');
+																								
+																								//make the action buttons are clickable
+																								products_images_item_buttons_live();
+																						} else {
+																								var tmpr = products_editor_images_current_edit_row; //just shorten the variable name here temporary..
+																								var imgurl = '';
+																								
+																								if(data.filename != '' && data.filename != undefined) {
+																										imgurl = data.server + data.destination_path + data.filename;
+																										$(tmpr).attr('data-attr-tmp-products-image', data.filename);
+																								} else {
+																										var tmp_image_name = $('#tmp_products_image').val();
+
+																										if(tmp_image_name == undefined || tmp_image_name == '') {		//if there wasn't an image upload for an existing item..
+																												imgurl = data.server + data.destination_path + $('#products_images_documents_id').val() + data.file_extension;
+																										} else {
+																												imgurl = data.server + data.destination_path + $('#tmp_products_image').val();
+																										}
+																								}
+																								
+																								//add data attributes to the table row
+																								$(tmpr).attr('data-attr-sort-order', $('#products_image_sort_order').val());
+																								$(tmpr).attr('data-attr-image-source', $('#products_image_source').val());
+																								$(tmpr).attr('data-attr-license-type', $('#products_image_license_type').val());
+																								$(tmpr).attr('data-attr-image-qualifier', $('#products_image_qualifier').val());
+																								$(tmpr).attr('data-attr-documents-id', $('#products_images_documents_id').val());
+																								
+																								{/literal}
+																										{foreach from=$DATALANGUAGES item=datalang name=datalangloop}
+																														{literal}$(tmpr).attr('data-attr-title-tag-{/literal}{$datalang.id}{literal}', $('#products_image_title_tag_{/literal}{$datalang.id}{literal}').val());{/literal}
+																										{/foreach}
+																										{foreach from=$DATALANGUAGES item=datalang name=datalangloop}
+																														{literal}$(tmpr).attr('data-attr-alt-tag-{/literal}{$datalang.id}{literal}', $('#products_image_alt_tag_{/literal}{$datalang.id}{literal}').val());{/literal}
+																										{/foreach}
+																								{literal}
+																								
+																								//set columns
+																								trow = '<td style="width:25%;" align="center"><img src="' + imgurl + '" style="max-width: 90%" /></td>';
+																								trow += '<td valign="top">';
+																										trow += '{/literal}{$smarty.const.TEXT_SORT_ORDER}{literal}: ' + $('#products_image_sort_order').val() + '<br />';
+																										trow += '{/literal}{$smarty.const.TEXT_FILE_SOURCE}{literal}: ' + $('#products_image_source').val() + '<br />';
+																										trow += '{/literal}{$smarty.const.TEXT_FILE_LICENSE}{literal}: ' + $('#products_image_license_type').val() + '<br />';
+
+																										trow += '{/literal}{$smarty.const.TEXT_FILE_QUALIFIER}{literal}: ' + $('#products_image_qualifier').val() + '<br />';
+																										trow += '{/literal}{$smarty.const.TEXT_IMAGE_ALT_TAG}{literal}: ' + $('#products_image_alt_tag_' + $('#current_datalanguage_id').val()).val() + '<br />';
+																										trow += '{/literal}{$smarty.const.TEXT_IMAGE_TITLE_TAG}{literal}: ' + $('#products_image_title_tag_' + $('#current_datalanguage_id').val()).val() + '<br />';
+																								
+																								trow += '</td>';
+																								trow += '<td>';
+																										trow += '<button type="button" class="btn btn-success edit_products_image">{/literal}{$smarty.const.TEXT_BUTTON_EDIT}{literal}</button>';
+																										trow += ' <button type="button" class="btn btn-danger delete_products_image">{/literal}{$smarty.const.TEXT_BUTTON_DELETE}{literal}</button>';
+																								
+																								$(tmpr).html(trow);
+																								
+																								//make the action buttons are clickable
+																								products_images_item_buttons_live();
+																								
+																								//close the dialog
+																								$('#products_images_add_editor').modal('hide');
+																						}
+																				}
+																		
+																				/////////////////////////////////////////////////////////////////////////////////////////
+																				//function to set additional post vars..
+																				/////////////////////////////////////////////////////////////////////////////////////////
+																				var image_set_post_vars = function image_set_post_vars_func() {
+																						var data = {
+																											sort_order: $('#products_image_sort_order').val(),
+																											image_source: $('#products_image_source').val(),
+																											image_license_type: $('#products_image_license_type').val(),
+																											image_qualifier: $('#products_image_qualifier').val(),
+																											tmp_products_image: $('#tmp_products_image').val(),
+																											documents_id: $('#products_images_documents_id').val(),
+																											{/literal}
+																													{foreach from=$DATALANGUAGES item=datalang name=datalangloop}
+																																	{literal}products_image_title_tag_{/literal}{$datalang.id}{literal}: $('#products_image_title_tag_{/literal}{$datalang.id}{literal}').val(){/literal}
+																															{if $smarty.foreach.datalangloop.last == FALSE},{/if}
+																													{/foreach}
+																											{literal},
+																											{/literal}
+																													{foreach from=$DATALANGUAGES item=datalang name=datalangloop}
+																																	{literal}products_image_alt_tag_{/literal}{$datalang.id}{literal}: $('#products_image_alt_tag_{/literal}{$datalang.id}{literal}').val(){/literal}
+																															{if $smarty.foreach.datalangloop.last == FALSE},{/if}
+																													{/foreach}
+																											{literal}
+																												};
+																						return data;
+																				}
+																				
+																				//build the params for the url
+																				var params = {
+																											s: 'cAdminproducts',
+																											action: 'ajax_upload_image',
+																											tmp_products_id: $('#tmp_products_id').val(),
+																											
+																											};
+																				params = $.param(params);
+																				
+																				$(this).mv_file_uploader({
+																															input_file_selector: '',
+																															input_upload_button: '#add_product_image_submit',
+																															input_file: '#new_product_image_file',
+																															receiver_url: 'index.php?' + params,
+																															trigger_add_post_vars: image_set_post_vars,
+																															handler_uploaded: handler_image_added,
+																															trigger_allow_upload_without_file: trigger_allow_upload_without_file
+																															});
+																															
+																				//delete editor action									
+																				$('#edit_products_image_delete_action').on('click', function() {
+																						//save the content via ajax..
+																						var params = { 
+																												s: 'cAdminproducts', 
+																												action: 'ajax_delete_image', 
+																												tmp_products_image: $('#tmp_products_image').val(),
+																												documents_id: $('#products_images_documents_id').val(),
+																												tmp_products_id: $('#tmp_products_id').val()
+																												};
+																						params = $.param(params);
+																						
+																						$.ajax({
+																								type: "POST",
+																								url: "index.php?" + params,
+																						}).done(function( msg ) {
+																								//remove the item of the list and close the dialog..
+																								$(products_editor_images_current_edit_row).remove();
+																								$('#products_images_delete_editor').modal('hide');
+																						});
+																				});
+																		});
+																</script>
+														{/literal}
+												</div>
+										
+										
+												<div class="form-group col-sm-12">
+														<label for="products_image_sort_order">{$smarty.const.TEXT_LABEL_SORT_ORDER}</label>
+														<input type="text" class="form-control" placeholder="{$smarty.const.TEXT_LABEL_SORT_ORDER}" value="" id="products_image_sort_order" />
+												</div>
+												
+												<div class="form-group col-sm-12">
+														<label for="products_image_source">{$smarty.const.TEXT_LABEL_IMAGE_SOURCE}</label>
+														<input type="text" class="form-control" placeholder="{$smarty.const.TEXT_LABEL_IMAGE_SOURCE}" value="" id="products_image_source" />
+												</div>
+												
+												<div class="form-group col-sm-12">
+														<label for="products_image_license_type">{$smarty.const.TEXT_LABEL_LICENSE_TYPE}</label>
+														<input type="text" class="form-control" placeholder="{$smarty.const.TEXT_LABEL_LICENSE_TYPE}" value="" id="products_image_license_type" />
+												</div>
+												
+												<div class="form-group col-sm-12">
+														<label for="products_image_qualifier">{$smarty.const.TEXT_LABEL_IMAGE_QUALIFIER}</label>
+														<input type="text" class="form-control" placeholder="{$smarty.const.TEXT_LABEL_IMAGE_QUALIFIER}" value="" id="products_image_qualifier" />
+												</div>
+										</div>
+										<div class="col-sm-6">
+												{foreach from=$DATALANGUAGES item=datalanguage}
+														<div class="mvbox gray">
+																<div class="mvbox-title">
+																		<div class="caption">{$datalanguage.title}</div>
+																</div>
+																<div class="mvbox-body">
+																		<div class="row">
+																				<div class="form-group col-sm-12">
+																						<label for="products_image_alt_tag">{$smarty.const.TEXT_LABEL_IMAGE_ALT_TAG}</label>
+																						<input type="text" class="form-control" placeholder="{$smarty.const.TEXT_LABEL_IMAGE_ALT_TAG}" value="" id="products_image_alt_tag_{$datalanguage.id}" />
+																				</div>
+																		</div>
+																		
+																		<div class="row">
+																				<div class="form-group col-sm-12">
+																						<label for="products_image_title_tag">{$smarty.const.TEXT_LABEL_IMAGE_TITLE_TAG}</label>
+																						<input type="text" class="form-control" placeholder="{$smarty.const.TEXT_LABEL_IMAGE_TITLE_TAG}" value="" id="products_image_title_tag_{$datalanguage.id}" />
+																				</div>
+																		</div>
+																		
+																		<div class="mv_clearfix"></div>
+																</div>
+														</div>
+												{/foreach}
+										</div>
+								</div>
+						</div>
+						<div class="modal-footer">
+								{* <!--
+								<input type="hidden" id="add_product_category_channel_id" value="" />
+								<input type="hidden" id="add_product_category_parent_id" value="" />
+								--> *}
+								<button type="button" class="btn btn-default" data-dismiss="modal">{$smarty.const.TEXT_BUTTON_CANCEL}</button>
+								<button type="button" class="btn btn-primary" id="add_product_image_submit">{$smarty.const.TEXT_BUTTON_SAVE}</button>
+						</div>
+				</div>
+		</div>
+</div>

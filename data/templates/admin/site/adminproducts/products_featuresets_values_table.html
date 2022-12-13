@@ -1,0 +1,30 @@
+<table id="products_featuresets_values_table" class="table table-hover table-condensed table-bordered table-striped">
+		<thead>
+				<tr>
+						<th>{$smarty.const.TEXT_TITLE}</th>
+						<th class="text_right">{$smarty.const.TEXT_TABLE_HEADING_ACTION}</th>
+				</tr>
+		</thead>
+		<tbody>
+				{foreach from=$PRODUCTS_FEATURESETS_VALUES item=pov}
+						<tr>
+								<td {strip}
+										data-attr-products-featuresets-values-id="{if isset($pov.id)}{$pov.id}{else}{$pov.products_featuresets_values_id}{/if}"{/strip} {strip}
+										data-attr-products-featuresets-id="{$pov.products_featuresets_id}"{/strip} {strip}
+										data-attr-products-featuresets-values-sort-order="{$pov.sort_order}"{/strip} {strip}
+										data-attr-tmp-products-featuresets-values-id="{if isset($pov.tmp_products_featuresets_values_id)}{$pov.tmp_products_featuresets_values_id}{/if}"{/strip} {strip}
+										data-attr-tmp-products-featuresets-id="{if isset($pov.tmp_products_featuresets_id)}{$pov.tmp_products_featuresets_id}{/if}"
+										{foreach from=$pov.descriptions item=povdesc}
+												data-attr-products-featuresets-values-title-{$povdesc.languages_id}="{$povdesc.title}"{/strip} {strip}
+										{/foreach}
+								>{/strip}
+										{$pov.descriptions[$CURRENT_DATALANGUAGE_ID].title}
+										<i class="fa fa-pencil mv_product_featureset_value_button_right yellow-on-hover"></i>
+								</td>
+								<td class="text_right">
+										<button class="btn btn-default btn-sm products_features_add" type="button">{$smarty.const.TEXT_BUTTON_ADD_FEATURE}</button>
+								</td>
+						</tr>
+				{/foreach}
+		</tbody>
+</table>

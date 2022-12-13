@@ -1,0 +1,282 @@
+<div class="container-fluid">
+		<nav class="navbar navbar-default mv-navbar" role="navigation">
+				<div class="navbar-header">
+						<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+								<span class="sr-only">{$smarty.const.TEXT_TOGGLE_NAVIGATION}</span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+						</button>
+				</div>
+				
+				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+						<div class="navbar-left navbar-text">
+								{$NAVBAR_TITLE}
+						</div>
+				</div>
+		</nav>
+		
+		<div class="mv-box">
+				<div class="mvbox">
+						<div class="mvbox-body">
+								<div class="row">
+                		<div class="col-xs-12" id="mv-config-container" style="margin-bottom: 24px;">
+                    		<div class="alert alert-danger" role="alert"><b>WARNUNG!</b> 
+                        Mit diesem Werkzeug können sehr viele Einträge auf einmal gelöscht werden. 
+                        Bitte legen Sie vor dem Löschen unbedingt ein Backup Ihrer Daten an! 
+                        Diese Aktion kann nicht rückgängig gemacht werden!
+                        Ein falsch eingestellter Server kann hierbei zu unerwarteten Problemen führen.
+                    		</div>
+
+                    		<h1>Kalender - Bereinigung</h1>
+                        <p>Wenn Sie keine Betriebsstätte und keine Abteilung wählen, werden die Termine für alle passenden weiteren Einstellungen gelöscht.<br />
+                        Wenn Sie nur eine Betriebsstätte wählen, werden alle Daten für die Betriebsstätte und Abteilungen gelöscht.<br />
+                        Wenn Sie eine Abteilung wählen, werden nur die Daten für die entsprechende Abteilung gelöscht.</p>
+                    
+                        <div class="row" id="betriebsstaette-select-container">
+                        		<div class="form-group col-sm-12">
+                            		<label for="event_location">Ladengeschäft/Betriebsstätte wählen:</label><br />
+                                <select name="event_location" id="event_location" class="form-control" style="">
+                                		<option value="0">-- Alle --</option>
+                                    
+                                    {foreach from=$EVENT_LOCATIONS item=el}
+                                    		<option value="{$el.id}">{$el.title}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div id="error-event_location" class="mverror" style="display: none;">
+                        </div>
+                        
+                        <div class="row" id="user-unit-select-container">
+                        		<div class="form-group col-sm-12">
+                            		<label for="user-unit">Abteilung/Mitarbeiter/Team wählen:</label><br />
+                                <select name="user-unit" id="user-unit" class="form-control" style="">
+                                		<option value="0">-- Alle --</option>
+                                    
+                                    {foreach from=$USER_UNITS item=el}
+                                    		<option value="{$el.id}" style="display: none;" data-attr-event-location-id="{$el.event_location_id}">{$el.title}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div id="error-user-unit" class="mverror" style="display: none;">
+                        </div>
+                        
+                        <div class="row">
+                            <div class="form-group col-sm-12" style="padding-top: 24px;">
+                                <label for="zeitraum">Zeitraum</label>
+                                <div>
+                                von <input type="text" class="form-control" placeholder="Datum von" id="date_from" value="{$DATE_FROM}" style="width: 100px!important; display: inline!important;" />
+                                bis <input type="text" class="form-control" placeholder="Datum bis" id="date_to" value="{$DATE_TO}" style="width: 100px!important; display: inline!important; " />
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div id="error-zeitraum" class="mverror" style="display: none;">
+                        </div>
+                        
+                        <div class="row">
+                            <div class="form-group col-sm-12" style="padding-top: 24px;">
+                                <label for="nka_branche">Werktage und Arbeitszeiten auswählen</label>
+                                <div class="mv-weekday-row" id="weekday-row-1">
+                                		<input type="checkbox" class="form-control weekday-checkbox" id="weekday-1" style="width: auto!important; display: inline!important;"/>{* <!--
+                                    --> *}<label for="weekday-1" class="weekday-label">Montag</label>
+                                    
+                                    <div class="mv-weekday-times">
+                                    		<div class="mv-abweichende-zeiten-container" style="display: none;">
+                                        		<button type="btn" class="form-control btn btn-primary add-custom-time-button" style="width: auto!important; display: inline!important;">Abweichende Zeiten einfügen</button>
+                                            <div class="mv-abweichende-zeiten-details">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="mv-weekday-row" id="weekday-row-2">
+                                		<input type="checkbox" class="form-control weekday-checkbox" id="weekday-2" style="width: auto!important; display: inline!important;"/>{* <!--
+                                    --> *}<label for="weekday-2" class="weekday-label">Dienstag</label>
+                                    
+                                    <div class="mv-weekday-times">
+                                    		<div class="mv-abweichende-zeiten-container">
+                                        		<button type="btn" class="form-control btn btn-primary add-custom-time-button" style="width: auto!important; display: inline!important;">Abweichende Zeiten einfügen</button>
+                                            <div class="mv-abweichende-zeiten-details">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="mv-weekday-row" id="weekday-row-3">
+                                		<input type="checkbox" class="form-control weekday-checkbox" id="weekday-3" style="width: auto!important; display: inline!important;"/>{* <!--
+                                    --> *}<label for="weekday-3" class="weekday-label">Mittwoch</label>
+                                    
+                                    <div class="mv-weekday-times">
+                                    		<div class="mv-abweichende-zeiten-container">
+                                        		<button type="btn" class="form-control btn btn-primary add-custom-time-button" style="width: auto!important; display: inline!important;">Abweichende Zeiten einfügen</button>
+                                            <div class="mv-abweichende-zeiten-details">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="mv-weekday-row" id="weekday-row-4">
+                                		<input type="checkbox" class="form-control weekday-checkbox" id="weekday-4" style="width: auto!important; display: inline!important;"/>{* <!--
+                                    --> *}<label for="weekday-4" class="weekday-label">Donnerstag</label>
+                                    
+                                    <div class="mv-weekday-times">
+                                    		<div class="mv-abweichende-zeiten-container">
+                                        		<button type="btn" class="form-control btn btn-primary add-custom-time-button" style="width: auto!important; display: inline!important;">Abweichende Zeiten einfügen</button>
+                                            <div class="mv-abweichende-zeiten-details">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="mv-weekday-row" id="weekday-row-5">
+                                		<input type="checkbox" class="form-control weekday-checkbox" id="weekday-5" style="width: auto!important; display: inline!important;"/>{* <!--
+                                    --> *}<label for="weekday-5" class="weekday-label">Freitag</label>
+                                    
+                                    <div class="mv-weekday-times">
+                                    		<div class="mv-abweichende-zeiten-container">
+                                        		<button type="btn" class="form-control btn btn-primary add-custom-time-button" style="width: auto!important; display: inline!important;">Abweichende Zeiten einfügen</button>
+                                            <div class="mv-abweichende-zeiten-details">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="mv-weekday-row" id="weekday-row-6">
+                                		<input type="checkbox" class="form-control weekday-checkbox" id="weekday-6" style="width: auto!important; display: inline!important;"/>{* <!--
+                                    --> *}<label for="weekday-6" class="weekday-label">Samstag</label>
+                                    
+                                    <div class="mv-weekday-times">
+                                    		<div class="mv-abweichende-zeiten-container">
+                                        		<button type="btn" class="form-control btn btn-primary add-custom-time-button" style="width: auto!important; display: inline!important;">Abweichende Zeiten einfügen</button>
+                                            <div class="mv-abweichende-zeiten-details">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="mv-weekday-row" id="weekday-row-7">
+                                		<input type="checkbox" class="form-control weekday-checkbox" id="weekday-7" style="width: auto!important; display: inline!important;"/>{* <!--
+                                    --> *}<label for="weekday-7" class="weekday-label">Sonntag</label>
+                                    
+                                    <div class="mv-weekday-times">
+                                    		<div class="mv-abweichende-zeiten-container">
+                                        		<button type="btn" class="form-control btn btn-primary add-custom-time-button" style="width: auto!important; display: inline!important;">Abweichende Zeiten einfügen</button>
+                                            <div class="mv-abweichende-zeiten-details">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="form-group col-sm-12" style="padding-top: 24px;">
+                                <label for="status">Status</label>
+                                <p>Wählen Sie die Stati aus, für die die Termine gelöscht werden sollen. Termine mit Stati, die nicht hier ausgewählt sind, werden nicht gelöscht.</p>
+                                <div>
+                                		{foreach from=$APPOINTMENT_STATUS_LIST item=status}
+                                    		<label for="mv-status-{$status.id}"><input type="checkbox" class="mv-appointment-status-checkbox" value="{$status.id}" id="mv-status-{$status.id}" /> {$status.title}</label><br />
+                                    {/foreach}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div id="error-status" class="mverror" style="display: none;">
+                        </div>
+                        
+                        <div id="mverror-general" style="display: none;">Es sind Fehler aufgetreten. Bitte prüfen Sie Ihre Eingaben!</div>
+														
+                        <div class="row">
+                            <div class="form-group col-sm-12">
+                                <button type="submit" class="btn btn-danger" id="delete-appointments">Termine löschen</button>
+                            </div>
+                        </div>
+										</div>
+                    
+                    <div class="col-xs-12" id="mv-process-container" style="display: none;">
+                    		<h1>Verarbeitung gestartet - Termine werden gelöscht.</h1>
+                        <p>Verarbeitung gestartet. Bitte schließe dieses Fenster nicht, bis alle Termine gelöscht sind.</p>
+                        <div class="mv-loading-spinner-container">
+                        		<div class="mv-loading-spinner"><div></div><div></div><div></div></div>
+                            <div class="mv-loading-spinner-text" id="mv-loading-spinner-text">Verarbeitung wird gestartet</div>
+                        </div>
+                        <div id="mv-loading-error" style="display: none;"></div>
+                    </div>
+                    
+                    <div class="col-xs-12" id="mv-success-container" style="display: none;">
+                    		<h1>Vorgang abgeschlossen.</h1>
+                        <p>Die Termine wurden gelöscht.</p>
+                    </div>
+								</div>
+						</div>
+				</div>
+		</div>
+</div>
+
+<input type="hidden" id="url" value="{$TEMPLATE_URL}" />
+
+<style>
+		.weekday-checkbox {
+				width: auto !important;
+				display: inline !important;
+				vertical-align: top;
+		}
+		.weekday-label {
+				vertical-align: top;
+				padding-top: 8px;
+				padding-left: 6px;
+				min-width: 100px;
+		}
+		
+		.mv-weekday-times {
+				display: inline-blocK;
+				padding-top: 3px;
+				padding-left: 12px;
+		}
+		
+		.mv-weekday-row {
+				margin-bottom: 12px;
+		}
+		
+		.mverror { color: #D92828; }
+		#mverror-general { color: #D92828; }
+		.mv-input-error { color: #D92828; border-color: #D92828; }
+		
+		/* loading animation */
+		.mv-loading-spinner { width: 40px; height: 40px; display: inline-block; position: relative; vertical-align: top; }
+		.mv-loading-spinner-text { height: 40px; display: inline-block; padding-top: 6px; padding-left: 12px; vertical-align: top; }
+		.mv-loading-spinner div { 
+				display: inline-block; position: absolute; 
+				left: 4px; width: 8px; 
+				background: #428bca; 
+				animation: mv-loading-spinner 1.2s cubic-bezier(0, 0.5, 0.5, 1) infinite;
+				border-radius: 4px;
+		}
+		.mv-loading-spinner div:nth-child(1) { left: 8px; animation-delay: -0.24s; }
+		.mv-loading-spinner div:nth-child(2) { left: 20px; animation-delay: -0.12s; }
+		.mv-loading-spinner div:nth-child(3) { left: 32px; animation-delay: 0.01; }
+		
+		@keyframes mv-loading-spinner {
+				0% { top: 4px; height: 16px; }
+				50%, 100% { top: 12px; height: 8px; }
+		}
+		
+		#mv-loading-error { color: #D92828; }
+</style>
+
+<div id="mv-weekday-times-template" style="display: none;">
+    <div class="mv-weekday-times-row">
+        von <input type="text" class="form-control time_from" placeholder="von" name="time_from" value="09:00" style="width: 100px!important; display: inline!important;" />
+        bis <input type="text" class="form-control time_to" placeholder="bis" name="time_to" value="12:00" style="width: 100px!important; display: inline!important; " />
+        <button type="btn" class="form-control btn btn-primary weekday-time-add-btn" style="width: auto!important; display: inline!important;">+ Zeitraum hinzufügen</button>
+        <button type="btn" class="form-control btn btn-danger weekday-time-del-btn" style="width: auto!important; display: inline!important;">- Entfernen</button>
+        <div class="mv-time-error-general mverror" style="display: none; margin-bottom: 6px;"></div>
+        <div class="mv-time-error-range mverror" style="display: none; margin-bottom: 6px;"></div>
+        </div>
+    </div>
+</div>

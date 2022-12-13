@@ -1,0 +1,32 @@
+<div class="mvbox">
+		<div class="mvbox-body">
+				<div class="row">
+						<div class="col-xs-12">
+								<br />
+								<button type="button" id="add_product">Artikel hinzufügen</button>
+						</div>
+				</div>
+		</div>
+</div>
+
+<div id="products">
+		{$PRODUCTS_BOXES_HTML}
+</div>
+
+<style>
+		.websellersessions-products-table { max-height: 200px; overflow: scroll; }
+		.image-container img { max-height: 150px; }
+</style>
+<div class="modal fade" tabindex="-1" role="dialog" id="websellersessions_products_dialog">
+		<div class="modal-dialog">
+				<div class="modal-content">
+						<div class="modal-header">
+        				<button type="button" class="close" data-dismiss="modal" aria-label="Schließen"><span aria-hidden="true">&times;</span></button>
+								<h4 class="modal-title">Artikel hinzufügen</h4>
+						</div>
+						<div class="modal-body">
+								<div id="websellersessions_products_dialog_products_list"></div>
+						</div>
+				</div>
+		</div>
+</div>

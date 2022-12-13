@@ -1,0 +1,164 @@
+{* <!--
+<div class="container-fluid">
+		
+		
+		<div class="row">
+		{foreach from=$DATA.report_modules item=module}
+    		<div class="col-md-2" id="report_module_{$module}">
+            <div class="mv-infobox infobox-gray">
+                <div class="heading">{if isset($DATA.report_modules_titles[$module])}{$DATA.report_modules_titles[$module]}{else}{$module}{/if}</div>
+                <div class="value">loading..</div>
+                <div class="infobox-additional">
+                </div>
+            </div>
+    		</div>
+    {/foreach}
+    
+    <script>
+				{literal}
+				var infobox_modules = ['{/literal}{foreach from=$DATA.report_modules item=module name=report_module_list}{$module}{if $smarty.foreach.report_module_list.last != TRUE},{/if}{/foreach}{literal}'];
+				
+				//load all the infobox modules contents
+				$(function() {
+						$(infobox_modules).each(function() {
+								//push it via ajax - YEAH!
+								var module = this;
+								var url = 'index.php?';
+								var get_params = {
+										s: 'reportmodules',
+										action: 'get_module',
+								};
+								get_params = $.param(get_params);
+								
+								var post_params = {
+										module: this
+								};
+								
+								$.ajax({
+										url: url + get_params,
+										method: "POST",
+										data: post_params
+								}).done(function(msg) {
+										try {
+												var result = $.parseJSON(msg);
+												
+												$('#report_module_' + module + ' .mv-infobox').removeClass('infobox-gray');
+												
+												if(result.status == 'error') {
+														$('#report_module_' + module + ' .value').html( result.msg );
+														$('#report_module_' + module + ' .mv-infobox').addClass('infobox-error');
+												} else {
+														$('#report_module_' + module + ' .value').html( result.value );
+														$('#report_module_' + module + ' .infobox-additional').html( result.additional );
+														
+														if( result.statuscolor != '') {
+																$('#report_module_' + module + ' .mv-infobox').addClass( result.statuscolor );
+														}
+												}
+										} catch(err) {
+												$('#report_module_' + module + ' .mv-infobox').removeClass('infobox-gray');
+												$('#report_module_' + module + ' .mv-infobox').addClass('infobox-error');
+												$('#report_module_' + module + ' .value').html( err );
+												//$('#report_module_' + module + ' .infobox-additional').html( msg );
+										}
+								});
+						});
+				});
+				
+				{/literal}
+		</script>
+		
+		--> *}
+    
+    
+    
+    {* <!--
+    <div class="col-md-2">
+    		<div class="mv-infobox">
+        		<div class="heading">Offene Kontakte</div>
+            <div class="value">12</div>
+            <div class="infobox-additional">
+            		Heute: 22 Neu
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-2">
+    		<div class="mv-infobox">
+        		<div class="heading">Aufträge</div>
+            <div class="value">93</div>
+            <div class="infobox-additional">
+            		(Laufende Aufträge)
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-2">
+    		<div class="mv-infobox">
+        		<div class="heading">Bestellungen</div>
+            <div class="value">4</div>
+            <div class="infobox-additional">
+            		Heute: 12 Neu
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-2">
+    		<div class="mv-infobox">
+        		<div class="heading">Guthaben</div>
+            <div class="value">22.750,00</div>
+            <div class="infobox-additional">
+            		<div class="pull-left text-success"><i class="fa fa-caret-up"></i>&nbsp;+2.000</div>
+                <div class="pull-right">EUR</div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-2">
+    		<div class="mv-infobox">
+        		<div class="heading">Aufgaben</div>
+            <div class="value">3</div>
+            <div class="infobox-additional">
+            		Nächste Fällig in 5 Tagen
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-2">
+    		<div class="mv-infobox">
+        		<div class="heading">Heutige Termine</div>
+            <div class="value">2</div>
+            <div class="infobox-additional">
+            		Nächster in 2 Stunden
+            </div>
+        </div>
+    </div>
+    
+</div>
+--> *}
+
+<div class="container-fluid">
+		{if isset($smarty.get.error)}
+        <div class="alert alert-danger">
+            Sie sind nicht berechtigt, auf diesen Bereich zuzugreifen. Bitte wenden Sie sich an einen Vorgesetzten.
+        </div><br />
+    {/if}
+
+		<div class="row">
+				<div class="col-sm-6">
+						<div class="mvbox blue">
+								<div class="mvbox-title">
+										<div class="caption">Willkommen zur&uuml;ck</div>
+										<div class="toolbox">
+												<i class="fa fa-minus-square-o"></i>
+										</div>
+								</div>
+								
+								<div class="mvbox-body">
+										<p>Vielen Dank, dass Sie sich für Click&amp;Meet entschieden haben. Wir wünschen Ihnen viel Erfolg!</p>
+								</div>                            
+						</div>
+				</div>
+		</div>
+</div>

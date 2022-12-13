@@ -1,0 +1,74 @@
+<div class="container-fluid">
+		<nav class="navbar navbar-default mv-navbar" role="navigation">
+				<div class="container-fluid">
+						<div class="navbar-header">
+								<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+										<span class="sr-only">{$smarty.const.TEXT_TOGGLE_NAVIGATION}</span>
+										<span class="icon-bar"></span>
+										<span class="icon-bar"></span>
+										<span class="icon-bar"></span>
+								</button>
+						</div>
+		
+						<!-- Collect the nav links, forms, and other content for toggling -->
+						<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+								<form class="navbar-form navbar-left" role="search" method="post" action="index.php?s=cAdminproducts&amp;action=search">
+										<div class="form-group">
+												<input type="text" class="form-control" placeholder="{$smarty.const.TEXT_PLACEHOLDER_SEARCH}" name="searchterm" value="{$DATA.searchterm}">
+										</div>
+										
+										<div class="form-group">
+												<select class="form-control selectpicker" name="search_mode">
+														<option value="all"{if $DATA.search_mode == 'all'} selected="selected"{/if}>{$smarty.const.TEXT_SEARCH_ALL_FIELDS}</option>
+														<option value="id"{if $DATA.search_mode == 'id'} selected="selected"{/if}>{$smarty.const.TEXT_ID}</option>
+												</select>
+										</div>
+										
+										<button type="submit" class="btn btn-default btn-sm">{$smarty.const.TEXT_BUTTON_SEARCH_SUBMIT}</button>
+								</form>
+								
+								<div class="navbar-form navbar-right">
+										<div class="form-group">
+												<a href="index.php?s=cAdminproducts&amp;action=new">
+														<button type="submit" class="btn btn-default btn-sm">{$smarty.const.TEXT_BUTTON_NEW}</button>
+												</a>
+										</div>
+								</div>
+						</div><!-- /.navbar-collapse -->
+				</div><!-- /.container-fluid -->
+		</nav>
+		
+		{if $DATA.result_count == 0}
+				{$smarty.const.TEXT_SEARCH_RESULT_EMPTY}
+		{else}
+				{$DATA.pagination}
+				
+				<div class="mv-force-table-responsive">
+						<table class="table table-hover table-condensed table-bordered table-striped">
+								<thead>
+										<tr>
+												<th>{$smarty.const.TEXT_TABLE_HEADING_ID}</th>
+												<th>{$smarty.const.TEXT_TABLE_HEADING_PRODUCTS_NUMBER}</th>
+												<th>{$smarty.const.TEXT_TABLE_HEADING_TITLE}</th>
+												<th class="text-right">{$smarty.const.TEXT_TABLE_HEADING_ACTION}</th>
+										</tr>
+								</thead>
+								
+								<tbody>
+										{foreach from=$DATA.list item=dataitem}
+												<tr>
+														<td>{$dataitem.id}</td>
+														<td>{$dataitem.products_number}</td>
+														<td>{$dataitem.titles[$CURRENT_DATALANGUAGE_ID][0][1]}</td>
+														<td class="text-right">
+																<a href="index.php?s=cAdminproducts&amp;action=edit&amp;id={$dataitem.id}"><button type="button" class="btn btn-default btn-sm">{$smarty.const.TEXT_BUTTON_EDIT}</button></a>
+														</td>
+												</tr>
+										{/foreach}
+								</tbody>
+						</table>
+				</div>
+				
+				{$DATA.pagination}
+		{/if}
+</div>

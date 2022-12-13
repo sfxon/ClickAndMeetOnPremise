@@ -1,0 +1,30 @@
+<div class="mv-page dashboard">
+		<div class="container">
+				<div class="row">
+						<div class="col text-center">
+								<h1>Und so siehts aus..</h1>
+								
+								<img src="{$TEMPLATE_URL}{$IMAGE.filename}" id="image-to-rate" />
+								
+								{if strlen($IMAGE.comment_for_visitors) > 0}
+										<p>Nachricht vom Bild-Poster:<br />
+										<strong>{$IMAGE.comment_for_visitors|htmlspecialchars}</strong>
+										</p>
+								{/if}
+								
+								<table style="margin: 0 auto 16px;;">
+										<tr>
+												<td>Deine Bewertung:</td>
+												<td><strong>{$AGE_RATING|htmlspecialchars}</strong></td>
+										</tr>
+										<tr>
+												<td>Tatsächliches Alter:</td>
+												<td><strong>{$IMAGE.age_on_image}</strong></td>
+										</tr>
+								</table>
+								
+								<a href="{$TEMPLATE_URL}meine-seite"><button type="submit" class="btn btn-primary" autofocus>Nächstes Bild</button></a>
+						</div>
+				</div>
+		</div>
+</div>

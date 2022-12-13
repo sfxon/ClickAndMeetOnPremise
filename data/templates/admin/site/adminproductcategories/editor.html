@@ -1,0 +1,100 @@
+<div class="container-fluid">
+		<nav class="navbar navbar-default mv-navbar" role="navigation">
+				<div class="container-fluid">
+						<div class="navbar-header">
+								<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+										<span class="sr-only">{$smarty.const.TEXT_TOGGLE_NAVIGATION}</span>
+										<span class="icon-bar"></span>
+										<span class="icon-bar"></span>
+										<span class="icon-bar"></span>
+								</button>
+						</div>
+		
+						<!-- Collect the nav links, forms, and other content for toggling -->
+						<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+								<ul class="nav navbar-nav">
+										<li><a href="#">/</a></li>
+										{foreach from=$CATEGORY_PATHS item=item name=categorypath} 
+												{if $smarty.foreach.categorypath.iteration > 1}
+														<li><a href="#">/</a></li>
+												{/if}
+												
+												{if $item.type == 'channel'}
+														<li><a href="index.php?s=cAdminproductcategories&amp;channel_id={$DATA.channel_id}"><i class="fa fa-folder"></i> {$item.title}</a></li>
+												{else}
+														<li {if $smarty.foreach.categorypath.last == TRUE}class="active"{/if}><a href="index.php?s=cAdminproductcategories&amp;channel_id={$DATA.channel_id}&amp;category_id={$item.id}"><i class="fa fa-folder-o"></i> {$item.title}</a></li>
+												{/if}
+										{/foreach}
+								</ul>
+								{* <!--
+								<form class="navbar-form navbar-left" role="search" method="post" action="index.php?s=product_categories&amp;action=search">
+										<div class="form-group">
+												<input type="text" class="form-control" placeholder="{$smarty.const.TEXT_PLACEHOLDER_SEARCH}" name="searchterm" value="{$DATA.searchterm}">
+										</div>
+										
+										<div class="form-group">
+												<select class="form-control selectpicker" name="search_mode">
+														<option value="all"{if $DATA.search_mode == 'all'} selected="selected"{/if}>{$smarty.const.TEXT_SEARCH_ALL_FIELDS}</option>
+														<option value="id"{if $DATA.search_mode == 'id'} selected="selected"{/if}>{$smarty.const.TEXT_ID}</option>
+												</select>
+										</div>
+										
+										<button type="submit" class="btn btn-default btn-sm">{$smarty.const.TEXT_BUTTON_SEARCH_SUBMIT}</button>
+								</form>
+								--> *}
+								
+								{* <!--
+								<div class="navbar-form navbar-right">
+										<div class="form-group">
+												<a href="index.php?s=product_categories&amp;action=new">
+														<button type="submit" class="btn btn-default btn-sm">{$smarty.const.TEXT_BUTTON_NEW}</button>
+												</a>
+										</div>
+								</div>
+								--> *}
+						</div><!-- /.navbar-collapse -->
+				</div><!-- /.container-fluid -->
+		</nav>
+		
+		
+		<!-- Nav tabs -->
+		<ul class="nav nav-tabs" role="tablist">
+				<li class="active"><a href="#general" role="tab" data-toggle="tab">{$smarty.const.TEXT_PRODUCTS_TAB_GENERAL}</a></li>
+				<li><a href="#images" role="tab" data-toggle="tab">{$smarty.const.TEXT_PRODUCTS_CATEGORIES_TAB_IMAGES}</a></li>
+		</ul>
+		
+		<form role="form" action="{$DATA.url}" method="POST" class="form">
+				<!-- Tab panes -->
+				<div class="tab-content">
+						<div role="tabpanel" class="tab-pane active" id="general">{$TAB_GENERAL}</div>
+						<div role="tabpanel" class="tab-pane" id="images">{$TAB_IMAGES}</div>
+				</div>
+		
+				<hr />
+		
+				<div class="row">
+						<div class="form-group col-sm-12">
+								<input type="hidden" name="id" id="id" value="{$DATA.data.id}" />
+								<input type="hidden" name="tmp_product_categories_id" id="tmp_product_categories_id" value="{$DATA.data.tmp_product_categories_id}" />
+								<input type="hidden" name="current_datalanguage_id" id="current_datalanguage_id" value="{$CURRENT_DATALANGUAGE_ID}" />
+								<button type="submit" class="btn btn-primary">{$smarty.const.TEXT_BUTTON_SAVE}</button>
+						</div>
+				</div>
+		</form>
+		
+		<script>
+		///////////////////////////////////////////////////////////////////////////////////////////////////
+		// function for showing the editor
+		///////////////////////////////////////////////////////////////////////////////////////////////////
+		function show_product_categories_images_editor(item) {
+				$('#product_categories_images_add_editor').modal();
+		}
+		
+		///////////////////////////////////////////////////////////////////////////////////////////////////
+		// function for showing the delete editor
+		///////////////////////////////////////////////////////////////////////////////////////////////////
+		function show_product_categories_images_delete_editor(item) {
+				$('#product_categories_images_delete_editor').modal();
+		}
+		</script>
+</div>

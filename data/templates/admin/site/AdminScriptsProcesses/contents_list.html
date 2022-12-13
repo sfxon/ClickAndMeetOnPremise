@@ -1,0 +1,6 @@
+<select name="scripts_contents_id" class="form-control" id="scripts_contents_id">
+		<option value="0">-- Bitte wählen--</option>
+		{foreach from=$SCRIPTS_CONTENTS_LIST item=content}
+				<option value="{$content.id}">{$content.title|htmlspecialchars}</option>
+		{/foreach}
+</select>

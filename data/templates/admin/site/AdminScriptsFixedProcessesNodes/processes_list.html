@@ -1,0 +1,6 @@
+<select name="next_processes_id" class="form-control" id="next_processes_id">
+		<option value="0">-- Bitte wählen--</option>
+		{foreach from=$SCRIPTS_PROCESSES_LIST item=process}
+				<option value="{$process.id}">{$process.title|htmlspecialchars}</option>
+		{/foreach}
+</select>

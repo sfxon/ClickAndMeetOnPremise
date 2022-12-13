@@ -1,0 +1,69 @@
+<input type="hidden" id="mv-kalender-current-year" value="{$YEAR}" />
+<input type="hidden" id="mv-kalender-base-url" value="{$TEMPLATE_URL}" />
+
+<div class="mv-kalender-small">
+    <div class="row">
+        <div class="col-xl-5 col-md-4">&nbsp;</div>
+        <div class="col-xl-2 col-md-4">
+            <div class="mv-kalender-year-heading">
+            		<div class="row">
+                		<div class="col-md-4 text-center mv-button-kalender-year-previous text-right"><i class="fa fa-chevron-circle-left" aria-hidden="true"></i></div>
+                    <div class="col-md-4 text-center"><div id="mv-kalender-current-year-heading">{$YEAR}</div></div>
+                    <div class="col-md-4 text-center mv-button-kalender-year-next" style="text-align: left;"><i class="fa fa-chevron-circle-right" aria-hidden="true"></i></div>
+            		</div>
+            </div>
+        </div>
+        <div class="col-xl-5 col-md-4">&nbsp;</div>
+    </div>
+    
+    <div class="mv-kalender-content">
+        <div class="row"><!-- Zeile 2 -->
+            <div class="col-sm-12"><!--Kalender-->
+                <div class="row">
+                    <div class="col-md-3">
+                        {$KALENDERBLAETTER[0]}
+                    </div>
+                    <div class="col-md-3">
+                        {$KALENDERBLAETTER[1]}
+                    </div>
+                    <div class="col-md-3">
+                        {$KALENDERBLAETTER[2]}
+                    </div>
+                    <div class="col-md-3">
+                        {$KALENDERBLAETTER[3]}
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-3">
+                        {$KALENDERBLAETTER[4]}
+                    </div>
+                    <div class="col-md-3">
+                        {$KALENDERBLAETTER[5]}
+                    </div>
+                    <div class="col-md-3">
+                        {$KALENDERBLAETTER[6]}
+                    </div>
+                    <div class="col-md-3">
+                        {$KALENDERBLAETTER[7]}
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-3">
+                        {$KALENDERBLAETTER[8]}
+                    </div>
+                    <div class="col-md-3">
+                        {$KALENDERBLAETTER[9]}
+                    </div>
+                    <div class="col-md-3">
+                        {$KALENDERBLAETTER[10]}
+                    </div>
+                    <div class="col-md-3">
+                        {$KALENDERBLAETTER[11]}
+                    </div>
+                </div>
+            </div><!--Ende Kalender-->
+        </div>
+    </div>
+</div>

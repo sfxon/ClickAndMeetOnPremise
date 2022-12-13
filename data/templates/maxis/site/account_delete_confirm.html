@@ -1,0 +1,28 @@
+<div class="startseite password-recovery">
+		<picture class="d-none d-lg-block">
+				<source srcset="{$TEMPLATE_URL}data/templates/{$TEMPLATE}/img/logo.jpg" media="(min-width: 992px)">
+				<img class="startseite-background" src="{$TEMPLATE_URL}data/templates/{$TEMPLATE}/img/logo-mobile.jpg">
+		</picture>
+		
+		<div class="startseite-mv-center-container">
+				<div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center mv-intro-text">
+						<h1 class="display-4">Account löschen - Schritt 2</h1>
+						
+						<p class="lead">Bitte bestätige mit der Eingabe deines Passwortes, dass dir der Account gehört.<br />
+						Das ist der letzte Schritt zur Account-Löschung.<br />
+						<span class="text-danger">Danach wird dein Account sofort unwiderruflich gelöscht!</span>
+						</p>
+						<form action="{$ACCOUNT_DELETE_FORM_URL}" method="post" class="text-left" id="mv-delete-account-form">
+								<input id="password" name="password" type="password" value="" class="form-control" placeholder="Dein aktuelles Passwort" />
+								<br />
+								<div class="row">
+										<div class="col-sm"><button type="submit" class="btn btn-danger">Account unwiderruflich löschen</button></div>
+								</div>
+								<small id="mv-error-message" class="text-danger" {if count($ERRORS) == 0}style="display: none;"{/if}>
+										<br />Irgendwas stimmt nicht. Bitte prüfe deine Eingaben nochmal.
+								</small>
+								
+						</form>
+				</div>
+		</div>
+</div>

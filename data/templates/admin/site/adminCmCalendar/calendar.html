@@ -1,0 +1,59 @@
+<div class="kalender-body">
+    {assign var=current_day value=1}
+    {assign var=weekday value=0}
+    {assign var=current_week_number value=$DATA.date.month_data.cal_week_start}
+    {strip}
+    		{if $DATA.date.month_data.days[0].weekday != 1}
+        		<div class="kalender-row">
+        			<div class="kalender-weeknumber">{$current_week_number|ltrim:'0'}</div>
+		            {assign var=current_week_number value=$current_week_number+1}
+            
+            {for $weekday_looper=1 to ($DATA.date.month_data.days[0].weekday-1)}
+            		{assign var=weekday value=$weekday_looper+1}
+                <div class="kalender-entry out-of-date-range"></div>
+            {/for}
+        {/if}
+    
+        {foreach from=$DATA.date.month_data.days item=day}
+            {if $weekday == 0}
+                <div class="kalender-row">
+                    <div class="kalender-weeknumber">{$day.weeknumber|ltrim:'0'}</div>
+                    {assign var=current_week_number value=$current_week_number+1}
+                    {assign var=weekday value=1}
+            {/if}
+
+            {* <!-- {if $day. == 1 && $day --> *}
+            {* <!--
+            {if $day.day == 1}
+                {if $weekday != $day.weekday}
+                    <div class="kalender-entry out-of-date-range"></div>
+                    {assign var=weekday value=$weekday+1}
+                    {continue}
+                {/if}
+            {/if}
+            --> *}
+            
+            {assign var=mark_as_current_day value=" test"}
+            
+            {if $day.day == $DATA.date.today_day && $day.month == $DATA.date.today_month && $day.year == $DATA.date.today_year}
+                {assign var=mark_as_current_day value=" mv-calendar-current-day mv-current-selected-day"}
+            {/if}
+            
+            <div class="kalender-entry{$mark_as_current_day}{if isset($day.status_count_classes)}{$day.status_count_classes}{/if}" data-attr-day="{$day.day}" data-attr-month="{$day.month}" data-attr-year="{$day.year}" data-attr-weekday="{$day.weekday}" id="mv-kalender-entry-{$day.year}-{$day.month}-{$day.day}">
+                {$day.day}
+            </div>
+            
+            
+            {* <!-- Nächsten Wochentag berechnen.. --> *}
+            {if $weekday < 7}
+                {assign var=weekday value=$weekday+1}
+            {else}
+                {assign var=weekday value=0}
+            {/if}
+            
+            {if $weekday == 0}
+              </div>
+            {/if}
+        {/foreach}
+    {/strip}
+</div>

@@ -1,0 +1,110 @@
+<div class="container-fluid">
+		<nav class="navbar navbar-default mv-navbar" role="navigation">
+				<div class="navbar-header">
+						<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+								<span class="sr-only">{$smarty.const.TEXT_TOGGLE_NAVIGATION}</span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+						</button>
+				</div>
+        
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <div class="navbar-left navbar-text">
+            		{$NAVBAR_TITLE}
+            </div>
+        </div>
+		</nav>
+		
+		<div class="mvbox">
+				<div class="mvbox-body">
+						<form role="form" action="{$DATA.url}" method="POST" class="form">
+								{if $DATA.item.id != 0}
+										<div class="row">
+												<div class="form-group col-sm-12">
+														<label for="navbar_item_id">{$smarty.const.TEXT_LABEL_NAVBAR_ITEM_ID}</label>
+														<input type="text" class="form-control" placeholder="{$smarty.const.TEXT_LABEL_NAVBAR_ITEM_ID}" name="navbar_item_id" id="navbar_item_id" value="{$DATA.item.id}" readonly="readonly" />
+												</div>
+										</div>
+								{/if}
+								
+								<div class="row">
+										<div class="form-group col-sm-12">
+												<label for="navbar_id">{$smarty.const.TEXT_LABEL_NAVBAR_ID}</label>
+												<input type="text" class="form-control" placeholder="{$smarty.const.TEXT_LABEL_NAVBAR_ID}" name="navbar_id" id="navbar_id" value="{$DATA.item.navbar_id}" readonly="readonly" />
+										</div>
+								</div>
+								
+								<div class="row">
+										<div class="form-group col-sm-12">
+												<label for="status">{$smarty.const.TEXT_LABEL_NAVBAR_STATUS}</label>
+												<select class="form-control selectpicker" name="status">
+														<option value="0"{if $DATA.item.status == '0'} selected="selected"{/if}>{$smarty.const.TEXT_NOT_ACTIVATED}</option>
+														<option value="1"{if $DATA.item.status == '1'} selected="selected"{/if}>{$smarty.const.TEXT_ACTIVATED}</option>
+												</select>
+										</div>
+								</div>
+								
+								{foreach from=$DATA.item.descriptions item=desc}
+										<div class="row">
+												<div class="form-group col-sm-12">
+														<label for="title_{$desc.language_id}">{$smarty.const.TEXT_LABEL_NAVBAR_TITLE}, {$desc.language_name}</label>
+														<input type="text" class="form-control" placeholder="{$smarty.const.TEXT_LABEL_NAVBAR_TITLE}" name="title[{$desc.language_id}]" id="title_{$desc.language_id}" value="{$desc.title}" />
+												</div>
+										</div>
+								{/foreach}
+								
+								{foreach from=$DATA.item.descriptions item=desc}
+										<div class="row">
+												<div class="form-group col-sm-12">
+														<label for="description_{$desc.language_id}">{$smarty.const.TEXT_LABEL_NAVBAR_DESCRIPTION}, {$desc.language_name}</label>
+														<input type="text" class="form-control" placeholder="{$smarty.const.TEXT_LABEL_NAVBAR_DESCRIPTION}" name="description[{$desc.language_id}]" id="description_{$desc.language_id}" value="{$desc.description}" />
+												</div>
+										</div>
+								{/foreach}
+								
+								<div class="row">
+										<div class="form-group col-sm-12">
+												<label for="sort_order">{$smarty.const.TEXT_LABEL_SORT_ORDER}</label>
+												<input type="text" class="form-control" placeholder="{$smarty.const.TEXT_LABEL_SORT_ORDER}" name="sort_order" id="sort_order" value="{$DATA.item.sort_order}" />
+										</div>
+								</div>
+								
+								<div class="row">
+										<div class="form-group col-sm-12">
+												<label for="data">{$smarty.const.TEXT_LABEL_NAVBAR_ITEM_DATA}</label>
+												<input type="text" class="form-control" placeholder="{$smarty.const.TEXT_LABEL_NAVBAR_ITEM_DATA}" name="data" id="data" value="{$DATA.item.data}" />
+										</div>
+								</div>
+								
+								<div class="row">
+										<div class="form-group col-sm-12">
+												<label for="status">{$smarty.const.TEXT_LABEL_NAVBAR_DATA_TYPE}</label>
+												<select class="form-control selectpicker" name="data_type">
+														{if $DATA.item.data_type == 0}<option value="0"{if $DATA.item.data_type == '0'} selected="selected"{/if}>{$smarty.const.TEXT_NAVBAR_ITEM_DATA_TYPE_NOT_SET}</option>{/if}
+														<option value="1"{if $DATA.item.data_type == '1'} selected="selected"{/if}>{$smarty.const.TEXT_NAVBAR_ITEM_DATA_TYPE_URL}</option>
+														<option value="2"{if $DATA.item.data_type == '2'} selected="selected"{/if}>{$smarty.const.TEXT_NAVBAR_ITEM_DATA_TYPE_CALCULATED_URL}</option>
+												</select>
+										</div>
+								</div>
+								
+								<div class="row">
+										<div class="form-group col-sm-12">
+												<label for="logged_in_only">{$smarty.const.TEXT_LABEL_NAVBAR_LOGGED_IN_ONLY}</label>
+												<select class="form-control selectpicker" name="logged_in_only">
+														<option value="0"{if $DATA.item.logged_in_only == '0'} selected="selected"{/if}>{$smarty.const.TEXT_NO}</option>
+														<option value="1"{if $DATA.item.logged_in_only == '1'} selected="selected"{/if}>{$smarty.const.TEXT_YES}</option>
+												</select>
+										</div>
+								</div>
+								
+								<div class="row">
+										<div class="form-group col-sm-12">
+												<input type="hidden" name="id" id="id" value="{$DATA.data.id}" />
+												<button type="submit" class="btn btn-primary">{$smarty.const.TEXT_BUTTON_SAVE}</button>
+										</div>
+								</div>
+						</form>
+				</div>
+		</div>
+</div>

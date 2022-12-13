@@ -1,0 +1,219 @@
+<?php
+
+/////////////////////////////////////////////////////////////////////////
+// This is the session code for everything that uses the api.
+// It is based on the web-code, but with slightly changes
+// for the special conditions, that the devices may have,
+// that are using the api.
+/////////////////////////////////////////////////////////////////////////
+
+class cApiSession {
+		/////////////////////////////////////////////////////////////////////
+		// Cookie aktualisieren
+		/////////////////////////////////////////////////////////////////////
+		function update($old_token, $user_id) {
+				//Get the user agent. We use the user agent as a security feature.
+				//If it changes, we do log out this user,
+				//because we think, this might be an unknown user..
+				//We could alternatively send him an email for security!
+				$user_agent = $this->getUserAgentInfo();
+				
+				//Get session id
+				//$session_id = 0; //session_id();
+				
+				do {
+						$token = $this->generateToken();		//Generate 256 bit token.
+				} while(false === $this->updateInDatabase($old_token, $token, $user_id, $user_agent));
+				
+				return $token;
+						
+		}
+		
+		/////////////////////////////////////////////////////////////////////
+		// Cookie erstellen
+		/////////////////////////////////////////////////////////////////////
+		function create($user_id) {
+				//Get the user agent. We use the user agent as a security feature.
+				//If it changes, we do log out this user,
+				//because we think, this might be an unknown user..
+				//We could alternatively send him an email for security!
+				$user_agent = $this->getUserAgentInfo();
+				$system_type = $this->getSystemType();
+				
+				//Get session id
+				//$session_id = session_id();
+				
+				//Create the token and try to insert it into the database
+				do {
+						$token = $this->generateToken();		//Generate 256 bit token.
+				} while(false === $this->createInDatabase($token, $user_id, $user_agent, $system_type));
+				
+				return $token;
+		}
+		
+		/////////////////////////////////////////////////////////////////////
+		// Generate 256 bit token.
+		/////////////////////////////////////////////////////////////////////
+		public function generateToken() {
+				return hash('sha256', time() . rand());
+		}
+		
+		/////////////////////////////////////////////////////////////////////
+		// User-Agent Informationen auslesen.
+		/////////////////////////////////////////////////////////////////////
+		public function getUserAgentInfo() {
+				$user_agent = '';
+				
+				if(isset($_SERVER['HTTP_USER_AGENT'])) {
+						$user_agent = $_SERVER['HTTP_USER_AGENT'];
+				}
+				
+				return $user_agent;
+		}
+		
+		/////////////////////////////////////////////////////////////////////
+		// System-Typ auslesen.
+		/////////////////////////////////////////////////////////////////////
+		public function getSystemType() {
+				$system_type = core()->getPostVar('system_type');
+				
+				switch($system_type) {
+						case 'Android':
+								break;
+						case 'Apple':
+								break;
+						default:
+								$system_type = 'Unknown';
+								break;
+				}
+				
+				return $system_type;
+		}
+		
+		/////////////////////////////////////////////////////////////////////
+		// Long-Time Cookie-Session erstellen.
+		/////////////////////////////////////////////////////////////////////
+		public function createInDatabase($token, $user_id, $user_agent, $system_type) {
+				//Check if this token exists..
+				if(false !== $this->checkIfEntryExistsByToken($token)) {
+						return false;
+				}
+				
+				//Create (if this fails, an error is risen automatically!
+				$db = core()->get('db');
+				$db->useInstance('systemdb');
+				$db->setQuery(
+						'INSERT INTO ' . $db->table('long_time_sessions') . ' ' .
+								'(token, user_id, user_agent, first_time_created, valid_until, system_type) ' .
+						'VALUES ' .
+								'(:token, :user_id, :user_agent, NOW(), :valid_until, :system_type);'				
+				);
+				$db->bind(':token', $token);
+				$db->bind(':user_id', (int)$user_id);
+				$db->bind(':user_agent', $user_agent);
+				$db->bind(':valid_until', date('Y-m-d H:i:s', $this->getCookieLifetime()));
+				$db->bind(':system_type', $system_type);
+				$result = $db->execute();
+				
+				return true;
+		}
+		
+		/////////////////////////////////////////////////////////////////////
+		// Long-Time Cookie-Session aktualisieren.
+		/////////////////////////////////////////////////////////////////////
+		public function updateInDatabase($old_token, $token, $user_id, $system_type) {
+				//Check if this token exists..
+				if(false !== $this->checkIfEntryExistsByToken($token)) {
+						return false;
+				}
+				
+				//Create (if this fails, an error is risen automatically!
+				$db = core()->get('db');
+				$db->useInstance('systemdb');
+				$db->setQuery(
+						'UPDATE ' . $db->table('long_time_sessions') . ' SET ' .
+								'token = :token, ' .
+								'user_id = :user_id, ' .
+								'user_agent = :user_agent, ' . 
+								'valid_until = :valid_until, ' .
+								'system_type = :system_type ' .
+						'WHERE ' .
+								'token = :old_token'			
+				);
+				$db->bind(':token', $token);
+				$db->bind(':user_id', (int)$user_id);
+				$db->bind(':user_agent', $user_agent);
+				$db->bind(':valid_until', date('Y-m-d H:i:s', $this->getCookieLifetime()));
+				$db->bind(':old_token', $old_token);
+				$db->bind(':system_type', $system_type);
+				$result = $db->execute();
+				
+				return true;
+		}
+		
+		/////////////////////////////////////////////////////////////////////
+		// Prüfen, ob ein Eintrag existiert (anhand des Tokens).
+		/////////////////////////////////////////////////////////////////////
+		public function checkIfEntryExistsByToken($token) {
+				$db = core()->get('db');
+				$db->useInstance('systemdb');
+				$db->setQuery(
+						'SELECT * FROM ' . $db->table('long_time_sessions') . ' WHERE ' .
+						'token = :token;'				
+				);
+				$db->bind(':token', $token);
+				$result = $db->execute();
+				
+				$tmp = $result->fetchArrayAssoc();
+				
+				if(false === $tmp) {
+						return false;
+				}
+				
+				return true;
+		}
+		
+		/////////////////////////////////////////////////////////////////////
+		// Lade einen Eintrag aus der Datenbank (anhand des Tokens).
+		/////////////////////////////////////////////////////////////////////
+		public function loadById($token) {
+				$db = core()->get('db');
+				$db->useInstance('systemdb');
+				$db->setQuery(
+						'SELECT * FROM ' . $db->table('long_time_sessions') . ' WHERE ' .
+						'token = :token;'				
+				);
+				$db->bind(':token', $token);
+				$result = $db->execute();
+				
+				$tmp = $result->fetchArrayAssoc();
+				
+				if(false === $tmp) {
+						return false;
+				}
+				
+				return $tmp;
+		}
+		
+		/////////////////////////////////////////////////////////////////////
+		// Cookie Lifetime ausleben.
+		/////////////////////////////////////////////////////////////////////
+		public function getCookieLifetime() {
+				return time()+86400*30;
+		}
+		
+		/////////////////////////////////////////////////////////////////////
+		// Alle LongTimeSessions für diesen User beenden!
+		/////////////////////////////////////////////////////////////////////
+		public function logoutAllInstancesForUser($user_id) {
+				$db = core()->get('db');
+				$db->useInstance('systemdb');
+				$db->setQuery(
+						'DELETE FROM ' . $db->table('long_time_sessions') . ' ' .
+						'WHERE ' .
+								'user_id = :user_id'			
+				);
+				$db->bind(':user_id', (int)$user_id);
+				$result = $db->execute();
+		}
+}

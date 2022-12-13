@@ -1,0 +1,13 @@
+Hi,
+
+dein Account wurde gelöscht.
+Schade dass du uns verlässt.
+Wir wünschen dir alles Gute für die Zukunft.
+Wenn du wieder Mitglied werden möchtest, bist du immer willkommen.
+Besuche uns einfach:
+
+{$URL}
+
+Liebe Grüße
+
+dein Team.

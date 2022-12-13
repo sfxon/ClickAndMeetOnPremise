@@ -1,0 +1,47 @@
+{if $PRODUCTS_ATTRIBUTES|@count == 0}
+    {$smarty.const.TEXT_INFO_NO_ATTRIBUTE_FOR_THIS_PRODUCT}
+{else}
+    <table class="table table-hover table-condensed table-bordered">
+        <thead>
+            <tr>
+                <th>{$smarty.const.TEXT_PRODUCTS_OPTION} ({$smarty.const.TEXT_HEADING_ATTRIBUTES_OPTION_VALUES})</th>
+                <th>{$smarty.const.TEXT_LABEL_ATTRIBUTE_EDITOR_MODEL}</th>
+                <th>{$smarty.const.TEXT_LABEL_SORT_ORDER}</th>
+                <th>{$smarty.const.TEXT_LABEL_ACTION}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {foreach from=$PRODUCTS_ATTRIBUTES item=attr}
+                {strip}
+                <tr{/strip} {strip}
+                    class="mv_products_attribute"{/strip} {strip}
+                    data-value-attributes-id="{$attr.attributes_id}"{/strip} {strip}
+                    data-value-products-options-id="{$attr.products_options_id}"{/strip} {strip}
+                    data-value-tmp-products-options-id="{$attr.tmp_products_options_id}"{/strip} {strip}
+                    data-value-products-options-values-id="{$attr.products_options_values_id}"{/strip} {strip}
+                    data-value-tmp-products-options-values-id="{$attr.tmp_products_options_values_id}"{/strip} {strip}
+                    data-value-products-options-title="{$attr.products_options_title}"{/strip} {strip}
+                    data-value-attributes-model="{$attr.attributes_model}"{/strip} {strip}
+                    data-value-sort-order="{$attr.sort_order}"
+                >
+                {/strip}
+                    <td>{$attr.products_options_title} ({$attr.products_options_values_title})</td>
+                    <td class="mv_products_attributes_model">
+                    		{$attr.attributes_model}
+                    </td>
+                    <td class="mv_products_attributes_order">{$attr.sort_order}</td>
+                    <td class="mv_attribute_edit_button_container">
+                        <button class="mv_edit_products_attribute btn btn-xs btn-default" type="button">{$smarty.const.TEXT_BUTTON_EDIT}</button>
+                        <button class="mv_remove_attribute btn btn-xs btn-default" type="button">{$smarty.const.TEXT_BUTTON_DELETE}</button>
+                    
+                    		{if $attr.slave_product_exists == 1}
+                        		<a href="index.php?s=cAdminproducts&action=edit&id={$attr.products_id_slave}" target="_blank"><button class="btn btn-xs btn-default products_attributes_slave_edit" type="button"><i class="fa fa-pencil products_attributes_edit_icon"></i> {$smarty.const.TEXT_EDIT_PRODUCTS_SLAVE}</button></a>
+                        {else}
+                        		<i class="fa fa-info-circle yellow-on-hover buttonlike products_attributes_slave_edit" data-placement="auto" data-trigger="hover" data-toggle="popover" data-container="body" data-content="{$smarty.const.TEXT_PRODUCTS_ATTRIBUTES_SLAVE_NOT_CREATED_UNTIL_SAVING}" data-original-title="" title=""></i>
+                        {/if}
+                    </td>
+                </tr>
+            {/foreach}   		
+        </tbody>
+    </table>
+{/if}

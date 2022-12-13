@@ -1,0 +1,29 @@
+<div class="mv-page account-delete-image">
+		<div class="mv-small-container">
+				<h1>Account löschen</h1>
+				
+				<div class="mv-account-user-image-delete-info-container">
+						<div class="title text-left">Möchtest du deinen Account wirklich löschen?<br />
+								Du kannst das nicht rückgängig machen. 
+								Alle deine Bilder werden ebenfalls gelöscht.<br /><br />
+								Damit wir dich und deine Daten schützen können,
+								musst du hier dein Passwort noch einmal eingeben.<br /><br />
+								Außerdem erhälst du eine E-Mail an dein Postfach,
+								mit einem Link, über den du das Löschen bestätigen musst.<br /><br />
+								Sobald du damit deinen Account bestätigst, löschen wir deine Daten unwiderruflich!
+								<br /><br />
+						</div>
+				</div>	
+						
+				<form action="{$TEMPLATE_URL}account-loeschen/?action=delete" method="post" id="mv-account-delete-form">
+						<div class="row mv-account-image-form-action-buttons">
+								<div class="col-4">
+										<a href="{$TEMPLATE_URL}meine-daten"><button type="button" class="btn btn-primary">Abbrechen</button></a>
+								</div>
+								<div class="col-8 text-right">
+										<button type="submit" class="btn btn-danger">Account unwiderruflich löschen</button>
+								</div>
+						</div>
+				</form>
+		</div>
+</div>

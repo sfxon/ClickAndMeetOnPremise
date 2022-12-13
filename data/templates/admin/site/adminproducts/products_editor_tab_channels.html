@@ -1,0 +1,41 @@
+<div class="mvbox">
+		<div class="mvbox-body">
+				{foreach from=$CHANNELS item=channel}
+						<div class="row">
+								<div class="col col-md-12 col-sm-12">
+										<div class="mvbox{if $channel.channel_type == 0} blue{/if}{if $channel.channel_type == 1} green{/if}{if $channel.channel_type == 2} red{/if}{if $channel.channel_type == 3} yellow{/if}{if $channel.channel_type == 4} black{/if}{if $channel.channel_type == 5} light-blue{/if}">
+												<div class="mvbox-title">
+														<div class="caption">{$channel.title} ({$channel.channel_type_data.title})</div>
+												</div>
+												<div class="mvbox-body">
+														<div class="row">
+																{if $PRODUCTS_CHANNELS_DATA[$channel.id]|@count == 0}
+																		<div class="form-group col-sm-12">
+																				{$smarty.const.TEXT_NO_SPECIFIC_CHANNEL_DATA}												
+																		</div>
+																{else}
+																		{foreach from=$PRODUCTS_CHANNELS_DATA[$channel.id] item=channeldata}
+																						<div class="form-group col-sm-12">
+																								<label for="declaration_erroneous">{$channeldata.descriptions[$CURRENT_DATALANGUAGE_ID].title}</label>
+																								{if $channeldata.input_type == 0}
+																										<input type="text" value="{$channeldata.current_value}" name="channeldata[{$channel.id}][{$channeldata.id}]" class="form-control" />
+																								{elseif $channeldata.input_type == 1}
+																										<input type="number" value="{$channeldata.current_value}" name="channeldata[{$channel.id}][{$channeldata.id}]" class="form-control" />
+																								{elseif $channeldata.input_type == 2}
+																										<select name="channeldata[{$channel.id}][{$channeldata.id}]" class="form-control" />
+																												{foreach from=$channeldata.options item=option}
+																														<option value="{$option.id}" {if $channeldata.current_value == $option.id}selected="selected"{/if}>{$option.descriptions[$CURRENT_DATALANGUAGE_ID].title}</option>
+																												{/foreach}
+																										</select>
+																								{/if}
+																						</div>
+																		{/foreach}
+																{/if}
+														</div>
+												</div>
+										</div>
+								</div>
+						</div>
+				{/foreach}
+		</div>
+</div>

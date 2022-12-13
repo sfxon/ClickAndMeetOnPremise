@@ -1,0 +1,153 @@
+<div class="container-fluid">
+		<div class="row">
+				<div class="col-md-2">
+						<div class="mv-infobox-small">
+								<div class="heading">{$smarty.const.TEXT_LABEL_TITLE}</div>
+								<div class="value">{if $DATA.data.display_title == ''}&nbsp;{else}{$DATA.data.display_title}{/if}</div>
+						</div>
+				</div>
+				
+				<div class="col-md-2">
+						<div class="mv-infobox-small">
+								<div class="heading">{$smarty.const.TEXT_LABEL_EAN}</div>
+								<div class="value">{if $DATA.data.ean == ''}-&nbsp;-&nbsp;-{else}{$DATA.data.ean}{/if}</div>
+						</div>
+				</div>
+				
+				<div class="col-md-2">
+						<div class="mv-infobox-small{if $DATA.data.declaration_erroneous == 1 || $DATA.data.declaration_incomplete == 1} mv-infobox-error{/if}">
+								<div class="heading">{$smarty.const.TEXT_LABEL_PRODUCTS_INTERNAL_STATUS}</div>
+								<div class="value">
+										{if $DATA.data.declaration_erroneous == 0 && $DATA.data.declaration_incomplete == 0}{$smarty.const.TEXT_PRODUCTS_DECLARATION_COMPLETE}{/if}
+										{if $DATA.data.declaration_erroneous == 1}<span class="error">{$smarty.const.TEXT_PRODUCTS_DECLARATION_ERRONEOUS}</span>{/if}
+										{if $DATA.data.declaration_incomplete == 1}<span class="error">{$smarty.const.TEXT_PRODUCTS_DECLARATION_INCOMPLETE}</span>{/if}
+								</div>
+						</div>
+				</div>
+		</div>
+		
+		<!-- Nav tabs -->
+		<ul class="nav nav-tabs" role="tablist">
+				<li class="active"><a href="#general" role="tab" data-toggle="tab">{$smarty.const.TEXT_PRODUCTS_TAB_GENERAL}</a></li>
+				<li class="dropdown btn-group">
+						<a class="dropdown-toggle" data-toggle="dropdown" href="#">
+								<span class="dropdown-title">{$smarty.const.TEXT_PRODUCTS_TAB_TEXTS}</span> <span class="caret"></span>
+						</a>
+						<ul class="dropdown-menu" role="menu">
+								{foreach from=$DATALANGUAGES item=dlang}
+										<li>
+												<a href="#texts_{$dlang.id}" role="tab" data-toggle="tab">
+														{if $dlang.flag_symbol_location != ''}<div class="datalanguage_flag"><img src="{$dlang.flag_symbol_location}" /></div>{else}{/if}{$dlang.title}
+												</a>
+										</li>
+								{/foreach}
+						</ul>
+				</li>
+				
+				<li><a href="#categories" role="tab" data-toggle="tab">{$smarty.const.TEXT_PRODUCTS_TAB_CATEGORIES}</a></li>
+				<li><a href="#prices" role="tab" data-toggle="tab">{$smarty.const.TEXT_PRODUCTS_TAB_PRICES}</a></li>
+				<li><a href="#images" role="tab" data-toggle="tab">{$smarty.const.TEXT_PRODUCTS_TAB_IMAGES}</a></li>
+				<li><a href="#files" role="tab" data-toggle="tab">{$smarty.const.TEXT_PRODUCTS_TAB_FILES}</a></li>
+				<li><a href="#channels" role="tab" data-toggle="tab">{$smarty.const.TEXT_PRODUCTS_TAB_CHANNELS}</a></li>
+				<li><a href="#attributes" role="tab" data-toggle="tab">{$smarty.const.TEXT_PRODUCTS_TAB_ATTRIBUTES}</a></li>
+				<li><a href="#features" role="tab" data-toggle="tab">{$smarty.const.TEXT_PRODUCTS_TAB_FEATURES}</a></li>
+				<li><a href="#stock" role="tab" data-toggle="tab">{$smarty.const.TEXT_PRODUCTS_TAB_STOCK}</a></li>
+		</ul>
+		
+		<script>
+		$(function() {
+				$(".dropdown-menu li a").click(function() {
+						var title = $(this).parents(".btn-group").find('.dropdown-title').html();
+						
+						if($(this).parents(".btn-group").find('.dropdown-title').data('original_title') == undefined) {
+								$(this).parents(".btn-group").find('.dropdown-title').data('original_title',  $(this).parents(".btn-group").find('.dropdown-title').html());
+						} else {
+								title = $(this).parents(".btn-group").find('.dropdown-title').data('original_title');
+						}
+						
+						$(this).parents(".btn-group").find('.dropdown-title').html(title + ': ' + $(this).html());				
+						//console.log(dropdown_titles);
+				});
+				
+				//Reset the dropdown texts, for each dropdown where not a child has been clicked!
+				$('.nav-tabs li').click( function(evt) {
+						var target = $(evt.target);
+				
+						$('.dropdown').each( function() {
+								//check if we clicked outside the dropdown box..
+								if(!$(this).has( target ).length) {
+										if($(this).find('.dropdown-title').data('original_title') != undefined) {
+												$(this).find('.dropdown-title').html( $(this).find('.dropdown-title').data('original_title') );
+										}
+								}
+						});
+				});
+		});
+		</script>
+		
+		<form role="form" action="{$DATA.url}" method="POST" class="form">
+				<!-- Tab panes -->
+				<div class="tab-content">
+						<!-- general -->
+						<div class="tab-pane active" id="general">
+								{$PRODUCTS_EDITOR_TAB_GENERAL}
+						</div>
+						
+						<!-- texts -->
+						{foreach from=$DATALANGUAGES item=dlang}
+								<div class="tab-pane" id="texts_{$dlang.id}">{$PRODUCTS_EDITOR_TAB_TEXTS[$dlang.id]}</div>
+						{/foreach}
+						
+						<!-- categories -->				
+						<div class="tab-pane" id="categories">
+								{$PRODUCTS_EDITOR_TAB_CATEGORIES}
+						</div>
+						
+						<!-- prices -->
+						<div class="tab-pane" id="prices">
+								{$PRODUCTS_EDITOR_TAB_BUYING_PRICES}
+								{$PRODUCTS_EDITOR_TAB_PRICES}
+						</div>
+						
+						<!-- images -->
+						<div class="tab-pane" id="images">
+								{$PRODUCTS_EDITOR_TAB_IMAGES}
+						</div>
+						
+						<!-- files -->
+						<div class="tab-pane" id="files">
+								{$PRODUCTS_EDITOR_TAB_FILES}
+						</div>
+						
+						<!-- channel specific -->
+						<div class="tab-pane" id="channels">
+								{$PRODUCTS_EDITOR_TAB_CHANNELS}
+						</div>
+						
+						<!-- Attribute -->
+						<div class="tab-pane" id="attributes">
+								{$PRODUCTS_EDITOR_TAB_ATTRIBUTES}
+						</div>
+						
+						<!-- Features -->
+						<div class="tab-pane" id="features">
+								{$PRODUCTS_EDITOR_TAB_FEATURES}
+						</div>
+						
+						<!-- stock -->
+						<div class="tab-pane" id="stock">
+								{$PRODUCTS_EDITOR_TAB_STOCK}
+						</div>
+				</div>
+				
+				<hr />
+		
+				<div class="form-group col-sm-12">
+						<input type="hidden" name="id" id="id" value="{$DATA.data.id}" />
+						<input type="hidden" name="user_id" id="user_id" value="{$DATA.data.user_id}" />
+						<input type="hidden" name="tmp_products_id" id="tmp_products_id" value="{$DATA.data.tmp_products_id}" />
+						<input type="hidden" name="current_datalanguage_id" id="current_datalanguage_id" value="{$CURRENT_DATALANGUAGE_ID}" />
+						<button type="submit" class="btn btn-primary">{$smarty.const.TEXT_BUTTON_SAVE}</button>
+				</div>
+		</form>
+</div>

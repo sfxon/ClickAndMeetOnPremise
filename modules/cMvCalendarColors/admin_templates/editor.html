@@ -1,0 +1,68 @@
+<div class="container-fluid">
+		<nav class="navbar navbar-default mv-navbar" role="navigation">
+				<div class="navbar-header">
+						<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+								<span class="sr-only">{$smarty.const.TEXT_TOGGLE_NAVIGATION}</span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+						</button>
+				</div>
+				
+				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+						<div class="navbar-left navbar-text">
+								{$NAVBAR_TITLE}
+						</div>
+				</div>
+		</nav>
+    
+    {if isset($smarty.get.success)}
+    		<div class="alert alert-success">Die Einstellungen wurden gespeichert.</div><br />
+    {/if}
+		
+		<div class="mv-box">
+				<div class="mvbox">
+						<div class="mvbox-body">
+								<div class="row">
+										<div class="col-xs-12">
+												<form role="form" action="{$DATA.url}" method="POST" class="form">
+														{if 0 != $DATA.data.id}
+																<div class="row">
+																		<div class="form-group col-sm-12">
+																				<label for="id">ID</label>
+																				<input type="text" class="form-control" placeholder="ID" name="id" value="{$DATA.data.id}" readonly="readonly" />
+																		</div>
+																</div>
+														{/if}
+                            
+                                                                                                                                                            <div class="row">
+                                        <div class="form-group col-sm-12">
+                                            <label for="title">Name</label>
+                                            <input type="text" class="form-control" placeholder="Name" name="title" value="{$DATA.data.title}" />
+                                        </div>
+                                    </div>
+                                                                                                                                <div class="row">
+                                        <div class="form-group col-sm-12">
+                                            <label for="internal_identifier">Interner Kennzeichner (nicht änderrn!)</label>
+                                            <input readonly="readonly" type="text" class="form-control" placeholder="Interner Kennzeichner (nicht änderrn!)" name="internal_identifier" value="{$DATA.data.internal_identifier}" />
+                                        </div>
+                                    </div>
+                                                                                                                                <div class="row">
+                                        <div class="form-group col-sm-12">
+                                            <label for="field_value">Farbe (Wert)</label>
+                                            <input type="text" class="form-control" placeholder="Farbe (Wert)" name="field_value" value="{$DATA.data.field_value}" />
+                                        </div>
+                                    </div>
+                                                            														
+														<div class="row">
+																<div class="form-group col-sm-12">
+																		<button type="submit" class="btn btn-primary">{$smarty.const.TEXT_BUTTON_SAVE}</button>
+																</div>
+														</div>
+												</form>
+										</div>
+								</div>
+						</div>
+				</div>
+		</div>
+</div>

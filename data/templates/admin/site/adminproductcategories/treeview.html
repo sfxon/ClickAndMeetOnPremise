@@ -1,0 +1,38 @@
+{function create_products_categories_tree data=false}
+		{if $data == false}
+		
+		{else}
+				<ul>
+						{foreach from=$data item=d}
+								<li>
+										<span>{if $d.childs != false}<i class="fa fa-caret-right">&nbsp;</i>&nbsp;{/if}{$d.title}</span>
+										<i class="fa fa-plus-square green_text product_category_add mv_tooltip" data-toggle="tooltip" data-placement="auto top" data-channel-id="{$CHANNEL_DATA.id}" data-parent-id="{$d.id}" title="{$smarty.const.TEXT_PRODUCTS_CATEGORY_ADD_CHILD}">&nbsp;</i>
+										{if $DELETE_BUTTON == 'TRUE'}
+												<i class="fa fa-minus-circle red_text product_category_delete mv_tooltip" data-toggle="tooltip" data-placement="auto top" title="{$smarty.const.TEXT_PRODUCTS_DELETE}">&nbsp;</i>
+										{/if}
+										<i class="fa fa-check-circle-o product_category_select mv_tooltip" data-toggle="tooltip" data-placement="auto top" data-channel-id="{$CHANNEL_DATA.id}" data-product-categories-id="{$d.id}" title="{$smarty.const.TEXT_PRODUCTS_CATEGORY_SELECT}">&nbsp;</i>
+
+										{create_products_categories_tree data=$d.childs}
+								</li>
+						{/foreach}
+				</ul>
+		{/if}
+{/function}
+
+<div class="tree">
+    <ul>
+        <li>	
+						<span>{if $PRODUCT_CATEGORIES != false}<i class="fa fa-caret-right">&nbsp;</i>&nbsp;{/if}{$CHANNEL_DATA.title}</span>
+						<i class="fa fa-plus-square green_text product_category_add mv_tooltip" data-toggle="tooltip" data-placement="auto top" data-channel-id="{$CHANNEL_DATA.id}" data-parent-id="0" title="{$smarty.const.TEXT_PRODUCTS_CATEGORY_ADD_CHILD}">&nbsp;</i>
+						{if $DELETE_BUTTON == 'TRUE'}
+								<i class="fa fa-minus-circle red_text product_category_delete mv_tooltip" data-toggle="tooltip" data-placement="auto top" title="{$smarty.const.TEXT_PRODUCTS_DELETE}">&nbsp;</i>
+						{/if}
+						{* <!--
+								the channel name doesn't need a add item - you cannot add the channel itself as a category..
+								<i class="fa fa-check-circle-o product_category_select mv_tooltip" data-toggle="tooltip" data-placement="auto top" title="{$smarty.const.TEXT_PRODUCTS_CATEGORY_SELECT}">&nbsp;</i>
+						--> *}
+
+            {create_products_categories_tree data=$PRODUCT_CATEGORIES}
+        </li>
+    </ul>
+</div>

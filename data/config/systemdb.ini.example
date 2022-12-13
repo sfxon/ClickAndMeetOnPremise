@@ -1,0 +1,11 @@
+;Konfigurationsdatei für die Systemweite Datenbank.
+;Über diese Datenbank werden Systembestandteile gehandhabt.
+
+dbmodule = "cPDOMysql"
+instance = "systemdb"
+host = "hostname;charset=utf8"
+db = "DATABASE_NAME"
+user = "DATABASE_USER"
+pw = "MY_SECRET"
+prefix = "aloha_"
+table_quotes = "`"

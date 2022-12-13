@@ -1,0 +1,50 @@
+<div class="container-fluid">
+		<nav class="navbar navbar-default mv-navbar" role="navigation">
+				<div class="navbar-header">
+						<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+								<span class="sr-only">{$smarty.const.TEXT_TOGGLE_NAVIGATION}</span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+						</button>
+				</div>
+				
+				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+						<div class="navbar-left navbar-text">
+								{$NAVBAR_TITLE}
+						</div>
+						
+						<div class="navbar-form navbar-right">
+                <div class="form-group">
+                    <a href="http://wiki/doku.php?id=verteiler_e-mail_gruppen_weiterleitung#eintrag_entfernen" target="_blank">
+												<button type="submit" class="btn btn-success btn-sm">Hilfe</button>
+										</a>
+								</div>
+						</div>
+				</div>
+		</nav>
+		
+		<div class="mvbox">
+				<div class="mvbox-body">
+						<div class="row">
+								<div class="col-xs-12 col-md-8">
+										Möchten Sie diesen Eintrag wirklich löschen?<br />
+										<br />
+										<b>{$DATA.data.users_account_data.email}</b><br />
+										<br />
+										<i>(Es wird nur die Weiterleitung entfernt. Der Benutzeraccount bleibt bestehen!)</i><br />
+										<br />
+								</div>
+						</div>
+						
+						<div class="row">										
+								<div class="col-xs-6">
+										<a href="index.php?s=cAdminmaildistributionrulesgroupsmailforward&amp;groups_id={$GROUPS_ID}"><button type="button" class="btn btn-default">Abbrechen</button></a>
+								</div>
+								<div class="col-xs-6 text-right">
+										<a href="{$DATA.url}"><button type="button" class="btn btn-danger">Löschen</button></a>
+								</div>
+						</div>
+				</div>
+		</div>
+</div>

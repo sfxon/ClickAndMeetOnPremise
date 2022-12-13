@@ -1,0 +1,57 @@
+<div class="container-fluid">
+		<nav class="navbar navbar-default mv-navbar" role="navigation">
+				<div class="navbar-header">
+						<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+								<span class="sr-only">{$smarty.const.TEXT_TOGGLE_NAVIGATION}</span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+						</button>
+				</div>
+				
+				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+						<div class="navbar-left navbar-text">
+								{$NAVBAR_TITLE}
+						</div>
+				</div>
+		</nav>
+
+		<div class="row">
+				<div class="col-xs-12">		
+						<!-- Nav tabs -->
+						<ul class="nav nav-tabs" role="tablist">
+								<li class="active"><a href="#general" role="tab" data-toggle="tab">{$smarty.const.TEXT_WEBSELLERSESSIONS_TAB_GENERAL}</a></li>
+								<li><a href="#websellersessions_logo" role="tab" data-toggle="tab">{$smarty.const.TEXT_WEBSELLERSESSIONS_TAB_WEBSELLERSESSIONS_LOGO}</a></li>
+								<li><a href="#websellersessions_products" role="tab" data-toggle="tab">{$smarty.const.TEXT_WEBSELLERSESSIONS_TAB_PRODUCTS}</a></li>
+						</ul>
+					
+						<form role="form" action="{$DATA.url}" method="POST" class="form">
+								<!-- Tab panes -->
+								<div class="tab-content">
+										<!-- general -->
+										<div class="tab-pane active" id="general">
+												{$WEBSELLERSESSIONS_EDITOR_TAB_GENERAL}
+										</div>
+										
+										<!-- logo -->
+										<div class="tab-pane" id="websellersessions_logo">
+												{$WEBSELLERSESSIONS_EDITOR_TAB_WEBSELLERSESSIONS_LOGO}
+										</div>
+										
+										<!-- product images -->
+										<div class="tab-pane" id="websellersessions_products">
+												{$WEBSELLERSESSIONS_EDITOR_TAB_WEBSELLERSESSIONS_PRODUCTS}
+										</div>
+								</div>
+								
+								<div class="row">
+										<div class="form-group col-sm-12">
+												<input type="hidden" name="id" id="id" value="{$DATA.data.id}" />
+												<input type="hidden" name="tmp_websellersessions_id" id="tmp_websellersessions_id" value="{$DATA.data.tmp_websellersessions_id}" />
+												<button type="submit" class="btn btn-primary">{$smarty.const.TEXT_BUTTON_SAVE}</button>
+										</div>
+								</div>
+						</form>
+				</div>
+		</div>
+</div>

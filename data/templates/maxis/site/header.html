@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {if isset($META_DESCRIPTION)}<meta name="description" content="{$META_DESCRIPTION}" />{/if}
+    {if isset($META_AUTHOR)}<meta name="author" content="{$META_AUTHOR}" />{/if}
+    <meta name="generator" content="BergiaMS 2021">
+    <title>{$META_TITLE}</title>
+
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+    
+     <!-- CSS -->
+    <link href="{$TEMPLATE_URL}data/templates/maxis/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{$TEMPLATE_URL}data/templates/maxis/css/dragula.min.css" rel="stylesheet">
+    <link href="{$TEMPLATE_URL}data/templates/maxis/css/fontawesome.css" rel="stylesheet">
+    <link href="{$TEMPLATE_URL}data/templates/maxis/css/mv.css" rel="stylesheet">
+    
+    {if isset($HEAD_CSS)}
+     		{$HEAD_CSS}
+    {/if}

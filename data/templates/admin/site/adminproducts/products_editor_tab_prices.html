@@ -1,0 +1,495 @@
+<input type="hidden" value="{$smarty.const.TEXT_BUTTON_EDIT}" id="prices_text_button_edit" />
+<input type="hidden" value="{$smarty.const.TEXT_PRICES_BUTTON_DELETE}" id="prices_text_button_delete" />
+
+<script>
+		var prices_edit_row = false;
+</script>
+
+		
+
+{foreach from=$CHANNELS item=channel}
+		<div class="mvbox">
+				<div class="mvbox-body">
+						<div class="row">
+								<div class="col col-md-12 col-sm-12">
+										<div class="mvbox{if $channel.channel_type == 0} blue{/if}{if $channel.channel_type == 1} green{/if}{if $channel.channel_type == 2} red{/if}{if $channel.channel_type == 3} yellow{/if}{if $channel.channel_type == 4} black{/if}{if $channel.channel_type == 5} light-blue{/if}">
+												<div class="mvbox-title">
+														<div class="caption">{$channel.title} ({$channel.channel_type_data.title})</div>
+												</div>
+												
+												<div class="mvbox-body">
+														{foreach from=$CUSTOMERGROUPS item=customergroup}
+																<div class="mvbox gray">
+																		<div class="mvbox-title">
+																				<div class="caption">{$customergroup.title}</div>
+																		</div>
+																		<div class="mvbox-body">
+																				<table class="table table-hover table-condensed table-bordered table-striped" id="products_prices_{$channel.id}_{$customergroup.id}">
+																						<thead>
+																								<tr>
+																										<th>{$smarty.const.TEXT_HEADING_PRICE_QUANTITY}</th> {* <!-- Preisstaffel (Stückzahl) --> *}
+																										<th>{$smarty.const.TEXT_HEADING_PRICE_NETTO}</th>
+																										<th>{$smarty.const.TEXT_HEADING_TAX_CLASS}</th>
+																										<th>{$smarty.const.TEXT_HEADING_PRICE_BRUTTO}</th>
+																										<th>{$smarty.const.TEXT_TABLE_HEADING_ACTION}</th>
+																								</tr>
+																						</thead>
+																						<tbody>
+																								{foreach from=$PRICES item=price}
+																										{if $price.channel_id == $channel.id && $price.customergroups_id == $customergroup.id}
+																												<tr data-customergroup-id="{$customergroup.id}" data-channel-id="{$channel.id}" data-price-id="{$price.id}" data-netto="{$price.price_netto_formated}" data-tax="{$price.taxclass_id}" data-price-quantity="{$price.price_quantity}" data-tmp-products-id="{$DATA.data.tmp_products_id}">
+																														<td>{$price.price_quantity}</td>
+																														<td>{$price.price_netto_formated}</td>
+																														<td>{$price.taxclass_name}</td>
+																														<td>{$price.price_brutto_formated}</td>
+																														<td>
+																																<button class="price_edit" type="button">{$smarty.const.TEXT_BUTTON_EDIT}</button>
+																																<button class="price_delete" type="button">{$smarty.const.TEXT_PRICES_BUTTON_DELETE}</button>
+																														</td>
+																												</tr>
+																										{/if}
+																								{/foreach}
+																						</tbody>
+																				</table>								
+																				<button type="button" id="add_price_{$channel.id}_{$customergroup.id}">{$smarty.const.TEXT_BUTTON_ADD_PRICE}</button>
+																		</div>
+																</div>
+																
+																{literal}
+																<script>
+																		$(function() {		
+																				$('#add_price_{/literal}{$channel.id}{literal}_{/literal}{$customergroup.id}{literal}').click( function(event) {
+																						event.stopPropagation();
+				
+																						//set the input fields with that data
+																						$('#prices_add_price_id').val('0');
+																						$('#products_prices_netto').val('0');
+																						$("#prices_taxclass").val('0');
+																						$('#products_prices_brutto').val('0');
+																						$('#price_quantity').val('1');
+																						$('.selectpicker').selectpicker('refresh');
+																						
+																						//set values important for edit mode..
+																						$('#prices_edit_mode').val('new');
+																						$('#prices_edit_channel_id').val({/literal}{$channel.id}{literal});
+																						$('#prices_edit_customergroup_id').val({/literal}{$customergroup.id}{literal});
+																						$('#prices_edit_price_netto').val('0');
+																						$('#prices_edit_taxclass').val('0');
+																						$('#prices_edit_price_quantity').val('0');
+																						
+																						prices_edit_row = false;
+																						
+																						show_products_price_editor(this);
+																				});
+																		});
+																</script>
+																{/literal}
+																
+														{/foreach}
+												</div>
+										</div>
+								</div>
+						</div>
+				</div>
+		</div>
+{/foreach}
+
+<!-- hidden fields for the modal edit and delete dialogs for prices -->
+<input type="hidden" id="prices_add_price_id" value="0" />
+<input type="hidden" id="prices_edit_mode" value="new" />
+<input type="hidden" id="prices_edit_channel_id" value="0" />
+<input type="hidden" id="prices_edit_customergroup_id" value="0" />
+<input type="hidden" id="prices_edit_price_netto" value="" />
+<input type="hidden" id="prices_edit_taxclass" value="" />
+<input type="hidden" id="prices_edit_price_quantity" value="" />
+
+<!-- Modal dialog for deleting an item -->
+<div class="modal fade" id="products_prices_delete_editor" tabindex="-1" role="dialog" aria-labbelledby="{$smarty.const.TEXT_TITLE_DELETE_PRODUCTS_PRICE}" aria-hidden="true">
+		<div class="modal-dialog">
+				<div class="modal-content">
+						<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">{$smarty.const.TEXT_BUTTON_CLOSE}</span></button>
+								<h4 class="modal-title" id="myModalLabel">{$smarty.const.TEXT_TITLE_DELETE_PRODUCTS_PRICE}</h4>
+						</div>
+						
+						<div class="modal-body">
+								<p>{$smarty.const.TEXT_DELETE_PRODUCTS_PRICE}</p>
+						</div>
+						<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">{$smarty.const.TEXT_BUTTON_CANCEL}</button>
+								<button type="button" class="btn btn-primary" id="add_product_price_delete">{$smarty.const.TEXT_BUTTON_DELETE}</button>
+						</div>
+				</div>
+		</div>
+</div>
+
+<!-- Modal Dialog for adding a new category -->
+<div class="modal fade" id="products_prices_add_editor" tabindex="-1" role="dialog" aria-labelledby="{$smarty.const.TEXT_ADD_PRODUCTS_PRICE}" aria-hidden="true">
+		<div class="modal-dialog">
+				<div class="modal-content">
+						<div class="modal-header">
+						
+								<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">{$smarty.const.TEXT_BUTTON_CLOSE}</span></button>
+								<h4 class="modal-title" id="myModalLabel">{$smarty.const.TEXT_ADD_PRODUCTS_PRICE}</h4>
+						</div>
+						<div class="modal-body">
+								<div class="row">
+										<div class="form-group col-md-3">
+												<label>{$smarty.const.TEXT_LABEL_QUANTITY}</label>
+										</div>
+										
+										<div class="form-group col-md-9">
+												<input type="text" id="price_quantity" value="" class="form-control" />
+										</div>
+								</div>
+								
+								<div class="row">
+										<div class="form-group col-md-3">
+												<label>{$smarty.const.TEXT_LABEL_PRICE_NETTO}</label>
+										</div>
+										
+										<div class="form-group col-md-9">
+												<input type="text" id="products_prices_netto" value="" class="form-control" />
+										</div>
+								</div>
+								
+								<div class="row">
+										<div class="form-group col-md-3">
+												<label>{$smarty.const.TEXT_LABEL_TAX_CLASS}</label>
+										</div>
+										
+										<div class="form-group col-md-9">
+												<select class="form-control selectpicker" name="prices_taxclass" id="prices_taxclass">
+														{foreach from=$TAXCLASSES item=taxclass}
+																<option value="{$taxclass.id}" data-taxclass-value="{$taxclass.value}">{$taxclass.title} ({$taxclass.value}%)</option>
+														{/foreach}
+												</select>
+										</div>
+								</div>
+								
+								<div class="row">
+										<div class="form-group col-md-3">
+												<label>{$smarty.const.TEXT_LABEL_PRICE_BRUTTO}</label>
+										</div>
+										
+										<div class="form-group col-md-9">
+												<input type="text" id="products_prices_brutto" value="" class="form-control" />
+										</div>
+								</div>
+								
+								{literal}
+										<script>
+										//delete price
+										function price_delete_dialog(event, item) {
+												event.stopPropagation();
+												
+												var row = $(item).closest("tr");
+												
+												//load the items data..
+												var price_id = $(row).attr('data-price-id');
+												var price_netto = $(row).attr('data-netto');
+												var taxclass_id = $(row).attr('data-tax');
+												var price_quantity = $(row).attr('data-price-quantity');
+												var tmp_products_id = $(row).attr('data-tmp-products-id');
+												var channel_id = $(row).attr('data-channel-id');
+												var customergroup_id = $(row).attr('data-customergroup-id');
+												
+												$('#prices_add_price_id').val(price_id);
+												$('#products_prices_netto').val(price_netto);
+												$("#prices_taxclass").val(taxclass_id);
+												$("#price_quantity").val(price_quantity);
+												$('#prices_edit_channel_id').val(channel_id);
+												$('#prices_edit_customergroup_id').val(customergroup_id);
+												
+												//set values important for edit mode..
+												$('#prices_edit_mode').val('edit');
+												$('#prices_edit_price_netto').val(price_netto);
+												$('#prices_edit_taxclass').val(taxclass_id);
+												$('#prices_edit_price_quantity').val(price_quantity);
+												
+												prices_edit_row = row;
+												
+												show_products_price_delete_editor(item);
+										}
+										
+										//price_edit_dialog
+										function price_edit_dialog(event, item) {
+												event.stopPropagation();
+														
+												//get the parent tr..
+												var row = $(item).closest("tr");
+												
+												//load the items data..
+												var price_id = $(row).attr('data-price-id');
+												var price_netto = $(row).attr('data-netto');
+												var taxclass_id = $(row).attr('data-tax');
+												var price_quantity = $(row).attr('data-price-quantity');
+												var tmp_products_id = $(row).attr('data-tmp-products-id');
+												var channel_id = $(row).attr('data-channel-id');
+												var customergroup_id = $(row).attr('data-customergroup-id');
+												
+												//set the input fields with that data
+												$('#prices_add_price_id').val(price_id);
+												$('#products_prices_netto').val(price_netto);
+												$("#prices_taxclass").val(taxclass_id);
+												price_update_brutto_from_netto();
+												$("#price_quantity").val(price_quantity);
+												$('.selectpicker').selectpicker('refresh');
+												$('#prices_edit_channel_id').val(channel_id);
+												$('#prices_edit_customergroup_id').val(customergroup_id);
+												
+												//set values important for edit mode..
+												$('#prices_edit_mode').val('edit');
+												$('#prices_edit_price_netto').val(price_netto);
+												$('#prices_edit_taxclass').val(taxclass_id);
+												$('#prices_edit_price_quantity').val(price_quantity);
+
+												prices_edit_row = row;
+
+												show_products_price_editor(item);
+										}
+										
+										//price- netto to brutto
+										function price_update_brutto_from_netto() {
+												var netto = $('#products_prices_netto').val();
+												var tax = $('#prices_taxclass').find(':selected').attr('data-taxclass-value');		//Retrieve it as a string -> thats why we use .attr instead of ,data
+												
+												var brutto = mv_netto_to_brutto(netto, tax);
+												
+												$('#products_prices_brutto').val(brutto);
+										}
+										
+										$( function() {
+												$('#products_prices_netto').change( function(event) {
+														event.stopPropagation();
+												
+														price_update_brutto_from_netto();
+												});
+												
+												$('#products_prices_netto').keyup( function(event) {
+														event.stopPropagation();
+														
+														price_update_brutto_from_netto();												
+												});
+										});
+										
+										//price - brutto to netto
+										function price_update_netto_from_brutto() {
+												var brutto = $('#products_prices_brutto').val();
+												var tax = $('#prices_taxclass').find(':selected').attr('data-taxclass-value');		//Retrieve it as a string -> thats why we use .attr instead of ,data
+												
+												var netto = mv_brutto_to_netto(brutto, tax);
+												
+												$('#products_prices_netto').val(netto);
+										}
+										
+										$( function() {
+												$('#products_prices_brutto').change( function(event) {
+														event.stopPropagation();
+												
+														price_update_netto_from_brutto();
+												});
+												
+												$('#products_prices_brutto').keyup( function(event) {
+														event.stopPropagation();
+														
+														price_update_netto_from_brutto();
+												});
+										});
+										
+										//update prices when tax class is changed
+										$( function() {
+												$('#prices_taxclass').change( function(event) {
+														event.stopPropagation();
+														
+														//check if a net value is set..
+														var netto = $('#products_prices_netto').val();
+														netto = mv_parse_float(netto);
+														
+														//if no net value is set, check the gros
+														if(isNaN(netto)) {
+																var brutto = $('#products_prices_brutto').val();
+																brutto = mv_parse_float(brutto);
+																
+																//if no gros is set and no net is set - use zero..
+																if(isNaN(brutto)) {
+																		$('#products_prices_netto').val(0);
+																		$('#products_prices_brutto').val(0);
+																} else {
+																		//update net price
+																		price_update_netto_from_brutto();
+																}
+														} else {
+																price_update_brutto_from_netto();
+														}
+												});
+										});
+										
+										//delete button - to delete a price
+										function mv_price_delete(price_id, channel_id, customergroup_id, netto, taxclass_id, price_quantity, tmp_products_id, remove, taxvalue, old_netto, old_taxclass_id, old_price_quantity, mode) {
+												//save the content via ajax..
+												var params = { 
+																		s: 'cAdminproducts', 
+																		action: 'ajax_price_save_tmp_delete', 
+																		price_id: price_id,
+																		channel_id: channel_id,
+																		customergroup_id: customergroup_id,
+																		netto: netto,
+																		taxclass_id: taxclass_id, 
+																		price_quantity: price_quantity, 
+																		tmp_products_id: tmp_products_id, 
+																		remove: remove,
+																		old_netto: old_netto,
+																		old_taxclass_id: old_taxclass_id,
+																		old_price_quantity: old_price_quantity
+																		};
+												params = $.param(params);
+												
+												$.ajax({
+														type: "POST",
+														url: "index.php?" + params,
+												}).done(function( msg ) {
+														//remove the item of the list and close the dialog..
+														$(prices_edit_row).remove();
+														$('#products_prices_delete_editor').modal('hide');
+												});
+										}
+										
+										//add button - to add a price
+										function mv_price_save(price_id, channel_id, customergroup_id, netto, taxclass_id, price_quantity, tmp_products_id, remove, taxvalue, old_netto, old_taxclass_id, old_price_quantity, mode) {
+												//save the content via ajax..
+												var params = { 
+																		s: 'cAdminproducts', 
+																		action: 'ajax_price_save_tmp', 
+																		price_id: price_id,
+																		channel_id: channel_id,
+																		customergroup_id: customergroup_id,
+																		netto: netto, 
+																		taxclass_id: taxclass_id, 
+																		price_quantity: price_quantity, 
+																		tmp_products_id: tmp_products_id, 
+																		remove: remove,
+																		old_netto: old_netto,
+																		old_taxclass_id: old_taxclass_id,
+																		old_price_quantity: old_price_quantity
+																		};
+												params = $.param(params);
+												
+												$.ajax({
+														type: "POST",
+														url: "index.php?" + params,
+												}).done(function( msg ) {
+														if(mode == 'new') {
+																if(msg.indexOf('insert') != -1) {		//message returns an insert with a simple string..
+																		//add the entry to the html table
+																		var trow = '';
+																		var text_button_edit = $('#prices_text_button_edit').val();
+																		var text_button_delete = $('#prices_text_button_delete').val();
+																		
+																		trow = '<tr data-customergroup-id="' + customergroup_id + '" data-price-id="' + price_id + '" data-netto="' + netto + '" data-tax="' + taxclass_id + '" data-price-quantity="' + price_quantity + '" data-tmp-products-id="' + tmp_products_id + '">';
+																				trow += '<td>' + price_quantity + '</td>';
+																																							
+																				trow += '<td>' + mv_number_format_decimal(netto.toString()) + '</td>';
+																				trow += '<td>' + taxvalue + '%</td>';
+																				
+																				trow += '<td>' + mv_number_format_decimal(mv_netto_to_brutto(netto.toString(), taxvalue.toString()).toString()) + '</td>';
+																				trow += '<td>';
+																						trow += '<button type="button" class="price_edit">' + text_button_edit + '</button>';
+																						trow += '<button type="button" class="price_delete">' + text_button_delete + '</button>';
+																				trow += '</td>';
+																		trow += '</tr>';
+																		
+																		$('#products_prices_' + channel_id + '_' + customergroup_id + ' tbody').append(trow);
+																		
+																		//disable and re-enable the click function for the edit buttons
+																		$('.price_edit').off('click');
+																		$('.price_edit').on('click', function(event) {
+																				price_edit_dialog(event, this);
+																		});
+																		
+																		//disable and re-enable the click function for the delete buttons
+																		$('.price_delete').off('click');
+																		$('.price_delete').on('click', function(event) {
+																				price_delete_dialog(event, this);
+																		});
+																}
+																
+																//hide window
+																$('#products_prices_add_editor').modal('hide');
+														} else {
+																//update the table row..
+																$(prices_edit_row).attr('data-netto', netto);
+																$(prices_edit_row).attr('data-tax', taxclass_id);
+																$(prices_edit_row).attr('data-price-quantity', price_quantity);
+																$(prices_edit_row).find('td:nth-child(1)').html(price_quantity);
+																$(prices_edit_row).find('td:nth-child(2)').html( mv_number_format_decimal(netto.toString()) );
+																$(prices_edit_row).find('td:nth-child(3)').html(taxvalue + '%');
+																$(prices_edit_row).find('td:nth-child(4)').html( mv_number_format_decimal(mv_netto_to_brutto(netto.toString(), taxvalue.toString()).toString()) );
+																
+																$('#products_prices_add_editor').modal('hide');
+														}
+												});
+										}
+										
+										$( function() {
+												$('#add_product_price_submit').click( function() {
+														var price_id = $('#prices_add_price_id').val();
+														var netto = mv_parse_float($('#products_prices_netto').val());
+														var taxclass_id = $('#prices_taxclass').val();
+														var price_quantity = mv_parse_float($('#price_quantity').val());
+														var tmp_products_id = $('#tmp_products_id').val();
+														var remove = false;
+														var taxvalue = $('#prices_taxclass').find(':selected').attr('data-taxclass-value');
+														
+														var edit_mode = $('#prices_edit_mode').val();
+														var channel_id = $('#prices_edit_channel_id').val();
+														var customergroup_id = $('#prices_edit_customergroup_id').val();
+														var old_netto = $('#prices_edit_price_netto').val();
+														var old_taxclass_id = $('#prices_edit_taxclass').val();
+														var old_price_quantity = $('#prices_edit_price_quantity').val();
+														
+														mv_price_save(price_id, channel_id, customergroup_id, netto, taxclass_id, price_quantity, tmp_products_id, remove, taxvalue, old_netto, old_taxclass_id, old_price_quantity, edit_mode);
+												});
+												
+												$('#add_product_price_delete').click( function() {
+														var price_id = $('#prices_add_price_id').val();
+														var netto = mv_parse_float($('#products_prices_netto').val());
+														var taxclass_id = $('#taxclass').val();
+														var price_quantity = $('#price_quantity').val();
+														var tmp_products_id = $('#tmp_products_id').val();
+														var remove = 1;
+														var taxvalue = $('#prices_taxclass').find(':selected').attr('data-taxclass-value');
+														
+														var edit_mode = $('#prices_edit_mode').val();
+														var channel_id = $('#prices_edit_channel_id').val();
+														var customergroup_id = $('#prices_edit_customergroup_id').val();
+														var old_netto = $('#prices_edit_price_netto').val();
+														var old_taxclass_id = $('#prices_edit_taxclass').val();
+														var old_price_quantity = $('#prices_edit_price_quantity').val();
+														
+														mv_price_delete(price_id, channel_id, customergroup_id, netto, taxclass_id, price_quantity, tmp_products_id, remove, taxvalue, old_netto, old_taxclass_id, old_price_quantity, edit_mode);
+												});
+												
+												//edit price
+												$('.price_edit').click( function(event) {
+														price_edit_dialog(event, this);
+												});
+												
+												//delete price
+												$('.price_delete').click( function(event) {
+														price_delete_dialog(event, this);
+												});
+										});
+										
+										</script>
+								{/literal}
+						</div>
+						<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">{$smarty.const.TEXT_BUTTON_CANCEL}</button>
+								<button type="button" class="btn btn-primary" id="add_product_price_submit">{$smarty.const.TEXT_BUTTON_SAVE}</button>
+						</div>
+				</div>
+		</div>
+</div>
+
+

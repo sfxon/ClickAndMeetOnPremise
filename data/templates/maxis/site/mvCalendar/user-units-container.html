@@ -1,0 +1,9 @@
+<div class="kalender-user-unit">
+    <label for="mv-kalender-user-unit">{$MV_CALENDAR_TEXTS['user_unit_title']}</label>
+    <select id="mv-kalender-user-unit" class="form-control">
+        <option value="0">{$MV_CALENDAR_TEXTS['user_unit_dropdown_all']}</option>
+        {foreach from=$USER_UNITS item=uu}
+            <option value="{$uu.id}" data-attr-event-location-id="{$uu.event_location_id}">{$uu.title_long}</option>
+        {/foreach}
+    </select>
+</div>

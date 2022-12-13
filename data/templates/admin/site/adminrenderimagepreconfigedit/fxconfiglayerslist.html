@@ -1,0 +1,9 @@
+{foreach from=$LAYERS item=layer}
+		{include file="./fxconfiglayerslist_item.html"}
+
+		{if !empty($layer.child_layers)}
+				{foreach from=$layer.child_layers item=child_layer}
+						{include file="./fxconfiglayerslist_item_child.html"}
+				{/foreach}
+		{/if}
+{/foreach}

@@ -1,0 +1,37 @@
+<?php
+
+class cApiOutput {
+		//////////////////////////////////////////////////////////////////////////////////
+		// Fehlernachricht senden..
+		//////////////////////////////////////////////////////////////////////////////////
+		public static function sendError($errorcode, $errormessage, $details = false) {
+				$data = array(
+						'status' => 'error',
+						'errorcode' => $errorcode,
+						'errormessage' => $errormessage,
+						'details' => $details
+				);
+				cApiOutput::sendAnswer($data);
+		}
+		
+		//////////////////////////////////////////////////////////////////////////////////
+		// Fehlernachricht senden..
+		//////////////////////////////////////////////////////////////////////////////////
+		public static function sendData($statuscode, $data) {
+				$data = array(
+						'status' => 'success',
+						'statuscode' => $statuscode,
+						'data' => $data
+				);
+				cApiOutput::sendAnswer($data);
+		}
+		
+		//////////////////////////////////////////////////////////////////////////////////
+		// Antwort senden.
+		//////////////////////////////////////////////////////////////////////////////////
+		public static function sendAnswer($array) {
+				$json = json_encode($array, JSON_PRETTY_PRINT);
+				echo $json;
+				die;
+		}
+}

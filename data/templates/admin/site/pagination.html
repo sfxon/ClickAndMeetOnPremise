@@ -1,0 +1,20 @@
+<nav>
+		<ul class="pagination no-margin pull-right">
+    		{if $DATA.link_page_back != ''}
+        		<li><a href="{$DATA.link_page_back}" aria-label="{$smarty.const.TEXT_LABEL_PREVIOUS}"><span aria-hidden="true">&laquo;</span></a></li>
+      	{else}
+        		<li class="disabled"><a href="#" aria-label="{$smarty.const.TEXT_LABEL_PREVIOUS}"><span aria-hidden="true">&laquo;</span></a></li>
+        {/if}
+        
+        {foreach from=$DATA.link_pages item=page}
+        		<li {if $page.status != ''}class="{$page.status}"{/if}><a href="{if $page.url == ''}#{else}{$page.url}{/if}">{$page.title}</a></li>
+        {/foreach}
+        
+        {if $DATA.link_page_forward != ''}
+        		<li><a href="{$DATA.link_page_forward}" aria-label="{$smarty.const.TEXT_LABEL_PREVIOUS}"><span aria-hidden="true">&raquo;</span></a></li>
+      	{else}
+        		<li class="disabled"><a href="#" aria-label="{$smarty.const.TEXT_LABEL_PREVIOUS}"><span aria-hidden="true">&raquo;</span></a></li>
+        {/if}
+
+    </ul>
+</nav>

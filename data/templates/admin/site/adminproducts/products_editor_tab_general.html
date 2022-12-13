@@ -1,0 +1,167 @@
+<div class="mvbox">
+		<div class="mvbox-body">
+				<div class="row">
+						{* <!-- Linke Spalte --> *}
+						<div class="col-sm-6">
+								<div class="form-group col-sm-12">
+										<label for="declaration_erroneous">{$smarty.const.TEXT_LABEL_DECLARATION_ERRONEOUS}</label>
+										<select class="form-control selectpicker" name="declaration_erroneous">
+												<option value="0">{$smarty.const.TEXT_NO}</option>
+												<option value="1"{if $DATA.data.declaration_erroneous == 1} selected="selected"{/if}>{$smarty.const.TEXT_YES}</option>
+										</select>
+								</div>
+								
+								<div class="form-group col-sm-12">
+										<label for="declaration_incomplete">{$smarty.const.TEXT_LABEL_DECLARATION_INCOMPLETE}</label>
+										<select class="form-control selectpicker" name="declaration_incomplete">
+												<option value="0">{$smarty.const.TEXT_NO}</option>
+												<option value="1"{if $DATA.data.declaration_incomplete == 1} selected="selected"{/if}>{$smarty.const.TEXT_YES}</option>
+										</select>
+								</div>
+						
+								<div class="form-group col-sm-12">
+										<label for="products_number">{$smarty.const.TEXT_LABEL_PRODUCTS_NUMBER}</label>
+										<input type="text" class="form-control" placeholder="{$smarty.const.TEXT_LABEL_PRODUCTS_NUMBER}" value="{$DATA.data.products_number}" name="products_number" />
+								</div>
+								
+								<div class="form-group col-sm-12">
+										<label for="ean">{$smarty.const.TEXT_LABEL_EAN}</label>
+										<input type="text" class="form-control" placeholder="{$smarty.const.TEXT_LABEL_EAN}" value="{$DATA.data.ean}" name="ean" />
+								</div>
+								
+								<div class="form-group col-sm-12">
+										<label for="products_type">{$smarty.const.TEXT_LABEL_PRODUCTS_TYPE}</label>
+										<select class="form-control selectpicker" name="products_type">
+												{foreach from=$PRODUCTTYPES item=ptype}
+														<option value="{$ptype.id}"{if $DATA.data.products_type == $ptype.id} selected="selected"{/if}>{$ptype.title}</option>
+												{/foreach}
+										</select>
+								</div>
+								
+								<div class="form-group col-sm-12">
+										<label for="products_condition">{$smarty.const.TEXT_LABEL_PRODUCTS_CONDITION}</label>
+										<select class="form-control selectpicker" name="products_condition">
+												<option value="0">{$smarty.const.TEXT_PLEASE_CHOOSE}</option>
+												{foreach from=$PRODUCTCONDITIONS item=pcond}
+														<option value="{$pcond.id}"{if $DATA.data.products_condition == $pcond.id} selected="selected"{/if}>{$pcond.title}</option>
+												{/foreach}
+										</select>
+								</div>
+								
+								<div class="form-group col-sm-12">
+										<label for="virtual_article">{$smarty.const.TEXT_LABEL_PRODUCTS_VIRTUAL_ARTICLE}</label>
+										<select class="form-control selectpicker" name="virtual_article">
+												<option value="0"{if $DATA.data.virtual_article == '0'} selected="selected"{/if}>{$smarty.const.TEXT_NO}</option>
+												<option value="1"{if $DATA.data.virtual_article == '1'} selected="selected"{/if}>{$smarty.const.TEXT_YES}</option>
+										</select>
+								</div>
+								
+								<div class="form-group col-sm-12">
+										<label for="bulky_good">{$smarty.const.TEXT_LABEL_PRODUCTS_BULKY_GOOD}</label>
+										<select class="form-control selectpicker" name="bulky_good">
+												<option value="0"{if $DATA.data.bulky_good == '0'} selected="selected"{/if}>{$smarty.const.TEXT_NO}</option>
+												<option value="1"{if $DATA.data.bulky_good == '1'} selected="selected"{/if}>{$smarty.const.TEXT_YES}</option>
+										</select>
+								</div>
+								
+								<div class="form-group col-sm-12">
+										<label for="spedition">{$smarty.const.TEXT_LABEL_PRODUCTS_SPEDITION}</label>
+										<select class="form-control selectpicker" name="spedition">
+												<option value="0"{if $DATA.data.spedition == '0'} selected="selected"{/if}>{$smarty.const.TEXT_NO}</option>
+												<option value="1"{if $DATA.data.spedition == '1'} selected="selected"{/if}>{$smarty.const.TEXT_YES}</option>
+										</select>
+								</div>
+								
+								<div class="form-group col-sm-12">
+										<label for="delivery_status">{$smarty.const.TEXT_LABEL_PRODUCTS_DELIVERY_STATUS}</label>
+										<select class="form-control selectpicker" name="delivery_status">
+												<option value="0">{$smarty.const.TEXT_PLEASE_CHOOSE}</option>
+												{foreach from=$DELIVERYSTATUS item=dstat}
+														<option value="{$dstat.id}"{if $DATA.data.delivery_status == $dstat.id} selected="selected"{/if}>{$dstat.title}</option>
+												{/foreach}
+										</select>
+								</div>
+								
+								<div class="form-group col-sm-12">
+										<label for="manufacturer">{$smarty.const.TEXT_LABEL_PRODUCTS_MANUFACTURER}</label>
+										<select class="form-control selectpicker" name="manufacturer">
+												<option value="0">{$smarty.const.TEXT_PLEASE_CHOOSE}</option>
+												{foreach from=$MANUFACTURERS item=manufacturer}
+														<option value="{$manufacturer.id}" {if $DATA.data.manufacturer == $manufacturer.id} selected="selected"{/if}>{if $manufacturer.company == ''}{$manufacturer.firstname} {$manufacturer.lastname}{else}{$manufacturer.company}{/if}</option>
+												{/foreach}
+										</select>
+								</div>
+								
+								<div class="form-group col-sm-12">
+										<label for="manufacturers_number">{$smarty.const.TEXT_LABEL_MANUFACTURERS_NUMBER}</label>
+										<input type="text" class="form-control" placeholder="{$smarty.const.TEXT_LABEL_MANUFACTURERS_NUMBER}" value="{$DATA.data.manufacturers_number}" name="manufacturers_number" />
+								</div>
+						</div>
+						
+						{* <!-- Rechte Spalte --> *}
+						<div class="col-sm-6">
+								<div class="form-group col-sm-12">
+										<label for="vpe">{$smarty.const.TEXT_LABEL_PRODUCTS_VPE}</label>
+										<div class="row">
+												<div class="col-sm-3">
+														<input type="text" class="form-control" placeholder="{$smarty.const.TEXT_LABEL_PRODUCTS_VPE}" value="{$DATA.data.vpe}" name="vpe" />
+												</div>
+												<div class="col-sm-9">
+														<select class="form-control selectpicker" name="vpe_unit">
+																<option value="0">{$smarty.const.TEXT_PLEASE_CHOOSE}</option>
+																{foreach from=$PACKAGINGUNITS item=punit}
+																		<option value="{$punit.id}"{if $DATA.data.vpe_unit == $punit.id} selected="selected"{/if}>{$punit.title}</option>
+																{/foreach}
+														</select>
+												</div>
+										</div>
+								</div>
+								
+								<div class="form-group col-sm-12">
+										<label for="box_height">{$smarty.const.TEXT_LABEL_BOX_HEIGHT}</label>
+										<input type="text" class="form-control" placeholder="{$smarty.const.TEXT_LABEL_BOX_HEIGHT}" value="{$DATA.data.box_height}" name="box_height" />
+								</div>
+								
+								<div class="form-group col-sm-12">
+										<label for="box_width">{$smarty.const.TEXT_LABEL_BOX_WIDTH}</label>
+										<input type="text" class="form-control" placeholder="{$smarty.const.TEXT_LABEL_BOX_WIDTH}" value="{$DATA.data.box_width}" name="box_width" />
+								</div>
+								
+								<div class="form-group col-sm-12">
+										<label for="box_depth">{$smarty.const.TEXT_LABEL_BOX_DEPTH}</label>
+										<input type="text" class="form-control" placeholder="{$smarty.const.TEXT_LABEL_BOX_DEPTH}" value="{$DATA.data.box_depth}" name="box_depth" />
+								</div>
+								
+								<div class="form-group col-sm-12">
+										<label for="products_height">{$smarty.const.TEXT_LABEL_PRODUCTS_HEIGHT}</label>
+										<input type="text" class="form-control" placeholder="{$smarty.const.TEXT_LABEL_PRODUCTS_HEIGHT}" value="{$DATA.data.products_height}" name="products_height" />
+								</div>
+								
+								<div class="form-group col-sm-12">
+										<label for="products_width">{$smarty.const.TEXT_LABEL_PRODUCTS_WIDTH}</label>
+										<input type="text" class="form-control" placeholder="{$smarty.const.TEXT_LABEL_PRODUCTS_WIDTH}" value="{$DATA.data.products_width}" name="products_width" />
+								</div>
+								
+								<div class="form-group col-sm-12">
+										<label for="products_depth">{$smarty.const.TEXT_LABEL_PRODUCTS_DEPTH}</label>
+										<input type="text" class="form-control" placeholder="{$smarty.const.TEXT_LABEL_PRODUCTS_DEPTH}" value="{$DATA.data.products_depth}" name="products_depth" />
+								</div>
+								
+								<div class="form-group col-sm-12">
+										<label for="box_weight">{$smarty.const.TEXT_LABEL_BOX_WEIGHT}</label>
+										<input type="text" class="form-control" placeholder="{$smarty.const.TEXT_LABEL_BOX_WEIGHT}" value="{$DATA.data.box_weight}" name="box_weight" />
+								</div>
+								
+								<div class="form-group col-sm-12">
+										<label for="products_weight">{$smarty.const.TEXT_LABEL_PRODUCTS_WEIGHT}</label>
+										<input type="text" class="form-control" placeholder="{$smarty.const.TEXT_LABEL_PRODUCTS_WEIGHT}" value="{$DATA.data.products_weight}" name="products_weight" />
+								</div>
+								
+								<div class="form-group col-sm-12">
+										<label for="dimensional_weight">{$smarty.const.TEXT_LABEL_DIMENSIONAL_WEIGHT}</label>
+										<input type="text" class="form-control" placeholder="{$smarty.const.TEXT_LABEL_DIMENSIONAL_WEIGHT}" value="{$DATA.data.dimensional_weight}" name="dimensional_weight" />
+								</div>
+						</div>
+				</div>
+		</div>
+</div>

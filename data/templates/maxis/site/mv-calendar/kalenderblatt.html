@@ -1,0 +1,61 @@
+<table class="tabelle">
+		<col><col><col><col><col><col><col>
+    
+    {if $KALENDERBLATT_DATA.monat == $KALENDERBLATT_DATA.aktuelles_datum}
+    		<caption class="tab-header blau">{$KALENDERBLATT_DATA.monatsnamen[$KALENDERBLATT_DATA.monat]}</caption>
+    {else}
+    		<caption class="tab-header c-btn--primary">{$KALENDERBLATT_DATA.monatsnamen[$KALENDERBLATT_DATA.monat]}</caption>
+    {/if}
+    
+    <thead class="tab-head">
+				<tr>
+        		<th>Mo</th>
+            <th>Di</th>
+            <th>Mi</th>
+            <th>Do</th>
+            <th>Fr</th>
+            <th class="spalte">Sa</th>
+        		<th class="spalte">So</th>
+				</tr>
+		</thead>
+    <tbody class="tab_body">
+    		{foreach from=$KALENDERBLATT_DATA.kalender_rows item=row}
+        		<tr>
+        				{foreach from=$row item=day}
+            				{* <!-- TD --> *}
+                    {if $day.wochenende == true}
+                    		<td class="mv-kalender-tag tab_wochenende{if $day.ist_heute} kal_aktueller_tag c-btn--info{/if} {$day.is_choosable}" data-attr-tag="{$day.kal_anzeige_heute_tag|str_pad:2:"0":$smarty.const.STR_PAD_LEFT}" data-attr-monat="{$KALENDERBLATT_DATA.monat}" data-attr-jahr="{$KALENDERBLATT_DATA.jahr}">
+                    {elseif $day.ist_heute == true}
+                    		<td class="mv-kalender-tag kal_aktueller_tag c-btn--info {$day.is_choosable}" data-attr-tag="{$day.kal_anzeige_heute_tag|str_pad:2:"0":$smarty.const.STR_PAD_LEFT}" data-attr-monat="{$KALENDERBLATT_DATA.monat}" data-attr-jahr="{$KALENDERBLATT_DATA.jahr}">
+                    {elseif $day.is_day_of_month == true}
+                    		<td class="mv-kalender-tag kal_standard_tag {$day.is_choosable}" data-attr-tag="{$day.kal_anzeige_heute_tag|str_pad:2:"0":$smarty.const.STR_PAD_LEFT}" data-attr-monat="{$KALENDERBLATT_DATA.monat}" data-attr-jahr="{$KALENDERBLATT_DATA.jahr}">
+										{else}
+                    		<td class="{$day.is_choosable}">
+                    {/if}
+                    
+                    {* <!-- Tage --> *}
+                    {if $day.wochenende == true}
+                    		{$day.kal_anzeige_heute_tag}
+                    {elseif $day.ist_heute == true}
+                    		{$day.kal_anzeige_heute_tag}
+                    {elseif $day.is_day_of_month == true}
+                    		{$day.kal_anzeige_heute_tag}
+                    {else}
+                    		&nbsp;
+                    {/if}
+                    
+                    {* <!-- END TD --> *}
+                    {if $day.wochenende == true}
+                    		</td>
+                    {elseif $day.ist_heute == true}
+                    		</td>
+                    {elseif $day.is_day_of_month == true}
+                    		</td>
+                    {else}
+                    		</td>
+                    {/if}
+            		{/foreach}
+            </tr>
+        {/foreach}
+		</tbody>
+</table>

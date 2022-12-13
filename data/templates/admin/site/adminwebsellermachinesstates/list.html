@@ -1,0 +1,74 @@
+<div class="container-fluid">
+		<nav class="navbar navbar-default mv-navbar" role="navigation">
+				<div class="navbar-header">
+						<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+								<span class="sr-only">{$smarty.const.TEXT_TOGGLE_NAVIGATION}</span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+						</button>
+				</div>
+        
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <div class="navbar-left navbar-text">
+            		{$NAVBAR_TITLE}
+            </div>
+            
+            <div class="navbar-form navbar-right">
+                <div class="form-group">
+                    <a href="index.php?s=cAdminwebsellermachinesstates&amp;webseller_machines_id={$DATA.webseller_machines_id}&amp;action=new">
+                        <button type="submit" class="btn btn-default btn-sm">{$smarty.const.TEXT_BUTTON_NEW}</button>
+                    </a>
+                </div>
+            </div>
+        </div>
+		</nav>
+		
+		<div class="mv-force-table-responsive">
+				<table class="table table-hover table-condensed table-bordered table-striped">
+						<thead>
+								<tr>
+										<th>{$smarty.const.TEXT_TABLE_HEADING_ID}</th>
+										<th>{$smarty.const.TEXT_TABLE_HEADING_STATE_MACHINES_ID}</th>
+										<th>{$smarty.const.TEXT_TABLE_HEADING_LEVEL}</th>
+										<th>{$smarty.const.TEXT_TABLE_HEADING_PARENT_STATE_ID}</th>
+										<th>{$smarty.const.TEXT_TABLE_HEADING_STATUS}</th>
+										<th>{$smarty.const.TEXT_TABLE_HEADING_TITLE}</th>
+										<th>{$smarty.const.TEXT_TABLE_HEADING_TEMPLATE_FILE}</th>
+										<th>{$smarty.const.TEXT_TABLE_HEADING_ACTION}</th>
+								</tr>
+						</thead>
+						
+						<tbody>
+								{if $DATA.list|count == 0}
+										<tr><td colspan="8">{$smarty.const.TEXT_NO_DATA}</td></tr>
+								{else}
+										{foreach from=$DATA.list item=dataitem name=listforeach}
+												{if false !== $dataitem}
+														<tr>
+																<td>{$dataitem.id}</td>
+																<td>{$DATA.webseller_machines_id}</td>
+																<td>{$dataitem.level}</td>
+																<td>{$dataitem.parent_state_id}</td>
+																<td>{$dataitem.status}</td>
+																<td>{$dataitem.title}</td>
+																<td>{$dataitem.template_file}</td>
+																 <td>
+																 		{strip}
+																		<a href="index.php?s=cAdminwebsellermachinesstates&amp;id={$dataitem.id}&amp;action=edit&amp;webseller_machines_id={$DATA.webseller_machines_id}">
+																				<i class="fa fa-pencil"></i>
+																		</a>
+																		{/strip}&nbsp;&nbsp;&nbsp;{strip}
+																				<a href="index.php?s=cAdminwebsellermachinesstatesobjects&amp;webseller_machines_id={$dataitem.state_machines_id}&amp;webseller_machines_states_id={$dataitem.id}">
+																						<i class="fa fa-cog"></i>
+																				</a>
+																		{/strip}
+																 </td>
+														</tr>
+												{/if}
+										{/foreach}
+								{/if}
+						</tbody>
+				</table>
+		</div>
+</div>

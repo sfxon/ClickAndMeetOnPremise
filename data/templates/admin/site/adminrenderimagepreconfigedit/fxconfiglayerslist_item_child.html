@@ -1,0 +1,25 @@
+<div class="mvbox light-blue mvbox-body-collapsed layer mv_layer_child" data-attr-parent-layer-id="{$child_layer.parent_layer}" data-attr-sort-order="{$child_layer.sort_order}">
+		<div class="mvbox-title">
+				<div class="caption"><i class="fa fa-caret-right mv-indicate-collapsed-field" aria-hidden="true"></i>&nbsp;{if !isset($child_layer.rendererfxconfig_data.name)}--- Neuer Layer ---{else}{$child_layer.rendererfxconfig_data.name}{/if}</div>
+				<div class="toolbox">
+						<i class="fa fa-times text-danger mv-action-delete-layer" aria-hidden="true" title="Löschen" data-attr-layer-id="{$child_layer.id}"></i>&nbsp;&nbsp;
+						<i class="fa fa-pencil mv-action-edit-layer" aria-hidden="true" title="Bearbeiten" data-attr-layer-id="{$child_layer.id}"></i>&nbsp;&nbsp;
+						<i class="fa fa-caret-up mv-action-move-up-layer" aria-hidden="true" title="Nach oben verschieben" data-attr-layer-id="{$child_layer.id}"></i>&nbsp;&nbsp;
+						<i class="fa fa-caret-down mv-action-move-down-layer" aria-hidden="true" title="Nach unten verschieben" data-attr-layer-id="{$child_layer.id}"></i>&nbsp;&nbsp;
+						{* <!-- <i class="fa fa-plus mv-action-add-child-layer" aria-hidden="true" title="Untereffekt einfügen"  data-attr-layer-id="{$child_layer.id}"></i> --> *}
+				</div>
+		</div>
+		<div class="mvbox-body">
+				<b>Details:</b>
+				{if isset($child_layer.rendererfxconfigfields_data) && !empty($child_layer.rendererfxconfigfields_data)}
+						<table class="table table-hover table-condensed table-bordered table-striped">
+								{foreach from=$child_layer.rendererfxconfigfields_data item=fields_data}
+										<tr>
+												<td>{$fields_data.name}:</td>
+												<td>{$fields_data.mv_current_value.value}</td>
+										</tr>
+								{/foreach}
+						</table>
+				{/if}
+		</div>
+</div>

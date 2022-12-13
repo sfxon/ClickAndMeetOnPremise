@@ -1,0 +1,77 @@
+<div class="container-fluid">
+		<nav class="navbar navbar-default mv-navbar" role="navigation">
+				<div class="navbar-header">
+						<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+								<span class="sr-only">{$smarty.const.TEXT_TOGGLE_NAVIGATION}</span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+						</button>
+				</div>
+				
+				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+						<div class="navbar-left navbar-text">
+								{$NAVBAR_TITLE}
+						</div>
+						
+						<div class="navbar-form navbar-right">
+								<div class="form-group">
+										{strip}
+										<a href="index.php?s=cAdminTest&amp;action=new">
+												<button type="submit" class="btn btn-default btn-sm">Neu</button>
+										</a>
+										{/strip}
+								</div>
+						</div>
+				</div>
+		</nav>
+
+		<div class="mv-force-table-responsive">
+				<table class="table table-hover table-condensed table-bordered table-striped">
+						<thead>
+								<tr>
+										<th>ID</th>
+                                        		                                        		                        		<th>Name</th>
+                                                                		                        		<th>Testfeld1</th>
+                                            										<th>Aktion</th>
+								</tr>
+						</thead>
+						
+						<tbody>
+								{if $DATA.list|count == 0}
+										<tr><td colspan="4">Es wurden keine Datens&auml;tze gefunden...</td></tr>
+								{else}
+										{foreach from=$DATA.list item=dataitem name=listforeach}
+												{if false !== $dataitem}
+														<tr>
+																<td>{$dataitem.id}</td>
+																
+                                		                                                                		                                                                    		<td>{$dataitem.title|htmlspecialchars}</td>
+                                                                    		                                                                    		<td>{$dataitem.testfeld1|htmlspecialchars}</td>
+                                                                                                    
+																<td>
+                                    {strip}
+																		<a href="index.php?s=cAdminTest&amp;id={$dataitem.id}&amp;action=edit">
+																				<i class="fa fa-pencil"></i>
+																		</a>
+																		{/strip}
+                                    
+																		{strip}
+                                    <a href="index.php?s=cAdminTest&amp;id={$dataitem.id}&amp;action=confirm_delete" title="Löschen">
+                                        <i class="fa fa-ban text-danger mv-fa-inline"></i>
+                                    </a>
+                                    {/strip}
+                                    
+																		<!--<a href="index.php?s=cAdminDemoSubValues&amp;demo_id=<br />
+<b>Notice</b>:  Undefined index: dataitem in <b>/var/www/vhosts/demo.clickandmeet.org/httpdocs/data/tmp/smarty/templates_c/4d8aff137ddb8daaf54581213aa00928fc32ef3e.string.php</b> on line <b>112</b><br />
+<br />
+<b>Notice</b>:  Trying to get property of non-object in <b>/var/www/vhosts/demo.clickandmeet.org/httpdocs/data/tmp/smarty/templates_c/4d8aff137ddb8daaf54581213aa00928fc32ef3e.string.php</b> on line <b>112</b><br />
+&amp;action=list"><button>Untereinträge bearbeiten</button></a>-->
+																 </td>
+														</tr>
+												{/if}
+										{/foreach}
+								{/if}
+				</table>
+		</div>
+</div>

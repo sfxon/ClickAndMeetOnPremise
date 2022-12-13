@@ -1,0 +1,351 @@
+html {height:100%} 
+body {min-height:100%}
+
+body {
+	background-image: linear-gradient(to right top, #051937, #004d7a, #008793, #00bf72, #a8eb12);
+	background-size: cover;
+	background-attachment: fixed;
+	background-position: center; 
+	min-height: 500px;
+	position: relative;
+	overflow: hidden;	/* Wichtig, auch, damit bei zu langen Pfeilverzweigungen keine Scroll-Leisten angezeigt werden. */
+}
+
+/* flex main content */
+.cover-container {
+	display: flex;
+	flex-direction:row;
+}
+
+header {
+	flex: 0 1 auto;
+	height: 65px;
+}
+
+#mv-guide-editor {
+	flex: 1 1 auto;
+}
+
+#mv-lists {
+	height: 100%;
+}
+
+.mv-list-inner {
+	display: flex;
+	flex-flow: column;
+	/* height: 80vh; */
+	max-height: 100%;
+}
+
+.mv-list-header {
+	background-color: #E4E9F1;
+	height: auto;
+	flex: 0 1 auto;
+}
+
+.mv-list-body {
+	background-color: #E4E9F1;
+	flex: 1 1 auto;
+}
+
+.mv-list-footer {
+	background-color: #E4E9F1;
+	flex: 0 1 auto;
+}
+
+
+
+/* more styles.. */
+.cover-container {
+	padding: 0!important;
+}
+	
+
+#mv-guide-editor {
+	-webkit-touch-callout: none; /* iOS Safari */
+	-webkit-user-select: none; /* Safari */
+	-khtml-user-select: none; /* Konqueror HTML */
+	-moz-user-select: none; /* Old versions of Firefox */
+	-ms-user-select: none; /* Internet Explorer/Edge */
+	user-select: none; /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
+	font-size: 0.9em;
+	height: 90%; 
+	text-align: left; 
+	min-width: 90%;
+	overflow-y: hidden; 
+	overflow-x: scroll; 
+	padding-bottom: 1rem; 
+	white-space:nowrap; 
+	cursor: grab;
+}
+
+.mv-list {
+	width: 278px;
+	height: 100%;
+	max-height: 100%;
+	background-color: transparent;
+	min-height: 50px;
+	border-radius: 5px;
+	display: inline-block;
+	margin: 0;
+	margin-right: 1rem;
+	vertical-align: top;
+	color: #0F1C31;
+	cursor: default;
+}
+
+.mv-list-body {
+	overflow-x: hidden; 
+	overflow-y: auto;
+	max-height: 100%;
+}
+
+#mv-lists, .mv-add-list {
+	display: inline-block;
+	vertical-align: top;
+}
+
+.mv-add-list {
+	background-color: rgba(255,255,255, 0.4);
+	width: 278px;
+	padding: 0.4rem 0.6rem 0.6rem;
+	border-radius: 5px;
+	cursor: pointer;
+	overflow: hidden;
+	
+}
+
+.mv-list-body { min-height: 100px; }
+
+.mv-list-item {
+	background-color: rgb(255,255,255);
+	cursor: pointer;
+	margin: 0.5rem;
+	padding: 0.4rem 0.6rem 0.6rem;
+	border-radius: 5px;
+}
+
+.mv-list-header-title, .mv-list-footer-action {
+	padding: 0.4rem 0.6rem 0.6rem;
+}
+
+.mv-list-header-title { 
+	font-weight: bold;
+	cursor: pointer;
+	overflow: hidden;
+}
+
+.mv-list-footer-action {
+	cursor: pointer;
+	color: #9194A2;
+	text-align: center;
+}
+
+.mv-list-footer-action:hover {
+	color: #009D86;
+	background-color: rgba(0, 0, 0, 0.2);
+}
+
+
+.mv-list-header {
+	display: flex;
+}
+
+.mv-list-header-title {
+	flex: 1 1 auto;
+	overflow: hidden;
+}
+
+
+.mv-list-header-edit-button {
+	flex: 0 0 auto;
+	padding: 0.4rem 0.6rem 0.6rem;
+	cursor: pointer;
+	display: none;
+}
+
+.mv-list:hover .mv-list-header-edit-button {
+	display: block;
+}
+
+.mv-list-header-edit-button:hover {
+	color: #009D86;
+}
+
+/* Editor Styles */
+.mv-modals {
+	color: rgb(15, 28, 49);
+}
+
+.mv-modals label {
+	width: 100%;
+}
+
+
+/* Karten-Details */
+.mv-card-content {
+	min-height: 20px;
+	border-top: 1px solid #CCC;
+	margin-top: 4px;
+	padding-bottom: 6px;
+	white-space: normal;
+}
+
+.mv-card-footer {
+	/*background-color: rgba(0, 0, 0, 0.1);*/
+	/*padding: 0.4rem 0.6rem 0.6rem;*/
+	text-align: center;
+	color: #9194A2;
+	
+}
+
+.mv-card-add-action {
+	margin-top: 12px;
+}
+
+.mv-card-add-action:hover {
+	color: #009D86;
+}
+
+.mv-card-header {
+	display: flex;
+}
+
+.mv-card-header-title {
+	flex: 1 1 auto;
+	overflow: hidden;
+}
+
+
+.mv-card-header-edit-button {
+	flex: 0 0 auto;
+	cursor: pointer;
+	display: none;
+	padding: 0 12px;
+}
+
+.mv-card:hover .mv-card-header-edit-button {
+	display: block;
+}
+
+.mv-card-header-edit-button:hover {
+	color: #009D86;
+}
+
+.mv-list-item.mv-action-hover {
+	background-color: #B7F2CC;
+}
+
+/* Lines between elements */
+.muConnector {
+  position: absolute;
+  border-left: 1px dashed red;
+  z-index: 10000;
+  -webkit-transform-origin: top left;
+  -moz-transform-origin: top left;
+  -o-transform-origin: top left;
+  -ms-transform-origin: top left;
+  transform-origin: top left;
+}
+
+
+body {
+  margin-bottom: 60px; /* Margin bottom by footer height */
+}
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 60px; /* Set the fixed height of the footer here */
+  line-height: 60px; /* Vertically center the text there */
+	color: #FFF;
+	text-align: right;
+  /* background-color: #f5f5f5; */
+}
+
+.footer a {
+		color: #FFF;
+		text-decoration: none;
+}
+
+#navbarCollapse {
+		background-color: #FFF;
+		margin-top: 16px;
+}
+#navbarCollapse a {
+		color: rgb(33, 37, 41);
+}
+
+@media (min-width: 768px) {
+		#navbarCollapse {
+				background-color: transparent;
+				margin-top: 0;
+		}
+		#navbarCollapse a {
+				color: rgba(255,255,255,.55);
+		}
+		#navbarCollapse a:hover {
+				color: rgba(255,255,255,.75);
+		}
+		
+		#navbarCollapse .navbar-nav.navbar-right a.nav-link {
+				color: rgb(33, 37, 41);
+		}
+		
+		footer,
+		header nav.navbar {
+				background-color: rgba(255,255,255,0.1);
+		}
+}
+
+header nav .container-fluid {
+		padding-left: 0;
+		padding-right: 0;
+}
+header .navbar-brand { padding-left: 16px; }
+header button.navbar-toggler { margin-right: 16px; }
+header .navbar-nav { padding: 15px; }
+
+
+
+/** styles for content pages.. **/
+body.content-page {
+		margin-top: 0;
+		margin-bottom: 0;
+		padding-top: 0;
+		padding-bottom: 0;
+		overflow: visible;
+		display: block;
+		min-height: 100%;
+}
+
+body.content-page header {
+		position: absolute;
+		top: 0; left: 0;
+}
+
+body.content-page .mv-container-min-full {
+		min-height: calc(100% - 60px);
+		padding-top: 128px;
+}
+
+body.content-page main {
+		margin-bottom: 0;
+}
+
+body.content-page footer.footer {
+		margin-top: 30px;
+		display: block;
+		position: relative;
+}
+
+body.content-page .mv-page>.container {
+		background-color: rgba(266,266,266,0.5);
+		padding-top: 30px;
+		padding-bottom: 30px;
+		padding-left: 45px;
+		padding-right: 45px;
+}
+
+
+

@@ -1,0 +1,146 @@
+<div class="container-fluid">
+		<nav class="navbar navbar-default mv-navbar" role="navigation">
+				<div class="navbar-header">
+						<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+								<span class="sr-only">{$smarty.const.TEXT_TOGGLE_NAVIGATION}</span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+						</button>
+				</div>
+				
+				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+						<div class="navbar-left navbar-text">
+								{$NAVBAR_TITLE}
+						</div>
+						
+						<div class="navbar-form navbar-right">
+                <div class="form-group">
+                    <a href="http://wiki/doku.php?id=scripting-AdminScriptsProcessesNodees#eintrag-bearbeiten" target="_blank">
+												<button type="submit" class="btn btn-success btn-sm">Hilfe</button>
+										</a>
+								</div>
+						</div>
+				</div>
+		</nav>
+		
+		<div class="mvbox">
+				<div class="mvbox-body">
+						<form role="form" action="{$DATA.url}" method="POST" class="form">
+								<div class="row">
+										<div class="col-xs-12 col-md-8">					
+												
+												{if $DATA.data.id != 0}								
+														<div class="row">
+																<div class="form-group col-sm-12">
+																		<label for="id">{$smarty.const.TEXT_LABEL_CONTENT_ID}</label>
+																		<input type="text" class="form-control" placeholder="{$smarty.const.TEXT_LABEL_CONTENT_ID}" name="id" value="{$DATA.data.id}" readonly="readonly" />
+																</div>
+														</div>
+												{/if}
+												
+												<div class="row">
+														<div class="form-group col-sm-12">
+																<label for="button_title">{$smarty.const.TEXT_LABEL_BUTTON_TITLE}</label>
+																<input type="text" class="form-control" placeholder="{$smarty.const.TEXT_LABEL_BUTTON_TITLE}" name="button_title" value="{$DATA.data.button_title}" />
+														</div>
+												</div>
+												
+												<div class="row">
+														<div class="form-group col-sm-12">
+																<label for="sort_order">{$smarty.const.TEXT_LABEL_SORT_ORDER}</label>
+																<input type="text" class="form-control" placeholder="{$smarty.const.TEXT_LABEL_SORT_ORDER}" name="sort_order" value="{$DATA.data.sort_order}" />
+														</div>
+												</div>
+												
+												<div class="row">
+														<div class="form-group col-sm-12">
+																<label for="next_processes_id">{$smarty.const.TEXT_LABEL_SCRIPTS_PROCESSES_ID}</label>
+														</div>
+												</div>
+												<div class="row">
+														<div class="form-group col-sm-8" id="next_processes_id_container">
+																<select name="next_processes_id" class="form-control" id="next_processes_id">
+																		<option value="0">-- Bitte wählen--</option>
+																		{foreach from=$SCRIPTS_PROCESSES_LIST item=process}
+																				<option value="{$process.id}"{if $process.id == $DATA.data.next_processes_id} selected="selected"{/if}>{$process.title|htmlspecialchars}</option>
+																		{/foreach}
+																</select>
+														</div>
+														<div class="col-sm-4">
+																<a href="index.php?s=cAdminScriptsProcesses&amp;scripts_id={$SCRIPTS_ID}" target="_blank"><button id="scripts_processes_id_add" class="btn btn-default" type="button">Eintrag hinzufügen</button></a>
+																<button id="next_processes_id_refresh" class="btn btn-default">Liste aktualisieren</button>&nbsp;&nbsp;
+														</div>
+												</div>
+												
+												<div class="row">
+														<div class="form-group col-sm-12">
+																<label for="scripts_button_styles_id">{$smarty.const.TEXT_LABEL_SCRIPTS_BUTTON_STYLES_ID}</label>
+																<select name="scripts_button_styles_id" class="form-control" id="scripts_button_styles_id">
+																		<option value="0">-- Bitte wählen--</option>
+																		{foreach from=$SCRIPTS_BUTTON_STYLES_LIST item=style}
+																				<option value="{$style.id}"{if $style.id == $DATA.data.scripts_button_styles_id} selected="selected"{/if}>{$style.title|htmlspecialchars}</option>
+																		{/foreach}
+																</select>
+														</div>
+												</div>
+												
+												<div class="row">
+														<div class="form-group col-sm-12">
+																<label for="scripts_button_areas_id">{$smarty.const.TEXT_LABEL_SCRIPTS_BUTTON_AREAS_ID}</label>
+																<select name="scripts_button_areas_id" class="form-control" id="scripts_button_areas_id">
+																		<option value="0">-- Bitte wählen--</option>
+																		{foreach from=$SCRIPTS_BUTTON_AREAS_LIST item=area}
+																				<option value="{$area.id}"{if $area.id == $DATA.data.scripts_button_areas_id} selected="selected"{/if}>{$area.title|htmlspecialchars}</option>
+																		{/foreach}
+																</select>
+														</div>
+												</div>
+												
+												<div class="row">
+														<div class="form-group col-sm-12">
+																<label for="type">{$smarty.const.TEXT_LABEL_TYPE}</label>
+																<select name="type" class="form-control" id="type">
+																		<option value="site">Seite</option>
+																		<option value="popup"{if $DATA.data.type == 'popup'} selected="selected"{/if}>Popup</option>
+																</select>
+														</div>
+												</div>
+												
+												<div class="row">
+														<div class="form-group col-sm-12">
+																<label for="open_as_customer_edit">Dialog zum Bearbeiten des Ansprechpartners anzeigen?</label>
+																<select name="open_as_customer_edit" class="form-control" id="open_as_customer_edit">
+																		<option value="0">Nein</option>
+																		<option value="1"{if $DATA.data.open_as_customer_edit == 1} selected="selected"{/if}>Ja</option>
+																</select>
+														</div>
+												</div>
+												
+												<div class="row">
+														<div class="form-group col-sm-12">
+																<label for="replace_customers_edit_action">"Ansprechpartner &auml;ndern" Button mit dieser Aktion beim Speichern ersetzen</label>
+																<select name="replace_customers_edit_action" class="form-control" id="layout">
+																		<option value="0">Nein</option>
+																		<option value="1"{if $DATA.data.replace_customers_edit_action == 1} selected="selected"{/if}>Ja</option>
+																</select>
+														</div>
+												</div>
+
+										</div>
+																				
+										<div class="col-xs-12">
+												<div class="row">
+														<div class="form-group col-sm-12">
+																<input type="hidden" name="id" id="id" value="{$DATA.data.id}" />
+																<input type="hidden" name="scripts_id" id="scripts_id" value="{$SCRIPTS_ID}" />
+																<input type="hidden" name="processes_id" id="processes_id" value="{$PROCESSES_ID}" />
+																<button type="submit" class="btn btn-primary">{$smarty.const.TEXT_BUTTON_SAVE}</button>
+														</div>
+												</div>
+										</div>
+								</form>
+						</div>
+				</div>
+		</div>
+</div>

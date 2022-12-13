@@ -1,0 +1,7 @@
+Hi,
+								
+wir freuen uns, dass du dich registriert hast.
+Um die Registrierung abzuschließen, musst du nur noch deine E-Mail Adresse bestätigen.
+
+Klicke dazu auf diesen Link: {$URL}
+								

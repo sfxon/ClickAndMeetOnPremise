@@ -1,0 +1,95 @@
+<div class="container-fluid">
+		<nav class="navbar navbar-default mv-navbar" role="navigation">
+				<div class="navbar-header">
+						<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+								<span class="sr-only">{$smarty.const.TEXT_TOGGLE_NAVIGATION}</span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+						</button>
+				</div>
+				
+				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+						<div class="navbar-left navbar-text">
+								{$NAVBAR_TITLE}
+						</div>
+						
+						<div class="navbar-form navbar-right">
+                <div class="form-group">
+                    <a href="http://wiki/doku.php?id=scripting-AdminScriptsProcesses#eintrag-bearbeiten" target="_blank">
+												<button type="submit" class="btn btn-success btn-sm">Hilfe</button>
+										</a>
+								</div>
+						</div>
+				</div>
+		</nav>
+		
+		<div class="mvbox">
+				<div class="mvbox-body">
+						<form role="form" action="{$DATA.url}" method="POST" class="form">
+								<div class="row">
+										<div class="col-xs-12 col-md-8">					
+												
+												{if $DATA.data.id != 0}								
+														<div class="row">
+																<div class="form-group col-sm-12">
+																		<label for="id">{$smarty.const.TEXT_LABEL_CONTENT_ID}</label>
+																		<input type="text" class="form-control" placeholder="{$smarty.const.TEXT_LABEL_CONTENT_ID}" name="id" value="{$DATA.data.id}" readonly="readonly" />
+																</div>
+														</div>
+												{/if}
+												
+												<div class="row">
+														<div class="form-group col-sm-12">
+																<label for="title">{$smarty.const.TEXT_LABEL_TITLE}</label>
+																<input type="text" class="form-control" placeholder="{$smarty.const.TEXT_LABEL_TITLE}" name="title" value="{$DATA.data.title}" />
+														</div>
+												</div>
+												
+												<div class="row">
+														<div class="form-group col-sm-12">
+																<label for="scripts_contents_id">{$smarty.const.TEXT_LABEL_SCRIPTING_CONTENTS_ID}</label>
+														</div>
+												</div>
+												<div class="row">
+														<div class="form-group col-sm-8" id="scripts_contents_id_container">
+																<select name="scripts_contents_id" class="form-control" id="scripts_contents_id">
+																		<option value="0">-- Bitte wählen--</option>
+																		{foreach from=$SCRIPTS_CONTENTS_LIST item=content}
+																				<option value="{$content.id}"{if $content.id == $DATA.data.scripts_contents_id} selected="selected"{/if}>{$content.title|htmlspecialchars}</option>
+																		{/foreach}
+																</select>
+														</div>
+														<div class="col-sm-4">
+																<a href="index.php?s=cAdminScriptsContents" target="_blank"><button id="scripts_contents_id_add" class="btn btn-default" type="button">Eintrag hinzufügen</button></a>
+																<button id="scripts_contents_id_refresh" class="btn btn-default">Liste aktualisieren</button>&nbsp;&nbsp;
+														</div>
+												</div>
+												
+												<div class="row">
+														<div class="form-group col-sm-12">
+																<label for="show_edit_customers_data_button">Button "Ansprechpartner &auml;ndern" anzeigen</label>
+																<select name="show_edit_customers_data_button" class="form-control" id="layout">
+																		<option value="0">Standard: Wie im Script eingestellt</option>
+																		<option value="1"{if $DATA.data.show_edit_customers_data_button == 1} selected="selected"{/if}>Anzeigen</option>
+																		<option value="2"{if $DATA.data.show_edit_customers_data_button == 2} selected="selected"{/if}>Nicht Anzeigen </option>
+																</select>
+																<p>Diese Einstellung überschreibt die Einstellung im Script für diese Seite. Sie hat also eine höhere Priorität!</p>
+														</div>
+												</div>
+										</div>
+										
+										<div class="col-xs-12">
+												<div class="row">
+														<div class="form-group col-sm-12">
+																<input type="hidden" name="id" id="id" value="{$DATA.data.id}" />
+																<input type="hidden" name="scripts_id" id="scripts_id" value="{$SCRIPTS_ID}" />
+																<button type="submit" class="btn btn-primary">{$smarty.const.TEXT_BUTTON_SAVE}</button>
+														</div>
+												</div>
+										</div>
+								</form>
+						</div>
+				</div>
+		</div>
+</div>

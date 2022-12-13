@@ -1,0 +1,485 @@
+<input type="hidden" value="{$smarty.const.TEXT_BUTTON_EDIT}" id="prices_text_button_edit" />
+<input type="hidden" value="{$smarty.const.TEXT_PRICES_BUTTON_DELETE}" id="prices_text_button_delete" />
+
+<div class="mvbox">
+		<div class="mvbox-body">
+				<div class="row">
+						<div class="col col-md-12 col-sm-12">
+								<div class="mvbox gray">
+										<div class="mvbox-title">
+												<div class="caption">{$smarty.const.TEXT_HEADING_BUYING_PRICES}</div>
+										</div>
+										
+										<div class="mvbox-body">
+												<table class="table table-hover table-condensed table-bordered table-striped" id="products_buying_prices">
+														<thead>
+																<tr>
+																		<th>{$smarty.const.TEXT_HEADING_SUPPLIER}</th>
+																		<th>{$smarty.const.TEXT_HEADING_PRICE_NETTO}</th>
+																		<th>{$smarty.const.TEXT_HEADING_TAX_CLASS}</th>
+																		<th>{$smarty.const.TEXT_HEADING_PRICE_BRUTTO}</th>
+																		<th>{$smarty.const.TEXT_TABLE_HEADING_ACTION}</th>
+																</tr>
+														</thead>
+														<tbody>
+																{foreach from=$BUYING_PRICES item=buying_price}
+																		<tr data-buying-price-id="{$buying_price.id}" data-netto="{$buying_price.price_netto_formated}" data-tax="{$buying_price.taxclass_id}" data-suppliers-id="{$buying_price.suppliers_id}" data-tmp-products-id="{$DATA.data.tmp_products_id}">
+																				<td>{$buying_price.suppliers_name}</td>
+																				<td>{$buying_price.price_netto_formated}</td>
+																				<td>{$buying_price.taxclass_name}</td>
+																				<td>{$buying_price.price_brutto_formated}</td>
+																				<td>
+																						<button class="buying_price_edit" type="button">{$smarty.const.TEXT_BUTTON_EDIT}</button>
+																						<button class="buying_price_delete" type="button">{$smarty.const.TEXT_PRICES_BUTTON_DELETE}</button>
+																				</td>
+																		</tr>
+																{/foreach}
+														</tbody>
+												</table>
+										
+												<button type="button" id="add_buying_price">{$smarty.const.TEXT_BUTTON_ADD_BUYING_PRICE}</button>
+										</div>
+								</div>
+						</div>
+				</div>
+				
+				{literal}
+				<script>
+						var buying_prices_edit_row = false;
+				
+						$(function() {		
+								$('#add_buying_price').click( function(event) {
+										event.stopPropagation();
+				
+										//set the input fields with that data
+										$('#buying_prices_add_buying_price_id').val('0');
+										$('#products_buying_prices_netto').val('0');
+										$("#buying_prices_taxclass").val('0');
+										$('#products_buying_prices_brutto').val('0');
+										$("#supplier").val('0');
+										$('.selectpicker').selectpicker('refresh');
+										
+										//set values important for edit mode..
+										$('#buying_prices_edit_mode').val('new');
+										$('#buying_prices_edit_price_netto').val('0');
+										$('#buying_prices_edit_taxclass').val('0');
+										$('#buying_prices_edit_supplier').val('0');
+										
+										buying_prices_edit_row = false;
+										
+										show_products_buying_price_editor(this);
+								});
+						});
+				</script>
+				{/literal}
+				
+				<!-- hidden fields for the modal edit and delete dialogs for buying prices -->
+				<input type="hidden" id="buying_prices_add_buying_price_id" value="0" />
+				<input type="hidden" id="buying_prices_edit_mode" value="new" />
+				<input type="hidden" id="buying_prices_edit_price_netto" value="" />
+				<input type="hidden" id="buying_prices_edit_taxclass" value="" />
+				<input type="hidden" id="buying_prices_edit_supplier" value="" />
+				
+				<!-- Modal dialog for deleting an item -->
+				<div class="modal fade" id="products_buying_prices_delete_editor" tabindex="-1" role="dialog" aria-labbelledby="{$smarty.const.TEXT_TITLE_DELETE_PRODUCTS_BUYING_PRICE}" aria-hidden="true">
+						<div class="modal-dialog">
+								<div class="modal-content">
+										<div class="modal-header">
+												<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">{$smarty.const.TEXT_BUTTON_CLOSE}</span></button>
+												<h4 class="modal-title" id="myModalLabel">{$smarty.const.TEXT_TITLE_DELETE_PRODUCTS_BUYING_PRICE}</h4>
+										</div>
+										
+										<div class="modal-body">
+												<p>{$smarty.const.TEXT_DELETE_PRODUCTS_BUYING_PRICE}</p>
+										</div>
+										<div class="modal-footer">
+												{* <!--
+												<input type="hidden" id="add_product_category_channel_id" value="" />
+												<input type="hidden" id="add_product_category_parent_id" value="" />
+												--> *}
+												<button type="button" class="btn btn-default" data-dismiss="modal">{$smarty.const.TEXT_BUTTON_CANCEL}</button>
+												<button type="button" class="btn btn-primary" id="add_product_buying_price_delete">{$smarty.const.TEXT_BUTTON_DELETE}</button>
+										</div>
+								</div>
+						</div>
+				</div>
+				
+				<!-- Modal Dialog for adding a new category -->
+				<div class="modal fade" id="products_buying_prices_add_editor" tabindex="-1" role="dialog" aria-labelledby="{$smarty.const.TEXT_ADD_PRODUCTS_BUYING_PRICE}" aria-hidden="true">
+						<div class="modal-dialog">
+								<div class="modal-content">
+										<div class="modal-header">
+										
+												<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">{$smarty.const.TEXT_BUTTON_CLOSE}</span></button>
+												<h4 class="modal-title" id="myModalLabel">{$smarty.const.TEXT_ADD_PRODUCTS_BUYING_PRICE}</h4>
+										</div>
+										<div class="modal-body">
+												<div class="row">
+														<div class="form-group col-md-3">
+																<label>{$smarty.const.TEXT_LABEL_SUPPLIER}</label>
+														</div>
+														
+														<div class="form-group col-md-9">
+																<select class="form-control selectpicker" name="supplier" id="supplier">
+																		<option value="0">{$smarty.const.TEXT_PLEASE_CHOOSE}</option>
+																		{foreach from=$SUPPLIERS item=supplier}
+																				<option value="{$supplier.id}">{if $supplier.company != ''}{$supplier.company}{else}{$supplier.firstname} {$supplier.lastname}{/if}</option>
+																		{/foreach}
+																</select>
+														</div>
+												</div>
+												
+												<div class="row">
+														<div class="form-group col-md-3">
+																<label>{$smarty.const.TEXT_LABEL_PRICE_NETTO}</label>
+														</div>
+														
+														<div class="form-group col-md-9">
+																<input type="text" id="products_buying_prices_netto" value="" class="form-control" />
+														</div>
+												</div>
+												
+												<div class="row">
+														<div class="form-group col-md-3">
+																<label>{$smarty.const.TEXT_LABEL_TAX_CLASS}</label>
+														</div>
+														
+														<div class="form-group col-md-9">
+																<select class="form-control selectpicker" name="buying_prices_taxclass" id="buying_prices_taxclass">
+																		{foreach from=$TAXCLASSES item=taxclass}
+																				<option value="{$taxclass.id}" data-taxclass-value="{$taxclass.value}">{$taxclass.title} ({$taxclass.value}%)</option>
+																		{/foreach}
+																</select>
+														</div>
+												</div>
+												
+												<div class="row">
+														<div class="form-group col-md-3">
+																<label>{$smarty.const.TEXT_LABEL_PRICE_BRUTTO}</label>
+														</div>
+														
+														<div class="form-group col-md-9">
+																<input type="text" id="products_buying_prices_brutto" value="" class="form-control" />
+														</div>
+												</div>
+												
+												{literal}
+														<script>
+														//delete buying price
+														function buying_price_delete_dialog(event, item) {
+																event.stopPropagation();
+																
+																var row = $(item).closest("tr");
+																
+																//load the items data..
+																var buying_price_id = $(row).attr('data-buying-price-id');
+																var price_netto = $(row).attr('data-netto');
+																var taxclass_id = $(row).attr('data-tax');
+																var suppliers_id = $(row).attr('data-suppliers-id');
+																var tmp_products_id = $(row).attr('data-tmp-products-id');
+																
+																$('#buying_prices_add_buying_price_id').val(buying_price_id);
+																$('#products_buying_prices_netto').val(price_netto);
+																$("#buying_prices_taxclass").val(taxclass_id);
+																$("#supplier").val(suppliers_id);
+																
+																//set values important for edit mode..
+																$('#buying_prices_edit_mode').val('edit');
+																$('#buying_prices_edit_price_netto').val(price_netto);
+																$('#buying_prices_edit_taxclass').val(taxclass_id);
+																$('#buying_prices_edit_supplier').val(suppliers_id);
+																
+																buying_prices_edit_row = row;
+																
+																show_products_buying_price_delete_editor(item);
+														}
+														
+														//buying_price_edit_dialog
+														function buying_price_edit_dialog(event, item) {
+																event.stopPropagation();
+																		
+																//get the parent tr..
+																var row = $(item).closest("tr");
+																//load the items data..
+																var buying_price_id = $(row).attr('data-buying-price-id');
+																var price_netto = $(row).attr('data-netto');
+																var taxclass_id = $(row).attr('data-tax');
+																var suppliers_id = $(row).attr('data-suppliers-id');
+																var tmp_products_id = $(row).attr('data-tmp-products-id');
+																//set the input fields with that data
+																$('#buying_prices_add_buying_price_id').val(buying_price_id);
+																$('#products_buying_prices_netto').val(price_netto);
+																$("#buying_prices_taxclass").val(taxclass_id);
+																buying_price_update_brutto_from_netto();
+																$("#supplier").val(suppliers_id);
+																$('.selectpicker').selectpicker('refresh');
+																
+																//set values important for edit mode..
+																$('#buying_prices_edit_mode').val('edit');
+																$('#buying_prices_edit_price_netto').val(price_netto);
+																$('#buying_prices_edit_taxclass').val(taxclass_id);
+																$('#buying_prices_edit_supplier').val(suppliers_id);
+				
+																buying_prices_edit_row = row;
+				
+																show_products_buying_price_editor(item);
+														}
+														
+														//buying price- netto to brutto
+														function buying_price_update_brutto_from_netto() {
+																var netto = $('#products_buying_prices_netto').val();
+																var tax = $('#buying_prices_taxclass').find(':selected').attr('data-taxclass-value');		//Retrieve it as a string -> thats why we use .attr instead of ,data
+																
+																var brutto = mv_netto_to_brutto(netto, tax);
+																
+																$('#products_buying_prices_brutto').val(brutto);
+														}
+														
+														$( function() {
+																$('#products_buying_prices_netto').change( function(event) {
+																		event.stopPropagation();
+																
+																		buying_price_update_brutto_from_netto();
+																});
+																
+																$('#products_buying_prices_netto').keyup( function(event) {
+																		event.stopPropagation();
+																		
+																		buying_price_update_brutto_from_netto();												
+																});
+														});
+														
+														//buying price - brutto to netto
+														function buying_price_update_netto_from_brutto() {
+																var brutto = $('#products_buying_prices_brutto').val();
+																var tax = $('#buying_prices_taxclass').find(':selected').attr('data-taxclass-value');		//Retrieve it as a string -> thats why we use .attr instead of ,data
+																
+																var netto = mv_brutto_to_netto(brutto, tax);
+																
+																$('#products_buying_prices_netto').val(netto);
+														}
+														
+														$( function() {
+																$('#products_buying_prices_brutto').change( function(event) {
+																		event.stopPropagation();
+																
+																		buying_price_update_netto_from_brutto();
+																});
+																
+																$('#products_buying_prices_brutto').keyup( function(event) {
+																		event.stopPropagation();
+																		
+																		buying_price_update_netto_from_brutto();
+																});
+														});
+														
+														//update prices when tax class is changed
+														$( function() {
+																$('#buying_prices_taxclass').change( function(event) {
+																		event.stopPropagation();
+																		
+																		//check if a net value is set..
+																		var netto = $('#products_buying_prices_netto').val();
+																		netto = mv_parse_float(netto);
+																		
+																		//if no net value is set, check the gros
+																		if(isNaN(netto)) {
+																				var brutto = $('#products_buying_prices_brutto').val();
+																				brutto = mv_parse_float(brutto);
+																				
+																				//if no gros is set and no net is set - use zero..
+																				if(isNaN(brutto)) {
+																						$('#products_buying_prices_netto').val(0);
+																						$('#products_buying_prices_brutto').val(0);
+																				} else {
+																						//update net price
+																						buying_price_update_netto_from_brutto();
+																				}
+																		} else {
+																				buying_price_update_brutto_from_netto();
+																		}
+																});
+														});
+														
+														//delete button - to delete a buying price
+														function mv_buying_price_delete(buying_price_id, netto, taxclass_id, suppliers_id, tmp_products_id, remove, suppliers_name, taxvalue, old_netto, old_taxclass_id, old_suppliers_id, mode) {
+																//save the content via ajax..
+																var params = { 
+																						s: 'cAdminproducts', 
+																						action: 'ajax_buying_price_save_tmp_delete', 
+																						buying_price_id: buying_price_id, 
+																						netto: netto, 
+																						taxclass_id: taxclass_id, 
+																						suppliers_id: suppliers_id, 
+																						tmp_products_id: tmp_products_id, 
+																						remove: remove,
+																						old_netto: old_netto,
+																						old_taxclass_id: old_taxclass_id,
+																						old_suppliers_id: old_suppliers_id
+																						};
+																params = $.param(params);
+																
+																$.ajax({
+																		type: "POST",
+																		url: "index.php?" + params,
+																}).done(function( msg ) {
+																		//remove the item of the list and close the dialog..
+																		$(buying_prices_edit_row).remove();
+																		$('#products_buying_prices_delete_editor').modal('hide');
+																});
+														}
+														
+														//add button - to add a buying price
+														function mv_buying_price_save(buying_price_id, netto, taxclass_id, suppliers_id, tmp_products_id, remove, suppliers_name, taxvalue, old_netto, old_taxclass_id, old_suppliers_id, mode) {
+																//save the content via ajax..
+																var params = { 
+																						s: 'cAdminproducts', 
+																						action: 'ajax_buying_price_save_tmp', 
+																						buying_price_id: buying_price_id, 
+																						netto: netto, 
+																						taxclass_id: taxclass_id, 
+																						suppliers_id: suppliers_id, 
+																						tmp_products_id: tmp_products_id, 
+																						remove: remove,
+																						old_netto: old_netto,
+																						old_taxclass_id: old_taxclass_id,
+																						old_suppliers_id: old_suppliers_id
+																						};
+																params = $.param(params);
+																
+																$.ajax({
+																		type: "POST",
+																		url: "index.php?" + params,
+																}).done(function( msg ) {
+																		if(mode == 'new') {
+																				if(msg.indexOf('insert') != -1) {		//message returns an insert with a simple string..
+																						//add the entry to the html table
+																						var trow = '';
+																						var text_button_edit = $('#prices_text_button_edit').val();
+																						var text_button_delete = $('#prices_text_button_delete').val();
+																						
+																						trow = '<tr data-buying-price-id="' + buying_price_id + '" data-netto="' + netto + '" data-tax="' + taxclass_id + '" data-suppliers-id="' + suppliers_id + '" data-tmp-products-id="' + tmp_products_id + '">';
+																								if(suppliers_id != 0) {
+																										trow += '<td>' + suppliers_name + '</td>';
+																								} else {
+																										trow += '<td>- - -</td>';
+																								}
+																								
+																								trow += '<td>' + mv_number_format_decimal(netto.toString()) + '</td>';
+																								trow += '<td>' + taxvalue + '%</td>';
+																								
+																								trow += '<td>' + mv_number_format_decimal(mv_netto_to_brutto(netto.toString(), taxvalue.toString()).toString()) + '</td>';
+																								trow += '<td>';
+																										trow += '<button type="button" class="buying_price_edit">' + text_button_edit + '</button>';
+																										trow += '<button type="button" class="buying_price_delete">' + text_button_delete + '</button>';
+																								trow += '</td>';
+																						trow += '</tr>';
+																						
+																						$('#products_buying_prices tbody').append(trow);
+																						
+																						//disable and re-enable the click function for the edit buttons
+																						$('.buying_price_edit').off('click');
+																						$('.buying_price_edit').on('click', function(event) {
+																								buying_price_edit_dialog(event, this);
+																						});
+																						
+																						//disable and re-enable the click function for the delete buttons
+																						$('.buying_price_delete').off('click');
+																						$('.buying_price_delete').on('click', function(event) {
+																								buying_price_delete_dialog(event, this);
+																						});
+																				}
+																				
+																				//hide window
+																				$('#products_buying_prices_add_editor').modal('hide');
+																		} else {
+																				//update the table row..
+																				$(buying_prices_edit_row).attr('data-netto', netto);
+																				$(buying_prices_edit_row).attr('data-tax', taxclass_id);
+																				$(buying_prices_edit_row).attr('data-suppliers-id', suppliers_id);
+																				
+																				if(suppliers_id == 0) {
+																						$(buying_prices_edit_row).find('td:nth-child(1)').html('- - -');
+																				} else {
+																						$(buying_prices_edit_row).find('td:nth-child(1)').html(suppliers_name);
+																				}
+																				
+																				$(buying_prices_edit_row).find('td:nth-child(2)').html( mv_number_format_decimal(netto.toString()) );
+																				$(buying_prices_edit_row).find('td:nth-child(3)').html(taxvalue + '%');
+																				$(buying_prices_edit_row).find('td:nth-child(4)').html( mv_number_format_decimal(mv_netto_to_brutto(netto.toString(), taxvalue.toString()).toString()) );
+																				
+																				$('#products_buying_prices_add_editor').modal('hide');
+																		}
+																});
+														}
+														
+														$( function() {
+																$('#add_product_buying_price_submit').click( function() {
+																		var buying_price_id = $('#buying_prices_add_buying_price_id').val();
+																		var netto = mv_parse_float($('#products_buying_prices_netto').val());
+																		var taxclass_id = $('#buying_prices_taxclass').val();
+																		var suppliers_id = $('#supplier').val();
+																		var tmp_products_id = $('#tmp_products_id').val();
+																		var remove = false;
+																		var suppliers_name = $('#supplier').find(':selected').html();
+																		var taxvalue = $('#buying_prices_taxclass').find(':selected').attr('data-taxclass-value');
+																		
+																		var edit_mode = $('#buying_prices_edit_mode').val();
+																		var old_netto = $('#buying_prices_edit_price_netto').val();
+																		var old_taxclass_id = $('#buying_prices_edit_taxclass').val();
+																		var old_suppliers_id = $('#buying_prices_edit_supplier').val();
+																		
+																		mv_buying_price_save(buying_price_id, netto, taxclass_id, suppliers_id, tmp_products_id, remove, suppliers_name, taxvalue, old_netto, old_taxclass_id, old_suppliers_id, edit_mode);
+																});
+																
+																$('#add_product_buying_price_delete').click( function() {
+																		var buying_price_id = $('#buying_prices_add_buying_price_id').val();
+																		var netto = mv_parse_float($('#products_buying_prices_netto').val());
+																		var taxclass_id = $('#buying_prices_taxclass').val();
+																		var suppliers_id = $('#supplier').val();
+																		var tmp_products_id = $('#tmp_products_id').val();
+																		var remove = 1;
+																		var suppliers_name = $('#supplier').find(':selected').html();
+																		var taxvalue = $('#buying_prices_taxclass').find(':selected').attr('data-taxclass-value');
+																		
+																		var edit_mode = $('#buying_prices_edit_mode').val();
+																		var old_netto = $('#buying_prices_edit_price_netto').val();
+																		var old_taxclass_id = $('#buying_prices_edit_taxclass').val();
+																		var old_suppliers_id = $('#buying_prices_edit_supplier').val();
+																		
+																		mv_buying_price_delete(buying_price_id, netto, taxclass_id, suppliers_id, tmp_products_id, remove, suppliers_name, taxvalue, old_netto, old_taxclass_id, old_suppliers_id, edit_mode);
+																});
+																
+																//edit buying price
+																$('.buying_price_edit').click( function(event) {
+																		buying_price_edit_dialog(event, this);
+																});
+																
+																//delete buying price
+																$('.buying_price_delete').click( function(event) {
+																		buying_price_delete_dialog(event, this);
+																});
+														});
+														
+														</script>
+												{/literal}
+														
+												{* <!--
+												<div id="add_product_category_title_error" class="red_text" style="display: none;">{$smarty.const.TEXT_PRODUCTS_CATEGORY_TITLE_TOO_SHORT}</div>
+												<label>{$smarty.const.TEXT_LABEL_PRODUCTS_CATEGORY_TITLE}</label>
+												<input type="text" name="add_product_category_title" id="add_product_category_title" value="" />
+												--> *}
+										</div>
+										<div class="modal-footer">
+												{* <!--
+												<input type="hidden" id="add_product_category_channel_id" value="" />
+												<input type="hidden" id="add_product_category_parent_id" value="" />
+												--> *}
+												<button type="button" class="btn btn-default" data-dismiss="modal">{$smarty.const.TEXT_BUTTON_CANCEL}</button>
+												<button type="button" class="btn btn-primary" id="add_product_buying_price_submit">{$smarty.const.TEXT_BUTTON_SAVE}</button>
+										</div>
+								</div>
+						</div>
+				</div>
+		</div>
+</div>

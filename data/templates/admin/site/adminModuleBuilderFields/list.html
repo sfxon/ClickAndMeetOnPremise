@@ -1,0 +1,107 @@
+<div class="container-fluid">
+		<nav class="navbar navbar-default mv-navbar" role="navigation">
+				<div class="navbar-header">
+						<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+								<span class="sr-only">{$smarty.const.TEXT_TOGGLE_NAVIGATION}</span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+						</button>
+				</div>
+				
+				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+						<div class="navbar-left navbar-text">
+								{$NAVBAR_TITLE}
+						</div>
+						
+						<div class="navbar-form navbar-right">
+								<div class="form-group">
+										{strip}
+										<a href="index.php?s=cAdminModuleBuilderFields&amp;action=new&amp;module_builder_id={$MODULE_BUILDER_ID}">
+												<button type="submit" class="btn btn-default btn-sm">Neu</button>
+										</a>
+										{/strip}
+								</div>
+						</div>
+				</div>
+		</nav>
+
+		<div class="mv-force-table-responsive">
+				<table class="table table-hover table-condensed table-bordered table-striped">
+						<thead>
+								<tr>
+										<th>ID</th>
+										<th>Name</th>
+										<th>Feld-Name</th>
+                    <th>Datentyp</th>
+                    <th>Größe/Länge</th>
+                    <th>Verknüpfte Tabelle (ID)</th>
+                    <th>Sortier-Reihenfolge</th>
+										<th>Aktion</th>
+								</tr>
+						</thead>
+            <tbody>
+            		<tr>
+                    <td colspan="7"><b>ACHTUNG! Die beiden Felder "id" und "title" werden standardmäßig für diese Tabelle erzeugt!</b></td>
+                </tr>
+                <tr class="mv-module-builder-default-values">
+                    <td>--</td>
+                    <td>ID</td>
+                    <td>id (Autoincrement)</td>
+                    <td>int</td>
+                    <td>11</td>
+                    <td>&nbsp;</td>
+                    <td>-2</td>
+                    <td>&nbsp;</td>
+                </tr>
+                
+                <tr class="mv-module-builder-default-values">
+                    <td>--</td>
+                    <td>Name</td>
+                    <td>title</td>
+                    <td>varchar</td>
+                    <td>256</td>
+                    <td>&nbsp;</td>
+                    <td>-1</td>
+                    <td>&nbsp;</td>
+                </tr>
+						
+						
+								{if $DATA.list|count == 0}
+										
+								{else}
+										{foreach from=$DATA.list item=dataitem name=listforeach}
+												{if false !== $dataitem}
+                            <tr>
+																<td>{$dataitem.id}</td>
+																<td>{$dataitem.title|htmlspecialchars}</td>
+																<td>{$dataitem.field_name|htmlspecialchars}</td>
+                                <td>{$dataitem.data_type|htmlspecialchars}</td>
+                                <td>{$dataitem.length|htmlspecialchars}</td>
+                             		<td>
+                                		{if $dataitem.foreign_table_id != 0}
+                                    		{$dataitem.foreign_table_id|htmlspecialchars}
+                                    {/if}
+                                </td>
+                                <td>{$dataitem.sort_order|htmlspecialchars}</td>
+																<td>
+                                    {strip}
+                                    <a href="index.php?s=cAdminModuleBuilderFields&amp;id={$dataitem.id}&amp;action=edit&amp;module_builder_id={$MODULE_BUILDER_ID}">
+                                        <i class="fa fa-pencil"></i>
+                                    </a>
+                                    {/strip}
+                                    
+                                    {strip}
+                                    <a href="index.php?s=cAdminModuleBuilderFields&amp;id={$dataitem.id}&amp;action=confirm_delete&amp;module_builder_id={$MODULE_BUILDER_ID}" title="Löschen">
+                                        <i class="fa fa-ban text-danger mv-fa-inline"></i>
+                                    </a>
+                                    {/strip}
+																</td>
+														</tr>
+												{/if}
+										{/foreach}
+								{/if}
+						</tbody>
+				</table>
+		</div>
+</div>

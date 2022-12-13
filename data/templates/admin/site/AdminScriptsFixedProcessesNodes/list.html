@@ -1,0 +1,127 @@
+<div class="container-fluid">
+		<nav class="navbar navbar-default mv-navbar" role="navigation">
+				<div class="navbar-header">
+						<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+								<span class="sr-only">{$smarty.const.TEXT_TOGGLE_NAVIGATION}</span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+						</button>
+				</div>
+        
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <div class="navbar-left navbar-text">
+            		{$NAVBAR_TITLE}
+            </div>
+            
+            <div class="navbar-form navbar-right">
+                <div class="form-group">
+                    <a href="http://wiki/doku.php?id=scripting-AdminScriptsFixedProcessesNodes#liste" target="_blank">
+												<button type="submit" class="btn btn-success btn-sm">Hilfe</button>
+										</a>
+										
+										<a href="index.php?s=cAdminScriptsFixedProcessesNodes&amp;scripts_id={$SCRIPTS_ID}&amp;action=new">
+                        <button type="submit" class="btn btn-default btn-sm">{$smarty.const.TEXT_BUTTON_NEW}</button>
+                    </a>
+                </div>
+            </div>
+        </div>
+		</nav>
+		
+		{foreach from=$INFO_MESSAGES item=info_message}
+				{if $info_message == 1}
+						<div class="alert alert-info" role="alert">Der Vorgang wurde abgebrochen. Der Account wurde nicht gelöscht.</div>
+				{/if}
+		{/foreach}
+		{foreach from=$SUCCESS_MESSAGES item=success_message}
+				{if $success_message == 24}
+						<div class="alert alert-success" role="alert">Der Eintrag wurde gelöscht.</div>
+				{/if}
+		{/foreach}
+		
+		<div class="row">
+				<div class="col-md-12 text-right">
+						Legende: 
+						<i class="fa fa-pencil"></i> = Eintrag bearbeiten |&nbsp;&nbsp;&nbsp;
+						<i class="fa fa-times text-danger" aria-hidden="true"></i> = Eintrag entfernen
+				</div>
+		</div>
+		
+		<div class="mv-force-table-responsive">
+				<table class="table table-hover table-condensed table-bordered table-striped">
+						<thead>
+								<tr>
+										<th>{$smarty.const.TEXT_TABLE_HEADING_ID}</th>
+										<th>{$smarty.const.TEXT_TABLE_HEADING_BUTTON_TITLE}</th>
+										<th>{$smarty.const.TEXT_TABLE_HEADING_SORT_ORDER}</th>
+										<th>{$smarty.const.TEXT_TABLE_HEADING_SCRIPTS_PROCESSES_TITLE}</th>
+										<th>{$smarty.const.TEXT_TABLE_HEADING_SCRIPTS_BUTTON_STYLE}</th>
+										<th>{$smarty.const.TEXT_TABLE_HEADING_SCRIPTS_BUTTON_AREA}</th>
+										<th>{$smarty.const.TEXT_TABLE_HEADING_TYPE}</th>
+										<th>{$smarty.const.TEXT_TABLE_HEADING_ACTION}</th>
+								</tr>
+						</thead>
+						
+						<tbody>
+								{if $DATA.list|count == 0}
+										<tr><td colspan="8">{$smarty.const.TEXT_NO_DATA}</td></tr>
+								{else}
+										{foreach from=$DATA.list item=dataitem name=listforeach}
+												{if false !== $dataitem}
+														<tr>
+																<td>{$dataitem.id}</td>
+																<td>{$dataitem.button_title|htmlspecialchars}</td>
+																<td>{$dataitem.sort_order|htmlspecialchars}</td>
+																
+																<td>
+																		{if $dataitem.next_processes_id != 0}
+																				{$dataitem.processes_data.title}
+																		{else}
+																				<span class="text-danger">-- Kein Eintrag ausgewählt --</span>
+																		{/if}
+																</td>
+																
+																<td>
+																		{if $dataitem.scripts_button_styles_id != 0}
+																				{$dataitem.scripts_button_styles_data.title}
+																		{else}
+																				<span class="text-danger">-- Kein Eintrag ausgewählt --</span>
+																		{/if}
+																</td>
+																
+																<td>
+																		{if $dataitem.scripts_button_areas_id != 0}
+																				{$dataitem.scripts_button_areas_data.title}
+																		{else}
+																				<span class="text-danger">-- Kein Eintrag ausgewählt --</span>
+																		{/if}
+																</td>
+																
+																<td>
+																		{if $dataitem.type != 'popup'}
+																				Seite
+																		{else}
+																				Popup
+																		{/if}
+																</td>
+																
+																<td>
+																 		{strip}
+																				<a href="index.php?s=cAdminScriptsFixedProcessesNodes&amp;scripts_id={$SCRIPTS_ID}&amp;id={$dataitem.id}&amp;action=edit" title="Bearbeiten">
+																						<i class="fa fa-pencil"></i>
+																				</a>
+																				
+																				&nbsp;&nbsp;&nbsp;
+																				<a href="index.php?s=cAdminScriptsFixedProcessesNodes&amp;scripts_id={$SCRIPTS_ID}&amp;id={$dataitem.id}&amp;action=delete" title="Löschen">
+																						<i class="fa fa-times text-danger" aria-hidden="true"></i>
+																				</a>
+																		{/strip}
+																</td>
+														</tr>
+												{/if}
+										{/foreach}
+								{/if}
+						</tbody>
+				</table>
+		</div>
+</div>

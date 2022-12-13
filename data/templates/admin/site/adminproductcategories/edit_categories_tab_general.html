@@ -1,0 +1,90 @@
+<div class="mvbox">
+		<div class="mvbox-body">
+				<div class="row">
+						{* <!-- Linke Spalte --> *}
+						<div class="col-sm-6">
+								<div class="row">
+										<div class="form-group col-sm-12">
+												<label for="status">{$smarty.const.TEXT_LABEL_PRODUCT_CATEGORIES_STATUS}</label>
+												<select class="form-control selectpicker" name="status">
+														<option value="0"{if $DATA.category_data.status == '0'} selected="selected"{/if}>{$smarty.const.TEXT_ACTIVATED}</option>
+														<option value="1"{if $DATA.category_data.status == '1'} selected="selected"{/if}>{$smarty.const.TEXT_NOT_ACTIVATED}</option>
+												</select>
+										</div>
+								</div>
+								
+								<div class="row">
+										<div class="form-group col-sm-12">
+												<label for="sort_order">{$smarty.const.TEXT_LABEL_CATEGORIES_SORT_ORDER}</label>
+												<input type="text" class="form-control" placeholder="{$smarty.const.TEXT_LABEL_CATEGORIES_SORT_ORDER}" value="{$DATA.category_data.sort_order}" name="sort_order" />
+										</div>
+								</div>
+						</div>
+						
+						{* <!-- Rechte Spalte --> *}
+						<div class="col-sm-6">
+								{foreach from=$DATALANGUAGES item=lang}
+										{foreach from=$DATA.category_data.descriptions item=desc}
+												{if $lang.id == $desc.languages_id}
+														<div class="mvbox gray">
+																<div class="mvbox-title">
+																		<div class="caption">{$lang.title}</div>
+																</div>
+																<div class="mvbox-body">
+																		<div class="row">
+																				<div class="form-group col-sm-12">
+																						<label for="title_{$lang.id}">{$smarty.const.TEXT_PRODUCT_CATEGORIES_NAME}</label>
+																						<input type="text" name="title_{$lang.id}" value="{$desc.title}" class="form-control" />
+																				</div>
+																		</div>
+																		
+																		<div class="row">
+																				<div class="form-group col-sm-12">
+																						<label for="heading_title_{$lang.id}">{$smarty.const.TEXT_PRODUCT_CATEGORIES_HEADING_TITLE}</label>
+																						<input type="text" name="heading_title_{$lang.id}" value="{$desc.heading_title}" class="form-control" />
+																				</div>
+																		</div>
+																		
+																		<div class="row">
+																				<div class="form-group col-sm-12">
+																						<label for="description_{$lang.id}">{$smarty.const.TEXT_PRODUCT_CATEGORIES_DESCRIPTION}</label>
+																						<textarea name="description_{$lang.id}" class="form-control">{$desc.description}</textarea>
+																				</div>
+																		</div>
+																		
+																		<div class="row">
+																				<div class="form-group col-sm-12">
+																						<label for="meta_title_{$lang.id}">{$smarty.const.TEXT_PRODUCT_CATEGORIES_META_TITLE}</label>
+																						<textarea name="meta_title_{$lang.id}" class="form-control">{$desc.meta_title}</textarea>
+																				</div>
+																		</div>
+																		
+																		<div class="row">
+																				<div class="form-group col-sm-12">
+																						<label for="meta_description_{$lang.id}">{$smarty.const.TEXT_PRODUCT_CATEGORIES_META_DESCRIPTION}</label>
+																						<textarea name="meta_description_{$lang.id}" class="form-control">{$desc.meta_description}</textarea>
+																				</div>
+																		</div>
+																		
+																		<div class="row">
+																				<div class="form-group col-sm-12">
+																						<label for="meta_keywords_{$lang.id}">{$smarty.const.TEXT_PRODUCT_CATEGORIES_META_KEYWORDS}</label>
+																						<textarea name="meta_keywords_{$lang.id}" class="form-control">{$desc.meta_keywords}</textarea>
+																				</div>
+																		</div>
+																		
+																		<div class="row">
+																				<div class="form-group col-sm-12">
+																						<label for="rewrite_url_{$lang.id}">{$smarty.const.TEXT_PRODUCT_CATEGORIES_REWRITE_URL}</label>
+																						<textarea name="rewrite_url_{$lang.id}" class="form-control">{$desc.rewrite_url}</textarea>
+																				</div>
+																		</div>
+																</div>
+														</div>
+												{/if}
+										{/foreach}
+								{/foreach}
+						</div>
+				</div>
+		</div>
+</div>

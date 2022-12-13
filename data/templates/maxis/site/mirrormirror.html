@@ -1,0 +1,47 @@
+<div class="container">
+		<div class="row">
+				<div class="col text-center">
+						<h1>Wie alt schätzt du mich?</h1>
+						
+						<img src="{$TEMPLATE_URL}{$IMAGE.filename}" id="image-to-rate" />
+						
+						<div class="direct-rate-input-container">
+								<form action="{$TEMPLATE_URL}meine-seite?action=rate" method="post" id="mirror-form">
+										<input type="hidden" value="{$IMAGE.id}" name="image_id" id="image_id" />
+										<input type="text" value="" placeholder="Alter eingeben" autofocus name="age-rating" class="form-control" id="age-rating-input" />
+										<div id="mirror_error_message_container" style="display: none;">
+												<div id="mirror_error_message" class="text-danger">
+												</div>
+										</div>
+										<button type="submit" class="btn btn-primary" id="rate-now-button">Einschätzen</button>
+								</form>
+						</div>
+						
+						<div class="number-field-input-container">
+								<div class="d-flex justify-content-center">
+										<div class=""><button type="button" id="number1" class="number-input" data-attr-value="1">1</button></div>
+										<div class=""><button type="button" id="number2" class="number-input" data-attr-value="2">2</button></div>
+										<div class=""><button type="button" id="number3" class="number-input" data-attr-value="3">3</button></div>
+								</div>
+								
+								<div class="d-flex justify-content-center">
+										<div class=""><button type="button" id="number4" class="number-input" data-attr-value="4">4</button></div>
+										<div class=""><button type="button" id="number5" class="number-input" data-attr-value="5">5</button></div>
+										<div class=""><button type="button" id="number6" class="number-input" data-attr-value="6">6</button></div>
+								</div>
+								
+								<div class="d-flex justify-content-center">
+										<div class=""><button type="button" id="number7" class="number-input" data-attr-value="7">7</button></div>
+										<div class=""><button type="button" id="number8" class="number-input" data-attr-value="8">8</button></div>
+										<div class=""><button type="button" id="number9" class="number-input" data-attr-value="9">9</button></div>
+								</div>
+								
+								<div class="d-flex justify-content-center">
+										<div class=""><button type="button" id="numberraute" class="number-input" data-attr-value="#">#</button></div>
+										<div class=""><button type="button" id="number0" class="number-input" data-attr-value="0">0</button></div>
+										<div class=""><button type="button" id="numberdel" class="number-input" data-attr-value="&lt;">&lt;</button></div>
+								</div>
+						</div>
+				</div>
+		</div>
+</div>

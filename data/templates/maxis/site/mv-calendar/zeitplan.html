@@ -1,0 +1,46 @@
+<style>
+		#termine-container-container { max-height: 700px; }
+		#termine-container { height: 100%; overflow: scroll; }
+		.kal_standard_tag { font-size: 14px; }
+		.tab_wochenende { font-size: 14px; }
+</style>
+
+<table class="c-table ">
+    <thead class="c-table__head c-table__head--slim kopfzeile-farbig ">
+        <tr class="c-table__row">
+            <th class="c-table__cell c-table__cell--head weight-bold">Uhrzeit</th>
+            <th class="c-table__cell c-table__cell--head weight-bold">Kundenname</th>
+            <th class="c-table__cell c-table__cell--head weight-bold">Ansprechpartner</th>
+            <th class="c-table__cell c-table__cell--head weight-bold">Gesprächstyp</th>
+        </tr>
+    </thead>
+
+    <tbody>
+    		{foreach from=$ZEITPLAN item=entry}
+        		<tr class="c-table__row">
+            		<td class="c-table__cell cell_abstand weight-bold">{$entry.stunde_formatiert}:{$entry.minute_formatiert}</td>
+                <td class="c-table__cell cell_abstand">
+               			{if $entry.termin_daten|count > 0}
+                    
+                    {else}
+                    		&nbsp;
+                    {/if}
+                </td>
+                <td class="c-table__cell cell_abstand">
+                		{if $entry.termin_daten|count > 0}
+                    
+                    {else}
+                    		&nbsp;
+                    {/if}
+                </td>
+                <td class="c-table__cell cell_abstand">
+                		{if $entry.termin_daten|count > 0}
+                    
+                    {else}
+                    		&nbsp;
+                    {/if}
+                </td>
+		        </tr>
+        {/foreach}
+    </tbody>
+</table>

@@ -1,0 +1,17 @@
+<footer class="footer">
+    <div class="container-fluid">
+        <a href="{$TEMPLATE_URL}">Click&amp;Meet &copy; 2020 - {$smarty.now|date_format:"%Y"}</a>
+  </div>
+</footer>
+
+{if isset($FOOTER_DATA.footer_admin_debug_section)}
+		{$FOOTER_DATA.footer_admin_debug_section}
+{/if}
+
+<script src="{$TEMPLATE_URL}data/templates/{$TEMPLATE}/js/jquery-3.5.1.min.js"></script>
+<script src="{$TEMPLATE_URL}data/templates/{$TEMPLATE}/js/bootstrap.min.js"></script>
+<script src="{$TEMPLATE_URL}data/templates/{$TEMPLATE}/js/mv.js"></script>
+
+{if isset($FOOTER_DATA.additional_footer_js)}
+		{$FOOTER_DATA.additional_footer_js}
+{/if}

@@ -1,0 +1,418 @@
+<style>
+		{* <!-- Kalender-Titel (Mo - Fr) --> *}
+		{if isset($MV_CALENDAR_COLORS['cal_title_background'])}
+		{literal}
+				.kalender-header-day {
+						background-color: {/literal}{$MV_CALENDAR_COLORS['cal_title_background']}{literal};
+				}
+		{/literal}
+		{/if}
+		
+		{if isset($MV_CALENDAR_COLORS['cal_title_text'])}
+		{literal}
+				.kalender-header-day {
+						color: {/literal}{$MV_CALENDAR_COLORS['cal_title_text']}{literal};
+				}
+		{/literal}
+		{/if}
+		
+		{* <!-- KW im Kalender-Header --> *}
+		{if isset($MV_CALENDAR_COLORS['cal_kw_background'])}
+		{literal}
+				.kalender-header-weeknumber {
+						background-color: {/literal}{$MV_CALENDAR_COLORS['cal_kw_background']}{literal};
+				}
+		{/literal}
+		{/if}
+		
+		{if isset($MV_CALENDAR_COLORS['cal_kw_text'])}
+		{literal}
+				.kalender-header-weeknumber {
+						color: {/literal}{$MV_CALENDAR_COLORS['cal_kw_text']}{literal};
+				}
+		{/literal}
+		{/if}
+		
+		{* <!-- Kalenderwochen Hintergrund --> *}
+		{if isset($MV_CALENDAR_COLORS['cal_weeks_background'])}
+		{literal}
+				.kalender-weeknumber {
+						background-color: {/literal}{$MV_CALENDAR_COLORS['cal_weeks_background']}{literal};
+				}
+		{/literal}
+		{/if}
+		
+		{if isset($MV_CALENDAR_COLORS['cal_weeks_text'])}
+		{literal}
+				.kalender-weeknumber {
+						color: {/literal}{$MV_CALENDAR_COLORS['cal_weeks_text']}{literal};
+				}
+		{/literal}
+		{/if}
+		
+		{* <!-- Nicht Buchbarer Termin --> *}
+		{if isset($MV_CALENDAR_COLORS['entry_no_booking_background'])}
+		{literal}
+				.kalender-entry {
+						background-color: {/literal}{$MV_CALENDAR_COLORS['entry_no_booking_background']}{literal};
+				}
+		{/literal}
+		{/if}
+		
+		{if isset($MV_CALENDAR_COLORS['entry_no_booking_text'])}
+		{literal}
+				.kalender-entry {
+						color: {/literal}{$MV_CALENDAR_COLORS['entry_no_booking_text']}{literal};
+				}
+		{/literal}
+		{/if}
+		
+		{* <!-- Buchbarer Termin --> *}
+		{if isset($MV_CALENDAR_COLORS['entry_booking_background'])}
+		{literal}
+				.kalender-entry.mv-status-count-1 {
+						background-color: {/literal}{$MV_CALENDAR_COLORS['entry_booking_background']}{literal};
+				}
+		{/literal}
+		{/if}
+		
+		{if isset($MV_CALENDAR_COLORS['entry_booking_text'])}
+		{literal}
+				.kalender-entry.mv-status-count-1 {
+						color: {/literal}{$MV_CALENDAR_COLORS['entry_booking_text']}{literal};
+				}
+		{/literal}
+		{/if}
+		
+		{* <!-- Hintergrund: Heutiger Tag --> *}
+		{if isset($MV_CALENDAR_COLORS['entry_booking_today_background'])}
+		{literal}
+				.kalender-entry.mv-calendar-current-day {
+						background-color: {/literal}{$MV_CALENDAR_COLORS['entry_booking_today_background']}{literal};
+				}
+		{/literal}
+		{/if}
+		
+		{* <!-- Ausgewählter Tag --> *}
+		{if isset($MV_CALENDAR_COLORS['entry_booking_selected_background'])}
+		{literal}
+				.kalender-entry.mv-current-selected-day {
+						background-color: {/literal}{$MV_CALENDAR_COLORS['entry_booking_selected_background']}{literal};
+				}
+		{/literal}
+		{/if}
+		
+		{if isset($MV_CALENDAR_COLORS['entry_booking_selected_text'])}
+		{literal}
+				.kalender-entry.mv-current-selected-day {
+						color: {/literal}{$MV_CALENDAR_COLORS['entry_booking_selected_text']}{literal};
+				}
+		{/literal}
+		{/if}
+
+		{* <!-- Textfarbe: Heutiger Tag - kommt erst hier, weil das auch zu sehen sein soll, wenn der Tag ausgewählt ist. --> *}
+		{if isset($MV_CALENDAR_COLORS['entry_booking_today_text'])}
+		{literal}
+				.kalender-entry.mv-calendar-current-day,
+				.kalender-entry.mv-current-selected-day.mv-calendar-current-day {
+						color: {/literal}{$MV_CALENDAR_COLORS['entry_booking_today_text']}{literal};
+				}
+		{/literal}
+		{/if}
+		
+		{* <!-- Termin-Liste Titel und Rahmen der Box darunter --> *}
+		{if isset($MV_CALENDAR_COLORS['timer_title_background'])}
+		{literal}
+				.times-list-title {
+						background-color: {/literal}{$MV_CALENDAR_COLORS['timer_title_background']}{literal};
+				}
+				
+				.times-list-top {
+						border: 1px solid {/literal}{$MV_CALENDAR_COLORS['timer_title_background']}{literal};
+				}
+		{/literal}
+		{/if}
+		
+		{if isset($MV_CALENDAR_COLORS['timer_title_text'])}
+		{literal}
+				.times-list-title {
+						color: {/literal}{$MV_CALENDAR_COLORS['timer_title_text']}{literal};
+				}
+		{/literal}
+		{/if}
+		
+		{* <!-- Termin-Liste gerade Reihen --> *}
+		{if isset($MV_CALENDAR_COLORS['timer_list_row_2_background'])}
+		{literal}
+				.times-list-content .mv-cm-timer-row>div {
+						background-color: {/literal}{$MV_CALENDAR_COLORS['timer_list_row_2_background']}{literal};
+				}
+		{/literal}
+		{/if}
+		
+		{if isset($MV_CALENDAR_COLORS['timer_list_row_2_text'])}
+		{literal}
+				.times-list-content .mv-cm-timer-row>div {
+						color: {/literal}{$MV_CALENDAR_COLORS['timer_list_row_2_text']}{literal};
+				}
+		{/literal}
+		{/if}
+		
+		{* <!-- Termin-Liste ungerade Reihen --> *}
+		{if isset($MV_CALENDAR_COLORS['timer_list_row_1_background'])}
+		{literal}
+				.times-list-content .mv-cm-timer-row:nth-child(odd)>div {
+						background-color: {/literal}{$MV_CALENDAR_COLORS['timer_list_row_1_background']}{literal};
+				}
+		{/literal}
+		{/if}
+		
+		{if isset($MV_CALENDAR_COLORS['timer_list_row_1_text'])}
+		{literal}
+				.times-list-content .mv-cm-timer-row:nth-child(odd)>div {
+						color: {/literal}{$MV_CALENDAR_COLORS['timer_list_row_1_text']}{literal};
+				}
+		{/literal}
+		{/if}
+		
+		{* <!-- Termin-Liste gehoverte Reihen --> *}
+		{if isset($MV_CALENDAR_COLORS['timer_list_row_hover_background'])}
+		{literal}
+				.times-list-content .mv-cm-timer-row:hover>div {
+						background-color: {/literal}{$MV_CALENDAR_COLORS['timer_list_row_hover_background']}{literal};
+				}
+		{/literal}
+		{/if}
+		
+		{if isset($MV_CALENDAR_COLORS['timer_list_row_hover_text'])}
+		{literal}
+				.times-list-content .mv-cm-timer-row:hover>div {
+						color: {/literal}{$MV_CALENDAR_COLORS['timer_list_row_hover_text']}{literal};
+				}
+		{/literal}
+		{/if}
+		
+		{* <!-- Termin-Liste gehoverte Reihen --> *}
+		{if isset($MV_CALENDAR_COLORS['timer_list_row_hover_background'])}
+		{literal}
+				.times-list-content .mv-cm-timer-row:hover>div {
+						background-color: {/literal}{$MV_CALENDAR_COLORS['timer_list_row_hover_background']}{literal};
+				}
+		{/literal}
+		{/if}
+		
+		{if isset($MV_CALENDAR_COLORS['timer_list_row_hover_text'])}
+		{literal}
+				.times-list-content .mv-cm-timer-row:hover>div {
+						color: {/literal}{$MV_CALENDAR_COLORS['timer_list_row_hover_text']}{literal};
+				}
+		{/literal}
+		{/if}
+		
+		{* <!-- Submit  --> *}
+		{if isset($MV_CALENDAR_COLORS['book_now_button_background'])}
+		{literal}
+				#mv-editor-save {
+						border-color: {/literal}{$MV_CALENDAR_COLORS['book_now_button_background']}{literal};
+						background-color: {/literal}{$MV_CALENDAR_COLORS['book_now_button_background']}{literal};
+				}
+		{/literal}
+		{/if}
+		
+		{if isset($MV_CALENDAR_COLORS['book_now_button_text'])}
+		{literal}
+				#mv-editor-save {
+						color: {/literal}{$MV_CALENDAR_COLORS['book_now_button_text']}{literal};
+				}
+		{/literal}
+		{/if}
+		
+		
+</style>
+
+<div class="container">
+{* <!-- <div class="mv-container-min-full"> --> *}
+		<div class="form-frontend-cm" id="kalender-success-container" style="margin-top: 160px; display: none;">
+        <h2>{$MV_CALENDAR_TEXTS['booking_success_title']}</h2>
+        <p>{$MV_CALENDAR_TEXTS['booking_success_text']}</p>
+        <div id="mv-kalender-success-appointment-info"></div>
+    </div>
+
+    <main class="form-frontend-cm" style="margin-top: 160px;" id="kalender-content-container">
+    		<h1 class="h3 mb-3 fw-normal">Click&amp;Meet Kalender Demo </h1>
+          <p>Ihre Kunden können über diesen Kalender nach offenen Terminen suchen, und diese direkt buchen.</p>
+
+          <div>
+              <div class="mv-kalender-location-container">
+                  <div id="mv-event-location-container"></div>
+                  <div id="mv-user-unit-container"></div>
+              </div>
+              
+              <div id="mv-kalender-timer-container">
+                  
+                  <div id="mv-kalender-container"></div>
+                  <div id="mv-timer-container"></div>
+              </div>
+              
+              <div id="mv-kalender-book-now" style="display: none">
+                  <h2>{$MV_CALENDAR_TEXTS['booking_mask_title']}</h2>
+                  <div id="mv-kalender-book-now-info"></div>
+                  
+                  <p>{$MV_CALENDAR_TEXTS['booking_mask_required']}</p>
+                  
+                  <input type="hidden" id="editor-appointment-id" value="0" />
+              
+              		{if $CM_SETTINGS.form_use_firstname == 1}
+                      <div class="form-group">
+                          <label for="editor-firstname" class="control-label">{$MV_CALENDAR_TEXTS['booking_mask_firstname']}</label>
+                          <input type="text" class="form-control" id="editor-firstname">
+                          <div class="mv-error" id="editor-firstname-error" style="display: none"></div>
+                      </div>
+                  {else}
+                  		<input type="hidden" class="form-control" id="editor-firstname" value="Keine Angabe" />
+                  {/if}
+                  
+                  {if $CM_SETTINGS.form_use_lastname == 1}
+                      <div class="form-group">
+                          <label for="editor-lastname" class="control-label">{$MV_CALENDAR_TEXTS['booking_mask_lastname']}</label>
+                          <input type="text" class="form-control" id="editor-lastname">
+                          <div class="mv-error" id="editor-lastname-error" style="display: none"></div>
+                      </div>
+                  {else}
+                  		<input type="hidden" class="form-control" id="editor-lastname" value="Keine Angabe" />
+                  {/if}
+                  
+                  <div class="form-group">
+                      <label for="editor-email-address" class="control-label">{$MV_CALENDAR_TEXTS['booking_mask_email_address']}</label>
+                      <input type="text" class="form-control" id="editor-email-address">
+                      <div class="mv-error" id="editor-email-address-error" style="display: none"></div>
+                  </div>
+                  
+                  {if $CM_SETTINGS.form_use_ask_for_reminder == 1}
+                      <div class="form-group">
+                          <label for="editor-email-reminder" class="control-label">{$MV_CALENDAR_TEXTS['booking_mask_reminder_text']}</label>
+                          <select id="editor-email-reminder" class="form-control">
+                              <option value="0">{$MV_CALENDAR_TEXTS['booking_mask_reminder_text_no']}</option>
+                              <option value="1">{$MV_CALENDAR_TEXTS['booking_mask_reminder_text_yes']}</option>
+                          </select>
+                          <div class="mv-error" id="editor-email-reminder-error" style="display: none"></div>
+                      </div>
+                  {else}
+                  		<input type="hidden" class="form-control" id="editor-email-reminder" value="0" />
+                  {/if}
+    
+    							{if $CM_SETTINGS.form_use_customers_number == 1}
+                      <div class="form-group">
+                          <label for="editor-customers-number" class="control-label">{$MV_CALENDAR_TEXTS['booking_mask_customers_number']}</label>
+                          <input type="text" class="form-control" id="editor-customers-number" value="" />
+                          <div class="mv-error" id="editor-customers-number-error" style="display: none"></div>
+                      </div>
+                  {else}
+                  		<input type="hidden" class="form-control" id="editor-customers-number" value="" />
+                  {/if}
+                  
+                  {if $CM_SETTINGS.form_use_phone == 1}
+                      <div class="form-group">
+                          <label for="editor-phone" class="control-label">{$MV_CALENDAR_TEXTS['booking_mask_phone']}</label>
+                          <input type="text" class="form-control" id="editor-phone">
+                          <div class="mv-error" id="editor-phone-error" style="display: none"></div>
+                      </div>
+                  {else}
+                  		<input type="hidden" class="form-control" id="editor-phone" value="" />
+                  {/if}
+                  
+                  {if $CM_SETTINGS.form_use_street == 1}
+                      <div class="form-group">
+                          <label for="editor-street" class="control-label">{$MV_CALENDAR_TEXTS['booking_mask_street']}</label>
+                          <input type="text" class="form-control" id="editor-street">
+                          <div class="mv-error" id="editor-street-error" style="display: none"></div>
+                      </div>
+                  {else}
+                  		<input type="hidden" class="form-control" id="editor-street" value="" />
+                  {/if}
+                  
+                  {if $CM_SETTINGS.form_use_plz == 1 || $CM_SETTINGS.form_use_city == 1}
+                      <div class="row">
+                          {if $CM_SETTINGS.form_use_plz == 1}
+                              <div class="col-md-6">
+                                  <div class="form-group">
+                                      <label for="editor-plz" class="control-label">{$MV_CALENDAR_TEXTS['booking_mask_text_plz']}</label>
+                                      <input type="text" class="form-control" id="editor-plz" value="">
+                                      <div class="mv-error" id="editor-plz-error" style="display: none"></div>
+                                  </div>
+                              </div>
+                          {else}
+                          		<input type="hidden" class="form-control" id="editor-plz" value="" />
+                          {/if}
+                          
+                          {if $CM_SETTINGS.form_use_city == 1}
+                              <div class="col-md-6">
+                                  <div class="form-group">
+                                      <label for="editor-city" class="control-label">{$MV_CALENDAR_TEXTS['booking_mask_city']}</label>
+                                      <input type="text" class="form-control" id="editor-city" value="">
+                                      <div class="mv-error" id="editor-city-error" style="display: none"></div>
+                                  </div>
+                              </div>
+                          {else}
+                          		<input type="hidden" class="form-control" id="editor-city" value="" />
+                          {/if}
+                          
+                      </div>
+                  {/if}
+                  
+                  {if $CM_SETTINGS.form_use_comment == 1}
+                      <div class="form-group">
+                          <label for="editor-comment-visitor-booking" class="control-label">{$MV_CALENDAR_TEXTS['booking_mask_comment']}</label>
+                          <textarea class="form-control" id="editor-comment-visitor-booking"></textarea>
+                          <div class="mv-error" id="editor-comment-visitor-booking-error" style="display: none"></div>
+                      </div>
+                  {else}
+                      <input type="hidden" class="form-control" id="editor-comment-visitor-booking" value="" />
+                  {/if}
+                  
+                  
+                  <div class="form-group">
+                      <label for="editor-accept-agb" class="control-label">{$MV_CALENDAR_TEXTS['booking_mask_datenschutz_title']}</label>
+                      <select id="editor-accept-agb" class="form-control">
+                          <option value="0">{$MV_CALENDAR_TEXTS['booking_mask_datenschutz_no']}</option>
+                          <option value="1">{$MV_CALENDAR_TEXTS['booking_mask_datenschutz_yes']}</option>
+                      </select>
+                      <div class="mv-error" id="editor-accept-agb-error" style="display: none"></div>
+                  </div>
+                  
+                  <div id="mv-kalender-book-now-info-2"></div>
+                  
+                  <div class="modal-footer">
+                      <div class="mv-error" id="mv-editor-save-error" style="display: none"></div>
+                      <div id="mv-additional-error-message" class="mv-error" style="display: none;"></div>
+                      <button type="button" class="btn btn-primary" id="mv-editor-save">{$MV_CALENDAR_TEXTS['button_book_now']}</button>
+                      
+                     <div id="mv-editor-saving" style="display: none;">{$MV_CALENDAR_TEXTS['book_now_loading']}</div>
+                  </div>
+              </div>
+          </div>
+          
+          <div id="mv-more-information">
+          		<h2>Weitere Informationen</h2>
+          		<p>Hier könnten weitere Informationen stehen. Es folgt ein Blindtext.</p>
+              <p>Lorem ipsum dolor sit amet, consectetur adipisici elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquid ex ea commodi consequat. Quis aute iure reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint obcaecat cupiditat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+              <p>Puis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
+              <p>Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.</p>
+              <p>Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer possim assum. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. </p>
+          </div>                
+    </main>
+</div>
+
+<input type="hidden" id="mv-base-url" value="{$TEMPLATE_URL}" />
+<input type="hidden" id="url" value="{$TEMPLATE_URL}" />
+<input type="hidden" id="mv_url_controller" value="cFrontendCm" />
+
+<input type="hidden" id="mv-error-text-editor-firstname" value="{$MV_CALENDAR_TEXTS['booking_mask_error_firstname']}" />
+<input type="hidden" id="mv-error-text-editor-lastname" value="{$MV_CALENDAR_TEXTS['booking_mask_error_lastname']}" />
+<input type="hidden" id="mv-error-text-editor-email-address" value="{$MV_CALENDAR_TEXTS['booking_mask_error_email_address']}" />
+<input type="hidden" id="mv-error-text-editor-accept-agb" value="{$MV_CALENDAR_TEXTS['booking_mask_datenschutz_error']}" />
+
+<input type="hidden" id="mv-text-termin-datum" value="{$MV_CALENDAR_TEXTS['booking_mask_date_title']}" />
+<input type="hidden" id="mv-text-termin-zeit" value="{$MV_CALENDAR_TEXTS['booking_mask_time_title']}" />
+<input type="hidden" id="mv-text-termin-event-location" value="{$MV_CALENDAR_TEXTS['event_location_title']}" />
+<input type="hidden" id="mv-text-termin-user-unit" value="{$MV_CALENDAR_TEXTS['user_unit_title']}" />

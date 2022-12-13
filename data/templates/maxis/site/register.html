@@ -1,0 +1,38 @@
+<div class="mv-container-min-full">
+    <main class="form-signin">
+        <form action="{$TEMPLATE_URL}registrieren/?action=process" method="post">
+            <h1 class="h3 mb-3 fw-normal">Account erstellen</h1>
+            <p>Das ist erstmal alles, was wir wissen wollen:</p>
+        
+            {if is_array($ERRORS)}
+                {if isset($ERRORS['wrong_login_data'])}
+                    <div class="alert alert-danger" role="alert">
+                        {$ERRORS.wrong_login_data}
+                    </div>
+                {/if}
+            {/if}
+            
+            <label for="mail" class="visually-hidden">E-Mail Adresse</label>
+            <input type="mail" id="mail" name="mail" class="form-control{if isset($ERRORS.mail)} is-invalid{/if}" placeholder="E-Mail Adresse" autofocus="autofocus" value="{$DATA.mail}">
+            <small id="mail_error" class="text-danger"{if !isset($ERRORS.mail)} style="display: none;"{/if}>{if isset($ERRORS.mail)}{$ERRORS.mail}{/if}</small>
+              
+            <input id="mail_repeat" name="mail_repeat" type="mail" value="{$DATA.mail_repeat}" placeholder="E-Mail Adresse wiederholen" class="form-control{if isset($ERRORS.mail_repeat)} is-invalid{/if}" />
+            <small id="mail_repeat_error" class="text-danger"{if !isset($ERRORS.mail_repeat)} style="display: none;"{/if}>{if isset($ERRORS.mail_repeat)}{$ERRORS.mail_repeat}{/if}</small>
+            <br />
+            <input id="pass" name="pass" type="password" value="{$DATA.pass}" placeholder="Passwort" class="form-control{if isset($ERRORS.pass)} is-invalid{/if}" />
+            <small id="pass_error" class="text-danger"{if !isset($ERRORS.pass)} style="display: none;"{/if}>{if isset($ERRORS.pass)}{$ERRORS.pass}{/if}</small>
+            <br />
+            <p class="mv-agb-register-text"><strong>Stimmst du unseren <a href="{$TEMPLATE_URL}nutzungsbedingungen">Nutzungsbedinungen</a> zu?</strong><br>In unserer <a href="{$TEMPLATE_URL}datenschutz">Datenschutzerklärung</a> erfährst du, wie wir mit deinen Daten umgehen.
+            Unsere <a href="{$TEMPLATE_URL}datenschutz">Cookie-Richtlinie</a> erläutert, wie Cookies bei uns eingesetzt werden und was das für dich bedeutet.
+            </p>
+            <input type="checkbox" value="1" name="accept_agb" id="accept_agb" data-on="Ich stimme zu" data-off="Ich stimme nicht zu" data-onstyle="success" data-offstyle="danger" class="mv-register-agb-toggle{if isset($ERRORS.accept_agb)} is-invalid{/if}"{if $DATA.accept_agb == 1} checked="checked"{/if}>
+            <label for="accept_agb" class="mv-agb-register-text">Ich stimme den Nutzungsbedingungen zu.</label><br />
+            <small id="accept_agb_error" class="text-danger"{if !isset($ERRORS.accept_agb)} style="display: none;"{/if}>{if isset($ERRORS.accept_agb)}{$ERRORS.accept_agb}{/if}</small>
+            <br />
+            <button type="submit" class="btn btn-success">Account erstellen</button>
+            <small id="mv-error-message" class="text-danger" {if count($ERRORS) == 0}style="display: none;"{/if}>
+                <br />Irgendwas stimmt nicht. Bitte prüfe deine Eingaben nochmal.
+            </small>
+        </form>
+		</main>
+</div>

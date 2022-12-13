@@ -1,0 +1,23 @@
+1			login not successful
+2			not authenticated
+3			missing access token in header
+4			missing access sign in header
+5			access token not found
+6			access sign is invalid
+7			cApiRefreshTokenController -> invalid (is sent when a request to refresh token controller is invalid. We keep it a little bit silent. When debugging is enabled, we put out more info)
+8			User-Input of age is too low (cApiEstimateUserAgeSendData:process)
+9			cApiEstimateUserAgeSendData -> User-Input of age is too high (cApiEstimateUserAgeSendData:process)
+10		cApiEstimateUserAgeSendData -> The image-data for the given image_id could not be loaded from the database (cApiEstimateUserAgeSendData:process)
+11		cApiEstimateUserAgeSendData -> The image-id of this image belongs to the same user that is trying to rate the image.. That makes no sense. Forbidd it! (cApiEstimateUserAgeSendData:process)
+12		cApiEstimateUserAgeSendData -> This user has already rated this image. Do not allow double ratings. (cApiEstimateUserAgeSendData:process)
+13		cApiCreateUserImage -> "no image data" -> Es wurde kein POST Wert $_POST['image_data'] übergeben.
+14		cApiCreateUserImage -> "Invalid image data" -> Es wurde ein Bild übertragen, dass: entweder nicht vom Typ JPG ist, ungültig ist -> also kein tatsächliches Bild, zu groß ist, oder ein fehlerhaftes Seitenverhältnis hat (wir benötigen 3/4 als Seitenverhältnis - also einen Teilwert von 0.75 gerundet)
+15		cApiCreateUserImage -> "invalid age" -> Das übergebene Alter ist ungültig. Es muss größer als 17 und kleiner als 151 sein.
+16		cApiCreateUserImage -> Error while saving file -> Datei konnte nicht gespeichert werden.. Mögliche Gründe: Dateiberechtigungen? Speicher voll?
+17		cApiCreateUserImage -> Error creating directory.
+18		cApiGetUserImageDetail -> Error loading image by image_id and user_id. Does it exits? Is user allowed to show this image?
+19		cApiUpdateUserImage -> image not found -> Es wurde kein Bild mit dieser user_id und dieser image_id in der Datenbank gefunden.
+20		cApiUpdateUserImage -> "invalid age" -> Das übergebene Alter ist ungültig. Es muss größer als 17 und kleiner als 151 sein.
+21		cApiDeleteUserImage -> image not found -> Es wurde kein Bild mit dieser user_id und dieser image_id in der Datenbank gefunden.
+22		cApiGetUserData -> user not found -> Es wurde kein User mit dieser user_id gefunden.
+23		cApiUpdateUserSettings -> errors occured -> Fehlerdetails wurden mit übergeben. Es können diverse Fehler auftreten.

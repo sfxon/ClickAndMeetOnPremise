@@ -1,0 +1,41 @@
+<div class="startseite register">
+		<picture class="d-none d-lg-block">
+				<source srcset="{$TEMPLATE_URL}data/templates/{$TEMPLATE}/img/tellface5.jpg" media="(min-width: 992px)">
+				<img class="startseite-background" src="{$TEMPLATE_URL}data/templates/{$TEMPLATE}/img/tellface5-mobile.jpg">
+		</picture>
+		
+		<div class="startseite-mv-center-container">
+				<div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center mv-intro-text">
+						<h1 class="display-4">Die E-Mail Adresse wurde zurückgesetzt.</h1>
+						<p>Aus Sicherheitsgründen wurdest du automatisch von allen verbundenen Geräten abgemeldet.</p>
+
+						{if is_array($ERRORS)}
+								{if isset($ERRORS['wrong_login_data'])}
+										<div class="alert alert-danger" role="alert">
+												{$ERRORS.wrong_login_data}
+										</div>
+								{/if}
+						{/if}
+						
+						<p class="lead">Du kannst dich jetzt einloggen:</p>
+						<form action="{$LOGIN_FORM_URL}" method="post" class="text-left" id="mv-register-form">
+								<input id="mail" name="mail" type="mail" value="{$DATA.mail}" placeholder="E-Mail Adresse" class="form-control{if isset($ERRORS.mail)} is-invalid{/if}" />
+								<small id="mail_error" class="text-danger"{if !isset($ERRORS.mail)} style="display: none;"{/if}>{if isset($ERRORS.mail)}{$ERRORS.mail}{/if}</small>
+								<input id="pass" name="pass" type="password" value="{$DATA.pass}" placeholder="Passwort" class="form-control{if isset($ERRORS.pass)} is-invalid{/if}" />
+								<small id="pass_error" class="text-danger"{if !isset($ERRORS.pass)} style="display: none;"{/if}>{if isset($ERRORS.pass)}{$ERRORS.pass}{/if}</small>
+								<br />
+								<p class="mv-agb-login-text"><strong>Möchtest du über einen längeren Zeitraum angemeldet bleiben?</strong></p>
+								<input type="checkbox" value="1" name="keep_logged_in" id="keep_logged_in" data-on="Eingeloggt bleiben" data-off="Nicht eingeloggt bleiben" data-onstyle="success" data-offstyle="danger" class="mv-keep-logged-in-toggle"{if $DATA.keep_logged_in == 1} checked="checked"{/if}>
+								<label for="keep_logged_in">Eingeloggt bleiben</label><br />
+								<br />
+								<div class="row">
+										<div class="col-sm"><button type="submit" class="btn btn-success">Log-In</button></div>
+										<div class="col-sm text-right mv-recover-passwd"><a href="{$TEMPLATE_URL}recover-password">Passwort vergessen?</a></div>
+								</div>
+								<small id="mv-error-message" class="text-danger" {if count($ERRORS) == 0}style="display: none;"{/if}>
+										<br />Irgendwas stimmt nicht. Bitte prüfe deine Eingaben nochmal.
+								</small>
+						</form>
+				</div>
+		</div>
+</div>
